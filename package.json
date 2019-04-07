@@ -1,0 +1,19 @@
+{
+  "name": "thisisnotacommercial.com",
+  "version": "0.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:schmidsi/thisisnotacommercial.com.git",
+  "author": "Simon Emanuel Schmid <simon@schmid.io>",
+  "license": "AGPL-3.0",
+  "private": false,
+  "dependencies": {
+    "next": "^8.0.4",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6"
+  },
+  "scripts": {
+    "dev": "next",
+    "build": "next build",
+    "start": "next start"
+  }
+}
