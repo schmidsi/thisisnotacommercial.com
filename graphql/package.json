@@ -1,8 +1,14 @@
 {
   "dependencies": {
+    "graphql-request": "^1.8.2",
     "graphql-yoga": "^1.17.4"
   },
   "scripts": {
-    "start": "node ."
+    "dev": "ts-node-dev -r dotenv-extended/config index.ts"
+  },
+  "devDependencies": {
+    "dotenv-extended": "^2.4.0",
+    "ts-node-dev": "^1.0.0-pre.32",
+    "typescript": "^3.4.2"
   }
 }
