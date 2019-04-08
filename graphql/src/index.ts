@@ -1,6 +1,8 @@
 import { GraphQLClient } from "graphql-request";
 import { GraphQLServer } from "graphql-yoga";
 
+import { schema } from "./schema";
+
 const query = `
     {
       orders {
@@ -20,18 +22,18 @@ const client = new GraphQLClient(endpoint, {
 
 client.request(query).then(data => console.log(data));
 
-const typeDefs = `
-  type Query {
-    hello(name: String): String!
-  }
-`;
+// const typeDefs = `
+//   type Query {
+//     hello(name: String): String!
+//   }
+// `;
 
-const resolvers = {
-  Query: {
-    hello: (_, { name }) => `Hello ${name || "World"}`
-  }
-};
+// const resolvers = {
+//   Query: {
+//     hello: (_, { name }) => `Hello ${name || "World"}`
+//   }
+// };
 
-const server = new GraphQLServer({ typeDefs, resolvers });
+const server = new GraphQLServer({ schema });
 
 server.start(() => console.log("Server is running on localhost:4000"));

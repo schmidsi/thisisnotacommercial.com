@@ -806,7 +806,7 @@ graphql-yoga@^1.17.4:
     graphql-tools "^4.0.0"
     subscriptions-transport-ws "^0.9.8"
 
-"graphql@^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0":
+"graphql@^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0", graphql@^14.2.1:
   version "14.2.1"
   resolved "https://registry.yarnpkg.com/graphql/-/graphql-14.2.1.tgz#779529bf9a01e7207b977a54c20670b48ca6e95c"
   integrity sha512-2PL1UbvKeSjy/lUeJqHk+eR9CvuErXoCNwJI4jm3oNFEeY+9ELqHNKO1ZuSxAkasPkpWbmT/iMRMFxd3cEL3tQ==
@@ -1157,6 +1157,13 @@ negotiator@0.6.1:
   version "0.6.1"
   resolved "https://registry.yarnpkg.com/negotiator/-/negotiator-0.6.1.tgz#2b327184e8992101177b28563fb5e7102acd0ca9"
   integrity sha1-KzJxhOiZIQEXeyhWP7XnECrNDKk=
+
+nexus@^0.11.6:
+  version "0.11.6"
+  resolved "https://registry.yarnpkg.com/nexus/-/nexus-0.11.6.tgz#2d2b7c30a0c6816ecbf671ba3f826a67b1488f4e"
+  integrity sha512-H9cSPGpPZejniI77O429fUVKUqEzFr/n6Q5poCbixpPsisQwADAI8C6GrTLe7ojFCfVcUHhhpEaDHyWg2+bSYA==
+  dependencies:
+    tslib "^1.9.3"
 
 nice-try@^1.0.4:
   version "1.0.5"
