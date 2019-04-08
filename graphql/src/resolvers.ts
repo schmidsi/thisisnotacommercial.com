@@ -1,4 +1,4 @@
-import * as R from "ramda";
+import R from "ramda";
 import { GraphQLClient } from "graphql-request";
 import { NexusGenFieldTypes } from "./typegen";
 
