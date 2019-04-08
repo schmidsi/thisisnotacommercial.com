@@ -62,6 +62,7 @@ export interface NexusGenFieldTypes {
     ZIP: string; // String!
   }
   Query: { // field return type
+    currentPrice: number; // Int!
     ordersCount: number; // Int!
   }
 }

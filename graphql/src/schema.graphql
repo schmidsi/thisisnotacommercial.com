@@ -25,6 +25,7 @@ enum PaymentEnum {
 }
 
 type Query {
+  currentPrice: Int!
   ordersCount: Int!
 }
 

@@ -1,6 +1,6 @@
 import * as path from "path";
 import { objectType, enumType, scalarType, makeSchema, queryType } from "nexus";
-import { ordersCount } from "./resolvers";
+import { ordersCount, currentPrice } from "./resolvers";
 
 const ShippingEnum = enumType({
   name: "ShippingEnum",
@@ -50,6 +50,10 @@ const Query = queryType({
     t.field("ordersCount", {
       type: "Int",
       resolve: ordersCount
+    });
+    t.field("currentPrice", {
+      type: "Int",
+      resolve: currentPrice
     });
   }
 });

@@ -37,4 +37,12 @@ const ordersCount = async (): Promise<number> => {
   return R.path(["ordersConnection", "aggregate", "count"], result);
 };
 
-export { ordersCount };
+const compoundInterest = (initialValue, interest, iterations) =>
+  initialValue * (1 + interest) ** iterations;
+
+const currentPrice = async (): Promise<number> => {
+  const orders = await ordersCount();
+  return Math.round(compoundInterest(250, 0.01, orders));
+};
+
+export { ordersCount, currentPrice };
