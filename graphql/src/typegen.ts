@@ -62,7 +62,7 @@ export interface NexusGenFieldTypes {
     ZIP: string; // String!
   }
   Query: { // field return type
-    ok: boolean; // Boolean!
+    ordersCount: number; // Int!
   }
 }
 

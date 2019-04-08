@@ -1,5 +1,6 @@
 import * as path from "path";
-import { objectType, enumType, scalarType, makeSchema } from "nexus";
+import { objectType, enumType, scalarType, makeSchema, queryType } from "nexus";
+import { ordersCount } from "./resolvers";
 
 const ShippingEnum = enumType({
   name: "ShippingEnum",
@@ -44,8 +45,17 @@ const Order = objectType({
   }
 });
 
+const Query = queryType({
+  definition(t) {
+    t.field("ordersCount", {
+      type: "Int",
+      resolve: ordersCount
+    });
+  }
+});
+
 export const schema = makeSchema({
-  types: { ShippingEnum, PaymentEnum, DateScalar, Order },
+  types: { ShippingEnum, PaymentEnum, DateScalar, Order, Query },
   outputs: {
     schema: path.join(__dirname, "./schema.graphql"),
     typegen: path.join(__dirname, "./typegen.ts")

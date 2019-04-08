@@ -25,7 +25,7 @@ enum PaymentEnum {
 }
 
 type Query {
-  ok: Boolean!
+  ordersCount: Int!
 }
 
 enum ShippingEnum {
