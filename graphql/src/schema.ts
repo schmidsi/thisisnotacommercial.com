@@ -1,6 +1,15 @@
 import * as path from "path";
-import { objectType, enumType, scalarType, makeSchema, queryType } from "nexus";
-import { ordersCount, currentPrice } from "./resolvers";
+import parseISO from "date-fns/fp/parseISO";
+import {
+  objectType,
+  enumType,
+  scalarType,
+  makeSchema,
+  queryType,
+  stringArg
+} from "nexus";
+
+import { ordersCount, currentPrice, getOrderById } from "./resolvers";
 
 const ShippingEnum = enumType({
   name: "ShippingEnum",
@@ -20,7 +29,8 @@ const DateScalar = scalarType({
     return new Date(value);
   },
   serialize(value) {
-    return value.getTime();
+    const dateObj = parseISO(value);
+    return dateObj.getTime();
   },
   parseLiteral(ast) {
     if (ast.kind === "IntValue") {
@@ -33,15 +43,15 @@ const DateScalar = scalarType({
 const Order = objectType({
   name: "Order",
   definition(t) {
-    t.string("Name");
-    t.string("Address");
-    t.string("ZIP");
-    t.string("Location");
-    t.string("Country", { nullable: true });
-    t.date("Paid", { nullable: true });
-    t.field("Shipping", { type: ShippingEnum });
-    t.int("Price");
-    t.field("Payment", { type: PaymentEnum });
+    t.string("name");
+    t.string("address");
+    t.string("zip");
+    t.string("location");
+    t.string("country", { nullable: true });
+    t.date("paid", { nullable: true });
+    t.field("shipping", { type: ShippingEnum });
+    t.int("price");
+    t.field("payment", { type: PaymentEnum });
   }
 });
 
@@ -55,6 +65,15 @@ const Query = queryType({
       type: "Int",
       resolve: currentPrice
     });
+    t.field("order", {
+      type: Order,
+      args: {
+        id: stringArg({
+          required: true
+        })
+      },
+      resolve: (_, { id }) => getOrderById(id)
+    });
   }
 });
 
@@ -62,6 +81,6 @@ export const schema = makeSchema({
   types: { ShippingEnum, PaymentEnum, DateScalar, Order, Query },
   outputs: {
     schema: path.join(__dirname, "./schema.graphql"),
-    typegen: path.join(__dirname, "./typegen.ts")
+    typegen: path.join(__dirname, "./typegen.d.ts")
   }
 });

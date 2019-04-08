@@ -6,15 +6,15 @@
 scalar Date
 
 type Order {
-  Address: String!
-  Country: String
-  Location: String!
-  Name: String!
-  Paid: Date
-  Payment: PaymentEnum!
-  Price: Int!
-  Shipping: ShippingEnum!
-  ZIP: String!
+  address: String!
+  country: String
+  location: String!
+  name: String!
+  paid: Date
+  payment: PaymentEnum!
+  price: Int!
+  shipping: ShippingEnum!
+  zip: String!
 }
 
 enum PaymentEnum {
@@ -26,6 +26,7 @@ enum PaymentEnum {
 
 type Query {
   currentPrice: Int!
+  order(id: String!): Order!
   ordersCount: Int!
 }
 

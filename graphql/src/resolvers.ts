@@ -1,5 +1,6 @@
 import * as R from "ramda";
 import { GraphQLClient } from "graphql-request";
+import { NexusGenFieldTypes } from "./typegen";
 
 const query = `
     {
@@ -17,8 +18,6 @@ const client = new GraphQLClient(endpoint, {
     authorization: `Bearer ${process.env.GRAPHCMS_AUTH_TOKEN}`
   }
 });
-
-client.request(query).then(data => console.log(data));
 
 const ordersCount = async (): Promise<number> => {
   // TODO: Parameterize: Only paid orders count price up
@@ -45,4 +44,34 @@ const currentPrice = async (): Promise<number> => {
   return Math.round(compoundInterest(250, 0.01, orders));
 };
 
-export { ordersCount, currentPrice };
+const getOrderById = async (
+  id: String
+): Promise<NexusGenFieldTypes["Order"]> => {
+  const query = `
+    query ($id: ID) {
+      order(where: {id: $id}) {
+        status
+        updatedAt
+        createdAt
+        id
+        name
+        address
+        zip
+        location
+        country
+        paid
+        shipping
+        price
+        payment
+      }
+    }
+  `;
+
+  const result: any = await client.request(query, { id });
+
+  return result.order;
+};
+
+export { ordersCount, currentPrice, getOrderById };
+
+// cju6rs731bt870c155zsuug7b;
