@@ -96,6 +96,36 @@ const createOrder = async data => {
   return result.createOrder;
 };
 
-export { ordersCount, currentPrice, getOrderById, createOrder };
+const updateOrder = async args => {
+  const query = `
+    mutation ($data: OrderUpdateInput!, $where: OrderWhereUniqueInput!) {
+      updateOrder(data: $data, where: $where) {
+        status
+        updatedAt
+        createdAt
+        id
+        name
+        address
+        zip
+        location
+        country
+        paid
+        shipping
+        price
+        payment
+        message
+      }
+    }
+  `;
+
+  const data = R.omit(["id"], args);
+  const where = { id: args.id };
+
+  const result: any = await client.request(query, { data, where });
+
+  return result.updateOrder;
+};
+
+export { ordersCount, currentPrice, getOrderById, createOrder, updateOrder };
 
 // cju6rs731bt870c155zsuug7b;

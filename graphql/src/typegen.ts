@@ -55,6 +55,7 @@ export interface NexusGenAllTypes extends NexusGenRootTypes {
 export interface NexusGenFieldTypes {
   Mutation: { // field return type
     createOrder: NexusGenRootTypes['Order']; // Order!
+    updateOrder: NexusGenRootTypes['Order']; // Order!
   }
   Order: { // field return type
     address: string; // String!
@@ -84,6 +85,17 @@ export interface NexusGenArgTypes {
       location?: string | null; // String
       message?: string | null; // String
       name?: string | null; // String
+      shipping?: NexusGenEnums['ShippingEnum'] | null; // ShippingEnum
+      zip?: string | null; // String
+    }
+    updateOrder: { // args
+      address?: string | null; // String
+      country?: string | null; // String
+      id: string; // ID!
+      location?: string | null; // String
+      message?: string | null; // String
+      name?: string | null; // String
+      payment?: NexusGenEnums['PaymentEnum'] | null; // PaymentEnum
       shipping?: NexusGenEnums['ShippingEnum'] | null; // ShippingEnum
       zip?: string | null; // String
     }

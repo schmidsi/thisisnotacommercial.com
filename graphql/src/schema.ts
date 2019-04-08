@@ -8,14 +8,16 @@ import {
   queryType,
   stringArg,
   mutationType,
-  arg
+  arg,
+  idArg
 } from "nexus";
 
 import {
   ordersCount,
   currentPrice,
   getOrderById,
-  createOrder
+  createOrder,
+  updateOrder
 } from "./resolvers";
 
 const ShippingEnumType = enumType({
@@ -87,23 +89,38 @@ const Query = queryType({
   }
 });
 
+const createOrderArgs = {
+  name: stringArg(),
+  address: stringArg(),
+  zip: stringArg(),
+  location: stringArg(),
+  country: stringArg({ nullable: true, default: "Switzerland" }),
+  message: stringArg({ nullable: true }),
+  shipping: arg({
+    type: ShippingEnumType,
+    default: "UNSTAMPED" // ["ShippingEnum"].Unstamped
+  })
+};
+
+const updateOrderArgs = {
+  ...createOrderArgs,
+  id: idArg({ required: true }),
+  payment: arg({
+    type: PaymentEnumType
+  })
+};
+
 const Mutation = mutationType({
   definition(t) {
     t.field("createOrder", {
       type: Order,
-      args: {
-        name: stringArg(),
-        address: stringArg(),
-        zip: stringArg(),
-        location: stringArg(),
-        country: stringArg({ nullable: true, default: "Switzerland" }),
-        message: stringArg({ nullable: true }),
-        shipping: arg({
-          type: ShippingEnumType,
-          default: "UNSTAMPED" // ["ShippingEnum"].Unstamped
-        })
-      },
+      args: createOrderArgs,
       resolve: (_, args) => createOrder(args)
+    });
+    t.field("updateOrder", {
+      type: Order,
+      args: updateOrderArgs,
+      resolve: (_, args) => updateOrder(args)
     });
   }
 });

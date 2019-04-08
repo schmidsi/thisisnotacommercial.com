@@ -7,6 +7,7 @@ scalar Date
 
 type Mutation {
   createOrder(address: String, country: String = "Switzerland", location: String, message: String, name: String, shipping: ShippingEnum = UNSTAMPED, zip: String): Order!
+  updateOrder(address: String, country: String = "Switzerland", id: ID!, location: String, message: String, name: String, payment: PaymentEnum, shipping: ShippingEnum = UNSTAMPED, zip: String): Order!
 }
 
 type Order {
