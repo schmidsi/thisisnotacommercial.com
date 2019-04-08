@@ -19,21 +19,24 @@ export interface NexusGenInputs {
 }
 
 export interface NexusGenEnums {
-  PaymentEnum: "Coinbase" | "Invoce" | "Paypal" | "Stripe"
-  ShippingEnum: "Registered" | "Standard" | "Unstamped"
+  PaymentEnum: "COINBASE" | "INVOICE" | "PAYPAL" | "STRIPE"
+  ShippingEnum: "REGISTERED" | "STANDARD" | "UNSTAMPED"
 }
 
 export interface NexusGenRootTypes {
+  Mutation: {};
   Order: { // root type
-    Address: string; // String!
-    Country?: string | null; // String
-    Location: string; // String!
-    Name: string; // String!
-    Paid?: any | null; // Date
-    Payment: NexusGenEnums['PaymentEnum']; // PaymentEnum!
-    Price: number; // Int!
-    Shipping: NexusGenEnums['ShippingEnum']; // ShippingEnum!
-    ZIP: string; // String!
+    address: string; // String!
+    country?: string | null; // String
+    id: string; // ID!
+    location: string; // String!
+    message?: string | null; // String
+    name: string; // String!
+    paid?: any | null; // Date
+    payment: NexusGenEnums['PaymentEnum']; // PaymentEnum!
+    price: number; // Int!
+    shipping: NexusGenEnums['ShippingEnum']; // ShippingEnum!
+    zip: string; // String!
   }
   Query: {};
   String: string;
@@ -50,24 +53,46 @@ export interface NexusGenAllTypes extends NexusGenRootTypes {
 }
 
 export interface NexusGenFieldTypes {
+  Mutation: { // field return type
+    createOrder: NexusGenRootTypes['Order']; // Order!
+  }
   Order: { // field return type
-    Address: string; // String!
-    Country: string | null; // String
-    Location: string; // String!
-    Name: string; // String!
-    Paid: any | null; // Date
-    Payment: NexusGenEnums['PaymentEnum']; // PaymentEnum!
-    Price: number; // Int!
-    Shipping: NexusGenEnums['ShippingEnum']; // ShippingEnum!
-    ZIP: string; // String!
+    address: string; // String!
+    country: string | null; // String
+    id: string; // ID!
+    location: string; // String!
+    message: string | null; // String
+    name: string; // String!
+    paid: any | null; // Date
+    payment: NexusGenEnums['PaymentEnum']; // PaymentEnum!
+    price: number; // Int!
+    shipping: NexusGenEnums['ShippingEnum']; // ShippingEnum!
+    zip: string; // String!
   }
   Query: { // field return type
     currentPrice: number; // Int!
+    order: NexusGenRootTypes['Order']; // Order!
     ordersCount: number; // Int!
   }
 }
 
 export interface NexusGenArgTypes {
+  Mutation: {
+    createOrder: { // args
+      address?: string | null; // String
+      country?: string | null; // String
+      location?: string | null; // String
+      message?: string | null; // String
+      name?: string | null; // String
+      shipping?: NexusGenEnums['ShippingEnum'] | null; // ShippingEnum
+      zip?: string | null; // String
+    }
+  }
+  Query: {
+    order: { // args
+      id: string; // String!
+    }
+  }
 }
 
 export interface NexusGenAbstractResolveReturnTypes {
@@ -75,7 +100,7 @@ export interface NexusGenAbstractResolveReturnTypes {
 
 export interface NexusGenInheritedFields {}
 
-export type NexusGenObjectNames = "Order" | "Query";
+export type NexusGenObjectNames = "Mutation" | "Order" | "Query";
 
 export type NexusGenInputNames = never;
 

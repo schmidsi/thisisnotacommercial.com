@@ -5,10 +5,16 @@
 """Date custom scalar type"""
 scalar Date
 
+type Mutation {
+  createOrder(address: String, country: String = "Switzerland", location: String, message: String, name: String, shipping: ShippingEnum = UNSTAMPED, zip: String): Order!
+}
+
 type Order {
   address: String!
   country: String
+  id: ID!
   location: String!
+  message: String
   name: String!
   paid: Date
   payment: PaymentEnum!
@@ -18,10 +24,10 @@ type Order {
 }
 
 enum PaymentEnum {
-  Coinbase
-  Invoce
-  Paypal
-  Stripe
+  COINBASE
+  INVOICE
+  PAYPAL
+  STRIPE
 }
 
 type Query {
@@ -31,7 +37,7 @@ type Query {
 }
 
 enum ShippingEnum {
-  Registered
-  Standard
-  Unstamped
+  REGISTERED
+  STANDARD
+  UNSTAMPED
 }

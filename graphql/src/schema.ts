@@ -6,21 +6,29 @@ import {
   scalarType,
   makeSchema,
   queryType,
-  stringArg
+  stringArg,
+  mutationType,
+  arg
 } from "nexus";
 
-import { ordersCount, currentPrice, getOrderById } from "./resolvers";
+import {
+  ordersCount,
+  currentPrice,
+  getOrderById,
+  createOrder
+} from "./resolvers";
 
-const ShippingEnum = enumType({
+const ShippingEnumType = enumType({
   name: "ShippingEnum",
-  members: ["Unstamped", "Standard", "Registered"]
+  members: ["UNSTAMPED", "STANDARD", "REGISTERED"]
 });
 
-const PaymentEnum = enumType({
+const PaymentEnumType = enumType({
   name: "PaymentEnum",
-  members: ["Coinbase", "Paypal", "Invoce", "Stripe"]
+  members: ["COINBASE", "PAYPAL", "INVOICE", "STRIPE"]
 });
 
+// https://stackoverflow.com/questions/41510880/whats-the-difference-between-parsevalue-and-parseliteral-in-graphqlscalartype
 const DateScalar = scalarType({
   name: "Date",
   asNexusMethod: "date",
@@ -43,15 +51,17 @@ const DateScalar = scalarType({
 const Order = objectType({
   name: "Order",
   definition(t) {
+    t.id("id");
     t.string("name");
     t.string("address");
     t.string("zip");
     t.string("location");
     t.string("country", { nullable: true });
+    t.string("message", { nullable: true });
     t.date("paid", { nullable: true });
-    t.field("shipping", { type: ShippingEnum });
+    t.field("shipping", { type: ShippingEnumType });
     t.int("price");
-    t.field("payment", { type: PaymentEnum });
+    t.field("payment", { type: PaymentEnumType });
   }
 });
 
@@ -77,10 +87,38 @@ const Query = queryType({
   }
 });
 
+const Mutation = mutationType({
+  definition(t) {
+    t.field("createOrder", {
+      type: Order,
+      args: {
+        name: stringArg(),
+        address: stringArg(),
+        zip: stringArg(),
+        location: stringArg(),
+        country: stringArg({ nullable: true, default: "Switzerland" }),
+        message: stringArg({ nullable: true }),
+        shipping: arg({
+          type: ShippingEnumType,
+          default: "UNSTAMPED" // ["ShippingEnum"].Unstamped
+        })
+      },
+      resolve: (_, args) => createOrder(args)
+    });
+  }
+});
+
 export const schema = makeSchema({
-  types: { ShippingEnum, PaymentEnum, DateScalar, Order, Query },
+  types: {
+    ShippingEnum: ShippingEnumType,
+    PaymentEnum: PaymentEnumType,
+    DateScalar,
+    Order,
+    Query,
+    Mutation
+  },
   outputs: {
     schema: path.join(__dirname, "./schema.graphql"),
-    typegen: path.join(__dirname, "./typegen.d.ts")
+    typegen: path.join(__dirname, "./typegen.ts")
   }
 });

@@ -2,14 +2,6 @@ import R from "ramda";
 import { GraphQLClient } from "graphql-request";
 import { NexusGenFieldTypes } from "./typegen";
 
-const query = `
-    {
-      orders {
-        name
-      }
-    }
-  `;
-
 const endpoint =
   "https://api-euwest.graphcms.com/v1/cju5jaeou3p2o01ffx00xgf32/master";
 
@@ -63,6 +55,7 @@ const getOrderById = async (
         shipping
         price
         payment
+        message
       }
     }
   `;
@@ -72,6 +65,37 @@ const getOrderById = async (
   return result.order;
 };
 
-export { ordersCount, currentPrice, getOrderById };
+const createOrder = async data => {
+  const query = `
+    mutation ($data: OrderCreateInput!) {
+      createOrder(data: $data) {
+        status
+        updatedAt
+        createdAt
+        id
+        name
+        address
+        zip
+        location
+        country
+        paid
+        shipping
+        price
+        payment
+        message
+      }
+    }
+  `;
+
+  const price = await currentPrice();
+
+  const result: any = await client.request(query, {
+    data: { ...data, price, status: "PUBLISHED" }
+  });
+
+  return result.createOrder;
+};
+
+export { ordersCount, currentPrice, getOrderById, createOrder };
 
 // cju6rs731bt870c155zsuug7b;
