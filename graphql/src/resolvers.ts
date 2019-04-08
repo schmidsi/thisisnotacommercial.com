@@ -11,11 +11,10 @@ const client = new GraphQLClient(endpoint, {
   }
 });
 
-const ordersCount = async (): Promise<number> => {
-  // TODO: Parameterize: Only paid orders count price up
+const paidOrdersCount = async (): Promise<number> => {
   const query = `
     {
-      ordersConnection {
+      ordersConnection(where: {paid_gt:"2019-04-01T14:34:00.000Z"}) {
         aggregate {
           count
         }
@@ -32,7 +31,7 @@ const compoundInterest = (initialValue, interest, iterations) =>
   initialValue * (1 + interest) ** iterations;
 
 const currentPrice = async (): Promise<number> => {
-  const orders = await ordersCount();
+  const orders = await paidOrdersCount();
   return Math.round(compoundInterest(250, 0.01, orders));
 };
 
@@ -126,6 +125,10 @@ const updateOrder = async args => {
   return result.updateOrder;
 };
 
-export { ordersCount, currentPrice, getOrderById, createOrder, updateOrder };
-
-// cju6rs731bt870c155zsuug7b;
+export {
+  paidOrdersCount,
+  currentPrice,
+  getOrderById,
+  createOrder,
+  updateOrder
+};

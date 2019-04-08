@@ -34,7 +34,7 @@ enum PaymentEnum {
 type Query {
   currentPrice: Int!
   order(id: String!): Order!
-  ordersCount: Int!
+  paidOrdersCount: Int!
 }
 
 enum ShippingEnum {

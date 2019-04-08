@@ -73,7 +73,7 @@ export interface NexusGenFieldTypes {
   Query: { // field return type
     currentPrice: number; // Int!
     order: NexusGenRootTypes['Order']; // Order!
-    ordersCount: number; // Int!
+    paidOrdersCount: number; // Int!
   }
 }
 

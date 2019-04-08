@@ -13,7 +13,7 @@ import {
 } from "nexus";
 
 import {
-  ordersCount,
+  paidOrdersCount,
   currentPrice,
   getOrderById,
   createOrder,
@@ -69,9 +69,9 @@ const Order = objectType({
 
 const Query = queryType({
   definition(t) {
-    t.field("ordersCount", {
+    t.field("paidOrdersCount", {
       type: "Int",
-      resolve: ordersCount
+      resolve: paidOrdersCount
     });
     t.field("currentPrice", {
       type: "Int",
