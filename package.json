@@ -1,0 +1,13 @@
+{
+  "private": true,
+  "workspaces": [
+    "frontend",
+    "graphql"
+  ],
+  "repository": "git@github.com:schmidsi/thisisnotacommercial.com.git",
+  "author": "Simon Emanuel Schmid <simon@schmid.io>",
+  "license": "AGPL-3.0",
+  "scripts": {
+    "dev": "yarn workspace tinac-frontend run dev & yarn workspace tinac-graphql run dev"
+  }
+}
