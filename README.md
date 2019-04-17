@@ -2,6 +2,7 @@
 
 - Unchained GraphQL: http://localhost:4010/graphql
 - Control Panel: http://localhost:4020
+- Frontend: http://localhost:3000/
 
 # Unchained workflow:
 
