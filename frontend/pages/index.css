@@ -1,3 +1,7 @@
+:global(*) {
+  box-sizing: border-box;
+}
+
 :global(img) {
   max-width: 100%;
 }
@@ -5,4 +9,21 @@
 .container {
   max-width: 800px;
   margin: 0 auto;
+}
+
+.field {
+  width: 100%;
+  display: block;
+  border: 1px solid black;
+  font-size: 1em;
+  padding: 0.5em;
+}
+
+.button {
+  margin-top: 2em;
+  width: 100%;
+  display: block;
+  border: 1px solid black;
+  font-size: 1em;
+  padding: 0.5em;
 }
