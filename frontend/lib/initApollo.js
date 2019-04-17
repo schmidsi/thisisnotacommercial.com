@@ -23,7 +23,7 @@ function create(initialState) {
       uri:
         process.env.NODE_ENV === "production"
           ? "/api"
-          : "http://localhost:4000", // Server URL (must be absolute)
+          : "http://localhost:4010/graphql", // Server URL (must be absolute)
       credentials: "same-origin" // Additional fetch() options like `credentials` or `headers`
     }),
     cache: new InMemoryCache().restore(initialState || {})

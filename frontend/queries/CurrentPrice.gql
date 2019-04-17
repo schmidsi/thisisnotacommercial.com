@@ -1,0 +1,23 @@
+query CurrentPrice {
+  product(slug: "postcard") {
+    _id
+    texts {
+      title
+      slug
+    }
+    ... on SimpleProduct {
+      simulatedPrice {
+        price {
+          amount
+          currency
+        }
+      }
+      catalogPrice {
+        price {
+          amount
+          currency
+        }
+      }
+    }
+  }
+}
