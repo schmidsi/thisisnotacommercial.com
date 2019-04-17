@@ -1,15 +1,22 @@
 {
   "private": true,
-  "workspaces": [
-    "frontend",
-    "graphql",
-    "unchained"
-  ],
+  "workspaces": {
+    "packages": [
+      "frontend",
+      "graphql",
+      "unchained",
+      "controlpanel"
+    ],
+    "nohoist": [
+      "controlpanel/**",
+      "unchained/**"
+    ]
+  },
   "repository": "git@github.com:schmidsi/thisisnotacommercial.com.git",
   "author": "Simon Emanuel Schmid <simon@schmid.io>",
   "license": "AGPL-3.0",
   "scripts": {
-    "postinstall": "cd unchained && npm install",
-    "dev": "yarn workspace @private/frontend run dev & yarn workspace @private/graphql run dev & yarn workspace @private/unchained run dev"
+    "postinstall": "cd unchained && npm install && cd ../controlpanel && npm install",
+    "dev": "yarn workspace @private/frontend run dev & yarn workspace @private/graphql run dev & yarn workspace @private/unchained run dev & yarn workspace @unchainedshop/controlpanel run dev"
   }
 }
