@@ -6,7 +6,6 @@
 
 # Unchained workflow:
 
-- Login guest user on submit form
-- Create order
-- Add item to order
+- loginAsGuest on submit form
+- addCartProduct
 - Add shipping information to order
