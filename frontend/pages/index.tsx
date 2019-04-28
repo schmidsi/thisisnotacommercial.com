@@ -1,4 +1,5 @@
 import React from "react";
+import Router from "next/router";
 import { Query, ApolloConsumer } from "react-apollo";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as yup from "yup";
@@ -9,7 +10,7 @@ import LoginAsGuest from "../queries/LoginAsGuest.gql";
 import AddCartProduct from "../queries/AddCartProduct.gql";
 import UpdateCart from "../queries/UpdateCart.gql";
 
-import css from "./index.css";
+import css from "./main.css";
 
 const Home = () => (
   <Query query={CurrentPrice}>
@@ -39,8 +40,8 @@ const Home = () => (
                   postalCode: "8001",
                   countryCode: "CH",
                   city: "Zürich",
-                  emailAddress: "asdf@asdf.ch"
-                  // message: "Test"
+                  emailAddress: "asdf@asdf.ch",
+                  message: "Test"
                 }}
                 validationSchema={yup.object().shape({
                   firstName: yup.string().required(),
@@ -85,6 +86,11 @@ const Home = () => (
                   console.log(updateCartResult);
 
                   setSubmitting(false);
+
+                  Router.push({
+                    pathname: "/order"
+                    // query: { token }
+                  });
                 }}
               >
                 {({ isSubmitting }) => (
