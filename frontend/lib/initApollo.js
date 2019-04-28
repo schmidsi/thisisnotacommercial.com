@@ -4,6 +4,8 @@ import {
   HttpLink,
   NormalizedCacheObject
 } from "apollo-boost";
+import { setContext } from "apollo-link-context";
+import { createHttpLink } from "apollo-link-http";
 import fetch from "isomorphic-unfetch";
 
 let apolloClient = null;
@@ -14,18 +16,29 @@ if (!process.browser) {
 }
 
 function create(initialState) {
-  // Check out https://github.com/zeit/next.js/pull/4611 if you want to use the AWSAppSyncClient
+  const httpLink = createHttpLink({
+    uri:
+      process.env.NODE_ENV === "production"
+        ? "/api"
+        : "http://localhost:4010/graphql",
+    credentials: "same-origin"
+  });
+
+  const authLink = setContext((_, { headers }) => {
+    const token = localStorage.getItem("token");
+
+    return {
+      headers: {
+        ...headers,
+        authorization: token ? `Bearer ${token}` : ""
+      }
+    };
+  });
+
   return new ApolloClient({
     connectToDevTools: process.browser,
     ssrMode: !process.browser, // Disables forceFetch on the server (so queries are only run once)
-
-    link: new HttpLink({
-      uri:
-        process.env.NODE_ENV === "production"
-          ? "/api"
-          : "http://localhost:4010/graphql", // Server URL (must be absolute)
-      credentials: "same-origin" // Additional fetch() options like `credentials` or `headers`
-    }),
+    link: authLink.concat(httpLink),
     cache: new InMemoryCache().restore(initialState || {})
   });
 }

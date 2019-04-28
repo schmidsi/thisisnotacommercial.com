@@ -13,7 +13,8 @@ import css from "./index.css";
 const Home = () => (
   <Query query={CurrentPrice}>
     {(result: any) => {
-      const price = R.path(
+      const price = R.pathOr(
+        0,
         ["data", "product", "simulatedPrice", "price", "amount"],
         result
       );
@@ -56,12 +57,13 @@ const Home = () => (
                     mutation: LoginAsGuest
                   });
 
-                  const token = R.path(
+                  const token = R.pathOr(
+                    "",
                     ["data", "loginAsGuest", "token"],
                     loginAsGuestResult
                   );
 
-                  console.log(token);
+                  if (window) window.localStorage.setItem("token", token);
 
                   const addCartProductResult = await client.mutate({
                     mutation: AddCartProduct,
