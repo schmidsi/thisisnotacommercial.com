@@ -1,0 +1,7 @@
+mutation LoginAsGuest($productId: ID!) {
+  addCartProduct(productId: $productId) {
+    total {
+      amount
+    }
+  }
+}
