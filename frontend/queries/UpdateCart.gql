@@ -1,0 +1,26 @@
+mutation UpdateCart(
+  $emailAddress: String!
+  $firstName: String!
+  $lastName: String!
+  $addressLine: String!
+  $postalCode: String!
+  $city: String!
+  $countryCode: String!
+  $message: String
+) {
+  updateCart(
+    contact: { emailAddress: $emailAddress }
+    billingAddress: {
+      firstName: $firstName
+      lastName: $lastName
+      addressLine: $addressLine
+      postalCode: $postalCode
+      city: $city
+      countryCode: $countryCode
+    }
+    meta: { message: $message }
+  ) {
+    _id
+    status
+  }
+}

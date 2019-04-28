@@ -7,6 +7,7 @@ import * as R from "ramda";
 import CurrentPrice from "../queries/CurrentPrice.gql";
 import LoginAsGuest from "../queries/LoginAsGuest.gql";
 import AddCartProduct from "../queries/AddCartProduct.gql";
+import UpdateCart from "../queries/UpdateCart.gql";
 
 import css from "./index.css";
 
@@ -32,22 +33,26 @@ const Home = () => (
             {client => (
               <Formik
                 initialValues={{
-                  name: "asdf",
-                  address: "asdf",
-                  zipCity: "asdf",
-                  country: "Switzerland",
-                  email: "asdf@asdf.ch",
-                  message: ""
+                  firstName: "Hans",
+                  lastName: "Muster",
+                  addressLine: "Bahnhofstrasse 1",
+                  postalCode: "8001",
+                  countryCode: "CH",
+                  city: "Zürich",
+                  emailAddress: "asdf@asdf.ch"
+                  // message: "Test"
                 }}
                 validationSchema={yup.object().shape({
-                  name: yup.string().required(),
-                  address: yup.string().required(),
-                  zipCity: yup.string().required(),
-                  country: yup.string().required(),
-                  email: yup
+                  firstName: yup.string().required(),
+                  lastName: yup.string().required(),
+                  addressLine: yup.string().required(),
+                  postalCode: yup.string().required(),
+                  countryCode: yup.string().required(),
+                  city: yup.string().required(),
+                  emailAddress: yup
                     .string()
-                    .email()
-                    .required(),
+                    .email("Invalid email address")
+                    .required("Please provide an email address"),
                   message: yup.string()
                 })}
                 onSubmit={async (values, { setSubmitting }) => {
@@ -72,51 +77,83 @@ const Home = () => (
 
                   console.log(addCartProductResult);
 
+                  const updateCartResult = await client.mutate({
+                    mutation: UpdateCart,
+                    variables: values
+                  });
+
+                  console.log(updateCartResult);
+
                   setSubmitting(false);
                 }}
               >
                 {({ isSubmitting }) => (
                   <Form>
+                    {/* {console.log(values)} */}
                     <label>
-                      <h2 className={css.label}>Name</h2>
-                      <ErrorMessage name="name" component="div" />
-                      <Field type="string" name="name" className={css.field} />
+                      <h2 className={css.label}>First Name</h2>
+                      <ErrorMessage name="firstName" component="div" />
+                      <Field
+                        type="string"
+                        name="firstName"
+                        className={css.field}
+                      />
+                    </label>
+
+                    <label>
+                      <h2 className={css.label}>Last Name</h2>
+                      <ErrorMessage name="lastName" component="div" />
+                      <Field
+                        type="string"
+                        name="lastName"
+                        className={css.field}
+                      />
                     </label>
 
                     <label>
                       <h2 className={css.label}>Address</h2>
-                      <ErrorMessage name="address" component="div" />
+                      <ErrorMessage name="addressLine" component="div" />
                       <Field
                         type="string"
-                        name="address"
+                        name="addressLine"
                         className={css.field}
                       />
                     </label>
 
                     <label>
-                      <h2 className={css.label}>ZIP / City</h2>
-                      <ErrorMessage name="zipCity" component="div" />
+                      <h2 className={css.label}>Country Code</h2>
+                      <ErrorMessage name="countryCode" component="div" />
                       <Field
                         type="string"
-                        name="zipCity"
+                        name="countryCode"
                         className={css.field}
                       />
                     </label>
 
                     <label>
-                      <h2 className={css.label}>Country</h2>
-                      <ErrorMessage name="country" component="div" />
+                      <h2 className={css.label}>Postal Code</h2>
+                      <ErrorMessage name="postalCode" component="div" />
                       <Field
                         type="string"
-                        name="country"
+                        name="postalCode"
                         className={css.field}
                       />
+                    </label>
+
+                    <label>
+                      <h2 className={css.label}>City</h2>
+                      <ErrorMessage name="city" component="div" />
+                      <Field type="string" name="city" className={css.field} />
                     </label>
 
                     <label>
                       <h2 className={css.label}>Email</h2>
-                      <ErrorMessage name="email" component="div" />
-                      <Field type="email" name="email" className={css.field} />
+                      <ErrorMessage name="emailAddress" component="div" />
+                      <Field
+                        type="email"
+                        name="emailAddress"
+                        className={css.field}
+                      />
                     </label>
 
                     <label>
