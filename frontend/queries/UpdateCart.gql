@@ -6,7 +6,7 @@ mutation UpdateCart(
   $postalCode: String!
   $city: String!
   $countryCode: String!
-  $message: String
+  $meta: JSON
 ) {
   updateCart(
     contact: { emailAddress: $emailAddress }
@@ -18,7 +18,7 @@ mutation UpdateCart(
       city: $city
       countryCode: $countryCode
     }
-    meta: { message: $message }
+    meta: $meta
   ) {
     _id
     status

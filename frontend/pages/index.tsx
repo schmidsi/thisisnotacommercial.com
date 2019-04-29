@@ -57,8 +57,6 @@ const Home = () => (
                   message: yup.string()
                 })}
                 onSubmit={async (values, { setSubmitting }) => {
-                  console.log(values, client);
-
                   const loginAsGuestResult = await client.mutate({
                     mutation: LoginAsGuest
                   });
@@ -71,19 +69,18 @@ const Home = () => (
 
                   if (window) window.localStorage.setItem("token", token);
 
-                  const addCartProductResult = await client.mutate({
+                  await client.mutate({
                     mutation: AddCartProduct,
                     variables: { productId }
                   });
 
-                  console.log(addCartProductResult);
-
-                  const updateCartResult = await client.mutate({
+                  await client.mutate({
                     mutation: UpdateCart,
-                    variables: values
+                    variables: {
+                      ...values,
+                      meta: { message: values.message }
+                    }
                   });
-
-                  console.log(updateCartResult);
 
                   setSubmitting(false);
 
@@ -95,7 +92,6 @@ const Home = () => (
               >
                 {({ isSubmitting }) => (
                   <Form>
-                    {/* {console.log(values)} */}
                     <label>
                       <h2 className={css.label}>First Name</h2>
                       <ErrorMessage name="firstName" component="div" />

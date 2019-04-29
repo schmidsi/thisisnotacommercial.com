@@ -1,0 +1,31 @@
+query CurrentOrder {
+  me {
+    cart {
+      _id
+      status
+      total {
+        amount
+      }
+      meta
+      billingAddress {
+        firstName
+        lastName
+        addressLine
+        postalCode
+        countryCode
+        city
+      }
+      contact {
+        emailAddress
+      }
+      supportedPaymentProviders {
+        _id
+        type
+        interface {
+          label
+          version
+        }
+      }
+    }
+  }
+}

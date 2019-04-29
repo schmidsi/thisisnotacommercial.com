@@ -11,9 +11,10 @@
 - [x] Add shipping information to order
 - [ ] Order confirmation page
 - [ ] Pay per invoice
-- [ ] Change order
-- [ ] Login through URL (Emailing --> To order confirmation page)
 - [ ] Increasing price
+- [ ] Change order
 - [ ] Paypal
-- [ ] Stripe
 - [ ] Coinbase
+- [ ] Stripe
+- [ ] Login through URL (Emailing --> To order confirmation page)
+- [ ] Instagram Stream
