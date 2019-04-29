@@ -1,9 +1,11 @@
-import { Query } from "react-apollo";
+import { Query, ApolloConsumer } from "react-apollo";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as yup from "yup";
 import * as R from "ramda";
 
 import CurrentOrder from "../queries/CurrentOrder.gql";
+import SetOrderPaymentProvider from "../queries/SetOrderPaymentProvider.gql";
+import CheckoutCart from "../queries/CheckoutCart.gql";
 
 import css from "./main.css";
 
@@ -48,46 +50,84 @@ const Order = () => (
               </>
             ))}
           </dl>
-          <Formik
-            initialValues={initialValues}
-            onSubmit={async (values, { setSubmitting }) => {
-              console.log(values);
-              setSubmitting(false);
-            }}
-            validationSchema={yup
-              .object()
-              .shape({ paymentProviderId: yup.string().required() })}
-          >
-            {({ isSubmitting }) => (
-              <Form>
-                {isSubmitting}
-                <ErrorMessage name="paymentProviderId" component="div" />
-                <Field name="paymentProviderId">
-                  {({ field }) =>
-                    supportedPaymentProviders.map((provider: any) => (
-                      <label key={provider.id}>
-                        <input
-                          type="radio"
-                          value={provider.id}
-                          name={field.name}
-                          onChange={field.onChange}
-                          checked={field.value === provider.id}
-                        />
-                        {provider.label}
-                      </label>
-                    ))
-                  }
-                </Field>
-                <button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className={css.button}
-                >
-                  Submit
-                </button>
-              </Form>
+          <ApolloConsumer>
+            {client => (
+              <Formik
+                initialValues={initialValues}
+                onSubmit={async (values, { setSubmitting }) => {
+                  await client.mutate({
+                    mutation: SetOrderPaymentProvider,
+                    variables: {
+                      paymentProviderId: values.paymentProviderId,
+                      orderId: cart._id
+                    }
+                  });
+
+                  console.log(
+                    await client.mutate({
+                      mutation: CheckoutCart
+                    })
+                  );
+
+                  console.log(values);
+                  setSubmitting(false);
+                }}
+                validationSchema={yup
+                  .object()
+                  .shape({ paymentProviderId: yup.string().required() })}
+              >
+                {({ isSubmitting }) => (
+                  <Form>
+                    {isSubmitting}
+                    <h2>Payment</h2>
+                    <ErrorMessage name="paymentProviderId" component="div" />
+                    <Field name="paymentProviderId">
+                      {({ field }) =>
+                        supportedPaymentProviders.map((provider: any) => (
+                          <label key={provider.id}>
+                            <input
+                              type="radio"
+                              value={provider.id}
+                              name={field.name}
+                              onChange={field.onChange}
+                              checked={field.value === provider.id}
+                            />
+                            {provider.label}
+                          </label>
+                        ))
+                      }
+                    </Field>
+
+                    <h2>Delivery</h2>
+                    <ErrorMessage name="paymentProviderId" component="div" />
+                    <Field name="paymentProviderId">
+                      {({ field }) =>
+                        supportedPaymentProviders.map((provider: any) => (
+                          <label key={provider.id}>
+                            <input
+                              type="radio"
+                              value={provider.id}
+                              name={field.name}
+                              onChange={field.onChange}
+                              checked={field.value === provider.id}
+                            />
+                            {provider.label}
+                          </label>
+                        ))
+                      }
+                    </Field>
+                    <button
+                      type="submit"
+                      disabled={isSubmitting}
+                      className={css.button}
+                    >
+                      Submit
+                    </button>
+                  </Form>
+                )}
+              </Formik>
             )}
-          </Formik>
+          </ApolloConsumer>
         </div>
       );
     }}

@@ -1,0 +1,8 @@
+mutation SetOrderPaymentProvider($orderId: ID!, $paymentProviderId: ID!) {
+  setOrderPaymentProvider(
+    orderId: $orderId
+    paymentProviderId: $paymentProviderId
+  ) {
+    _id
+  }
+}
