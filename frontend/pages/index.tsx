@@ -67,7 +67,8 @@ const Home = () => (
                     loginAsGuestResult
                   );
 
-                  if (window) window.localStorage.setItem("token", token);
+                  if (window && window.localStorage)
+                    window.localStorage.setItem("token", token);
 
                   await client.mutate({
                     mutation: AddCartProduct,
