@@ -18,7 +18,7 @@ const Order = () => (
         city: R.pathOr("", ["billingAddress", "city"], cart),
         emailAddress: R.pathOr("", ["contact", "emailAddress"], cart),
         message: R.pathOr("", ["meta", "message"], cart),
-        total: R.pathOr("", ["total", "amount"], cart)
+        total: (R.pathOr("", ["total", "amount"], cart) / 100).toFixed(2)
       };
       console.log(order);
 
@@ -29,8 +29,8 @@ const Order = () => (
           <dl>
             {R.toPairs(order).map(([name, value]) => (
               <>
-                <dt>{name}</dt>
-                <dd>{value}</dd>
+                <dt key={"dt-" + name}>{name}</dt>
+                <dd key={"dd-" + name}>{value}</dd>
               </>
             ))}
           </dl>
