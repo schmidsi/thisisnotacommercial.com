@@ -1,5 +1,6 @@
 import { Query } from "react-apollo";
 import { Formik, Form, Field, ErrorMessage } from "formik";
+import * as yup from "yup";
 import * as R from "ramda";
 
 import CurrentOrder from "../queries/CurrentOrder.gql";
@@ -22,8 +23,18 @@ const Order = () => (
         total: (R.pathOr("", ["total", "amount"], cart) / 100).toFixed(2)
       };
 
-      const paymentProviderId = R.path(["payment", "provider", "_id"], cart);
-      console.log({ result, order, paymentProviderId });
+      const initialValues = {
+        paymentProviderId: R.path(["payment", "provider", "_id"], cart)
+      };
+
+      const supportedPaymentProviders = (
+        cart.supportedPaymentProviders || []
+      ).map((provider: any) => ({
+        id: provider._id,
+        label: provider.interface.label
+      }));
+
+      console.log({ result, order, initialValues, supportedPaymentProviders });
 
       return (
         <div className={css.container}>
@@ -38,26 +49,43 @@ const Order = () => (
             ))}
           </dl>
           <Formik
-            initialValues={{ paymentProviderId }}
+            initialValues={initialValues}
             onSubmit={async (values, { setSubmitting }) => {
               console.log(values);
               setSubmitting(false);
             }}
+            validationSchema={yup
+              .object()
+              .shape({ paymentProviderId: yup.string().required() })}
           >
             {({ isSubmitting }) => (
-              <div>
+              <Form>
                 {isSubmitting}
-                <Field
-                  name="color"
-                  component="select"
-                  placeholder="Favorite Color"
-                >
-                  <option value="red">Red</option>
-                  <option value="red">Red</option>
-                  <option value="green">Green</option>
-                  <option value="blue">Blue</option>
+                <ErrorMessage name="paymentProviderId" component="div" />
+                <Field name="paymentProviderId">
+                  {({ field }) =>
+                    supportedPaymentProviders.map((provider: any) => (
+                      <label key={provider.id}>
+                        <input
+                          type="radio"
+                          value={provider.id}
+                          name={field.name}
+                          onChange={field.onChange}
+                          checked={field.value === provider.id}
+                        />
+                        {provider.label}
+                      </label>
+                    ))
+                  }
                 </Field>
-              </div>
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className={css.button}
+                >
+                  Submit
+                </button>
+              </Form>
             )}
           </Formik>
         </div>

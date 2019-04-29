@@ -38,7 +38,8 @@ function create(initialState) {
   return new ApolloClient({
     connectToDevTools: process.browser,
     ssrMode: !process.browser, // Disables forceFetch on the server (so queries are only run once)
-    link: authLink.concat(httpLink),
+    // TODO: Share GraphQL Auth-token between client and server
+    link: process.browser ? authLink.concat(httpLink) : httpLink,
     cache: new InMemoryCache().restore(initialState || {})
   });
 }
