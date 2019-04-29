@@ -18,6 +18,11 @@ query CurrentOrder {
       contact {
         emailAddress
       }
+      payment {
+        provider {
+          _id
+        }
+      }
       supportedPaymentProviders {
         _id
         type

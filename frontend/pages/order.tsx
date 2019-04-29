@@ -1,4 +1,5 @@
 import { Query } from "react-apollo";
+import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as R from "ramda";
 
 import CurrentOrder from "../queries/CurrentOrder.gql";
@@ -20,7 +21,9 @@ const Order = () => (
         message: R.pathOr("", ["meta", "message"], cart),
         total: (R.pathOr("", ["total", "amount"], cart) / 100).toFixed(2)
       };
-      console.log(order);
+
+      const paymentProviderId = R.path(["payment", "provider", "_id"], cart);
+      console.log({ result, order, paymentProviderId });
 
       return (
         <div className={css.container}>
@@ -34,6 +37,29 @@ const Order = () => (
               </>
             ))}
           </dl>
+          <Formik
+            initialValues={{ paymentProviderId }}
+            onSubmit={async (values, { setSubmitting }) => {
+              console.log(values);
+              setSubmitting(false);
+            }}
+          >
+            {({ isSubmitting }) => (
+              <div>
+                {isSubmitting}
+                <Field
+                  name="color"
+                  component="select"
+                  placeholder="Favorite Color"
+                >
+                  <option value="red">Red</option>
+                  <option value="red">Red</option>
+                  <option value="green">Green</option>
+                  <option value="blue">Blue</option>
+                </Field>
+              </div>
+            )}
+          </Formik>
         </div>
       );
     }}
