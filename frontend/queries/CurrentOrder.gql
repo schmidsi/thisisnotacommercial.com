@@ -23,9 +23,24 @@ query CurrentOrder {
           _id
         }
       }
+      delivery {
+        provider {
+          _id
+        }
+      }
       supportedPaymentProviders {
         _id
         type
+        configuration
+        interface {
+          label
+          version
+        }
+      }
+      supportedDeliveryProviders {
+        _id
+        type
+        configuration
         interface {
           label
           version

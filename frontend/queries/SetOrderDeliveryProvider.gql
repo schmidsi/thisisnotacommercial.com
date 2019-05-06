@@ -1,0 +1,8 @@
+mutation SetOrderDeliveryProvider($orderId: ID!, $deliveryProviderId: ID!) {
+  setOrderDeliveryProvider(
+    orderId: $orderId
+    deliveryProviderId: $deliveryProviderId
+  ) {
+    _id
+  }
+}

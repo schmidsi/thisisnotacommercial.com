@@ -5,9 +5,21 @@ import * as R from "ramda";
 
 import CurrentOrder from "../queries/CurrentOrder.gql";
 import SetOrderPaymentProvider from "../queries/SetOrderPaymentProvider.gql";
+import SetOrderDeliveryProvider from "../queries/SetOrderDeliveryProvider.gql";
 import CheckoutCart from "../queries/CheckoutCart.gql";
 
 import css from "./main.css";
+
+const getProviderDescription = provider => {
+  const description = provider.configuration.find(c => c.key === "description");
+
+  if (description) {
+    return description.value;
+  } else {
+    console.warn("No description provided for provider:", provider);
+    return "";
+  }
+};
 
 const Order = () => (
   <Query query={CurrentOrder}>
@@ -26,20 +38,26 @@ const Order = () => (
       };
 
       const initialValues = {
-        paymentProviderId: R.path(["payment", "provider", "_id"], cart)
+        paymentProviderId: R.path(["payment", "provider", "_id"], cart),
+        deliveryProviderId: R.path(["delivery", "provider", "_id"], cart)
       };
 
       const supportedPaymentProviders = (
         cart.supportedPaymentProviders || []
       ).map((provider: any) => ({
         id: provider._id,
-        label: provider.interface.label
+        label: getProviderDescription(provider)
       }));
 
-      console.log({ result, order, initialValues, supportedPaymentProviders });
+      const supportedDeliveryProviders = (
+        cart.supportedDeliveryProviders || []
+      ).map(provider => ({
+        id: provider._id,
+        label: getProviderDescription(provider)
+      }));
 
       return (
-        <div className={css.container}>
+        <div className={css.container} key="main">
           <img src="/static/titile.jpg" alt="Postcard by Veli &amp; Amos" />
           <h1>Your order</h1>
           <dl>
@@ -63,13 +81,18 @@ const Order = () => (
                     }
                   });
 
-                  console.log(
-                    await client.mutate({
-                      mutation: CheckoutCart
-                    })
-                  );
+                  await client.mutate({
+                    mutation: SetOrderDeliveryProvider,
+                    variables: {
+                      deliveryProviderId: values.deliveryProviderId,
+                      orderId: cart._id
+                    }
+                  });
 
-                  console.log(values);
+                  await client.mutate({
+                    mutation: CheckoutCart
+                  });
+
                   setSubmitting(false);
                 }}
                 validationSchema={yup
@@ -99,10 +122,10 @@ const Order = () => (
                     </Field>
 
                     <h2>Delivery</h2>
-                    <ErrorMessage name="paymentProviderId" component="div" />
-                    <Field name="paymentProviderId">
+                    <ErrorMessage name="deliveryProviderId" component="div" />
+                    <Field name="deliveryProviderId">
                       {({ field }) =>
-                        supportedPaymentProviders.map((provider: any) => (
+                        supportedDeliveryProviders.map((provider: any) => (
                           <label key={provider.id}>
                             <input
                               type="radio"
