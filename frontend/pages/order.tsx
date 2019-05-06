@@ -9,6 +9,7 @@ import SetOrderDeliveryProvider from "../queries/SetOrderDeliveryProvider.gql";
 import CheckoutCart from "../queries/CheckoutCart.gql";
 
 import css from "./main.css";
+import Router from "next/router";
 
 const getProviderDescription = provider => {
   const description = provider.configuration.find(c => c.key === "description");
@@ -94,6 +95,10 @@ const Order = () => (
                   });
 
                   setSubmitting(false);
+
+                  Router.push({
+                    pathname: "/thankyou"
+                  });
                 }}
                 validationSchema={yup
                   .object()
