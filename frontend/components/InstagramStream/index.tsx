@@ -15,7 +15,7 @@ const InstagramStream = () => {
   useEffect(() => {
     (async () => {
       const response = await fetch(
-        "https://api.instagram.com/v1/users/self/media/recent/?access_token=5680860.167ddba.986e0cd55dce4423af86c28c5c72c40a"
+        "https://api.instagram.com/v1/users/self/media/recent/?access_token=12010147783.167ddba.04d192f906244f22987008181b98ce98"
       );
       const json = await response.json();
       const newPosts = json.data.map(post => ({
