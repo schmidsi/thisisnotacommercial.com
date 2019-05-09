@@ -9,8 +9,8 @@
 - [x] loginAsGuest on submit form
 - [x] addCartProduct
 - [x] Add shipping information to order
-- [ ] Order confirmation page
-- [ ] Pay per invoice
+- [x] Order confirmation page
+- [x] Pay per invoice
 - [ ] Increasing price
 - [ ] Change order
 - [ ] Paypal
