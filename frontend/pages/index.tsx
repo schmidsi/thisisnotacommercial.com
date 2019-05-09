@@ -5,6 +5,8 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as yup from "yup";
 import * as R from "ramda";
 
+import InstagramStream from "../components/InstagramStream";
+
 import CurrentPrice from "../queries/CurrentPrice.gql";
 import LoginAsGuest from "../queries/LoginAsGuest.gql";
 import AddCartProduct from "../queries/AddCartProduct.gql";
@@ -181,6 +183,7 @@ const Home = () => (
               </Formik>
             )}
           </ApolloConsumer>
+          <InstagramStream />
         </div>
       );
     }}

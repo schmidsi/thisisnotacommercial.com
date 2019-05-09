@@ -11,11 +11,11 @@
 - [x] Add shipping information to order
 - [x] Order confirmation page
 - [x] Pay per invoice
-- [ ] Increasing price
-- [ ] Change order
+- [x] Increasing price
+- [ ] Instagram Stream
 - [ ] Paypal
 - [ ] Coinbase
+- [ ] Styling
+- [ ] Change order
 - [ ] Stripe
 - [ ] Login through URL (Emailing --> To order confirmation page)
-- [ ] Instagram Stream
-- [ ] Styling
