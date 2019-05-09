@@ -18,3 +18,4 @@
 - [ ] Stripe
 - [ ] Login through URL (Emailing --> To order confirmation page)
 - [ ] Instagram Stream
+- [ ] Styling
