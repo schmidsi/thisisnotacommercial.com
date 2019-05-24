@@ -23,6 +23,7 @@ COPY --from=rebuilder /rebuild/bundle /webapp
 WORKDIR /webapp
 ENV PORT 3000
 ENV NODE_ENV production
+ENV ROOT_URL http://localhost:3000
 EXPOSE 3000
 USER meteor
 CMD node main.js
