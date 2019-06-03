@@ -1,0 +1,6 @@
+{
+  "version": 2,
+  "alias": ["new.thisisnotacommercial.com", "www.thisisnotacommercial.com"],
+  "builds": [{ "src": "next.config.js", "use": "@now/next" }],
+  "regions": ["cdg1"]
+}

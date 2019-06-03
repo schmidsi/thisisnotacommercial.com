@@ -24,7 +24,7 @@
     "dev": "next",
     "dev:remote": "GRAPHQL_ENDPOINT=https://unchained.thisisnotacommercial.com/graphql next",
     "build": "next build",
-    "now-build": "next build",
+    "now-build": "GRAPHQL_ENDPOINT=https://unchained.thisisnotacommercial.com/graphql next build",
     "start": "next start"
   },
   "devDependencies": {
