@@ -1,4 +1,4 @@
-mutation LoginAsGuest($productId: ID!) {
+mutation AddCartProduct($productId: ID!) {
   addCartProduct(productId: $productId) {
     total {
       amount

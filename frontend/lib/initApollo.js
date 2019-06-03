@@ -7,8 +7,11 @@ import {
 import { setContext } from "apollo-link-context";
 import { createHttpLink } from "apollo-link-http";
 import fetch from "isomorphic-unfetch";
+import getConfig from "next/config";
 
 let apolloClient = null;
+
+const { publicRuntimeConfig } = getConfig();
 
 // Polyfill fetch() on the server (used by apollo-client)
 if (!process.browser) {
@@ -18,9 +21,7 @@ if (!process.browser) {
 function create(initialState) {
   const httpLink = createHttpLink({
     uri:
-      process.env.NODE_ENV === "production"
-        ? "/api"
-        : "http://localhost:4010/graphql",
+      publicRuntimeConfig.GRAPHQL_ENDPOINT || "http://localhost:4010/graphql",
     credentials: "same-origin"
   });
 

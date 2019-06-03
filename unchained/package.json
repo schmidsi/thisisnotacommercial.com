@@ -26,7 +26,8 @@
     "lint": "eslint . --cache  --fix --ext=jsx --ext=js",
     "dev": "NODE_OPTIONS='-r dotenv/config' UI_ENDPOINT=http://localhost:4020 meteor --no-release-check --no-lint -p 4010",
     "build": "meteor build --architecture os.linux.x86_64 --directory .build",
-    "debug": "UI_ENDPOINT=http://localhost:4020 meteor debug -p 4010"
+    "debug": "UI_ENDPOINT=http://localhost:4020 meteor debug -p 4010",
+    "deploy": "DEPLOY_HOSTNAME=eu-west-1.galaxy-deploy.meteor.com meteor deploy unchained.thisisnotacommercial.com --settings settings.json"
   },
   "dependencies": {
     "@babel/runtime": "^7.4.3",

@@ -35,7 +35,7 @@ const initializeDatabase = () => {
       emails: [{ address: 'admin@localhost', verified: true }],
       guest: false
     });
-    const languages = ['de', 'fr'].map((code, key) => {
+    const languages = ['en'].map((code, key) => {
       const isBase = key === 0;
       const language = Factory.create('language', {
         isoCode: code,
@@ -78,5 +78,5 @@ const initializeDatabase = () => {
 Meteor.startup(() => {
   configureEmailTemplates();
   initializeDatabase();
-  startPlatform();
+  startPlatform({ introspection: true });
 });

@@ -21,6 +21,7 @@
   },
   "scripts": {
     "dev": "next",
+    "dev:remote": "GRAPHQL_ENDPOINT=https://unchained.thisisnotacommercial.com/graphql next",
     "build": "next build",
     "start": "next start"
   },
