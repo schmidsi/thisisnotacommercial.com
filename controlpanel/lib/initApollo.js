@@ -11,7 +11,7 @@ import getConfig from 'next/config';
 import { createUploadLink } from 'apollo-upload-client';
 import introspectionQueryResultData from '../schema.json';
 
-const { publicRuntimeConfig } = getConfig();
+
 
 let apolloClient = null;
 
@@ -26,7 +26,7 @@ const fragmentMatcher = new IntrospectionFragmentMatcher({
 
 function create(initialState, headersOverride, getToken) {
   const httpLink = createUploadLink({
-    uri: publicRuntimeConfig.GRAPHQL_ENDPOINT,
+    uri: process.env.GRAPHQL_ENDPOINT,
     credentials: 'same-origin'
   });
   const errorLink = onError(({ graphQLErrors, networkError }) => {

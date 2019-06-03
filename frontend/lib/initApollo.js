@@ -11,8 +11,6 @@ import getConfig from "next/config";
 
 let apolloClient = null;
 
-const { publicRuntimeConfig } = getConfig();
-
 // Polyfill fetch() on the server (used by apollo-client)
 if (!process.browser) {
   global.fetch = fetch;
@@ -20,8 +18,7 @@ if (!process.browser) {
 
 function create(initialState) {
   const httpLink = createHttpLink({
-    uri:
-      publicRuntimeConfig.GRAPHQL_ENDPOINT || "http://localhost:4010/graphql",
+    uri: process.env.GRAPHQL_ENDPOINT || "http://localhost:4010/graphql",
     credentials: "same-origin"
   });
 

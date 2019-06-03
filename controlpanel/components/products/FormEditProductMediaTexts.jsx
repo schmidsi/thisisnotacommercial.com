@@ -13,7 +13,7 @@ import withFormSchema from '../../lib/withFormSchema';
 import withFormModel from '../../lib/withFormModel';
 import withFormErrorHandlers from '../../lib/withFormErrorHandlers';
 
-const { publicRuntimeConfig } = getConfig();
+
 
 const FormEditProductMediaTexts = ({
   languages,
@@ -98,7 +98,7 @@ export default compose(
     const baseLanguage =
       filteredActiveLanguages.length > 0
         ? filteredActiveLanguages[0].isoCode
-        : publicRuntimeConfig.LANG;
+        : process.env.LANG;
     return {
       data,
       languages,

@@ -3,16 +3,14 @@ const typescript = require("@zeit/next-typescript");
 const css = require("@zeit/next-css");
 const graphql = require("next-plugin-graphql");
 
-const { GRAPHQL_ENDPOINT } = process.env;
-
 module.exports = withPlugins([typescript, css, graphql], {
   cssModules: true,
   sourceMap: true,
   cssLoaderOptions: {
     localIdentName: "[local]___[hash:base64:5]"
   },
-  publicRuntimeConfig: {
-    GRAPHQL_ENDPOINT
+  env: {
+    GRAPHQL_ENDPOINT: process.env.GRAPHQL_ENDPOINT
   },
-  target: 'serverless'
+  target: "serverless"
 });
