@@ -13,5 +13,6 @@ module.exports = withPlugins([typescript, css, graphql], {
   },
   publicRuntimeConfig: {
     GRAPHQL_ENDPOINT
-  }
+  },
+  target: 'serverless'
 });

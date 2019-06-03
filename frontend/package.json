@@ -7,6 +7,7 @@
     "@zeit/next-css": "^1.0.1",
     "@zeit/next-typescript": "^1.1.1",
     "apollo-boost": "^0.3.1",
+    "apollo-link-context": "^1.0.17",
     "formik": "^1.5.2",
     "graphql": "^14.2.1",
     "isomorphic-unfetch": "^3.0.0",
@@ -23,6 +24,7 @@
     "dev": "next",
     "dev:remote": "GRAPHQL_ENDPOINT=https://unchained.thisisnotacommercial.com/graphql next",
     "build": "next build",
+    "now-build": "next build",
     "start": "next start"
   },
   "devDependencies": {
