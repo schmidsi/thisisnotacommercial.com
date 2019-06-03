@@ -12,10 +12,15 @@
 - [x] Order confirmation page
 - [x] Pay per invoice
 - [x] Increasing price
-- [ ] Instagram Stream
+- [x] Instagram Stream
 - [ ] Paypal
 - [ ] Coinbase
 - [ ] Styling
 - [ ] Change order
 - [ ] Stripe
 - [ ] Login through URL (Emailing --> To order confirmation page)
+
+# Deployment
+
+- Unchained on Meteor Galaxy: https://eu-west-1.galaxy.meteor.com/app/unchained.thisisnotacommercial.com
+- Control Panel & Frontend on now.sh
