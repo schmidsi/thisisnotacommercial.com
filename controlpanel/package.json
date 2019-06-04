@@ -24,7 +24,8 @@
     "build": "next build",
     "now-build": "GRAPHQL_ENDPOINT=https://unchained.thisisnotacommercial.com/graphql next build",
     "start": "next start",
-    "update-schema": "npx apollo service:download"
+    "update-schema": "npx apollo service:download",
+    "deploy": "now --target production"
   },
   "dependencies": {
     "@zeit/next-css": "^1.0.1",

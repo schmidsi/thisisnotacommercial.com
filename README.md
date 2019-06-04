@@ -24,3 +24,5 @@
 
 - Unchained on Meteor Galaxy: https://eu-west-1.galaxy.meteor.com/app/unchained.thisisnotacommercial.com
 - Control Panel & Frontend on now.sh
+
+Check [package.json#scripts](./package.json) for deployment scripts
