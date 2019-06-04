@@ -10,7 +10,7 @@ import 'meteor/unchained:core-warehousing/plugins/google-sheets';
 import 'meteor/unchained:core-documents/plugins/smallinvoice';
 import 'meteor/unchained:core-messaging/plugins/local-mail';
 // import 'meteor/unchained:core-payment/plugins/invoice';
-import 'meteor/unchained:core-payment/plugins/paypal';
+// import 'meteor/unchained:core-payment/plugins/paypal';
 import 'meteor/unchained:core-payment/plugins/invoice-prepaid';
 import 'meteor/unchained:core-pricing/plugins/order-items';
 // import 'meteor/unchained:core-pricing/plugins/order-discount';
@@ -21,6 +21,7 @@ import 'meteor/unchained:core-pricing/plugins/product-catalog-price';
 // import 'meteor/unchained:core-pricing/plugins/product-swiss-tax';
 import 'meteor/unchained:core-quotations/plugins/manual';
 import 'meteor/thisisnotacommercial:pricing';
+import 'meteor/thisisnotacommercial:braintree';
 
 const logger = console;
 

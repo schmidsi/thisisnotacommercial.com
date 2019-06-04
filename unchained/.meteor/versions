@@ -73,6 +73,7 @@ srp@1.0.12
 standard-minifier-css@1.5.3
 standard-minifier-js@2.4.1
 standard-minifiers@1.1.0
+thisisnotacommercial:braintree@0.0.1
 thisisnotacommercial:pricing@0.0.1
 tmeasday:check-npm-versions@0.3.2
 tracker@1.2.0
@@ -87,10 +88,10 @@ unchained:core-documents@0.26.0
 unchained:core-files@0.26.0
 unchained:core-filters@0.26.0
 unchained:core-languages@0.26.0
-unchained:core-logger@0.26.0
+unchained:core-logger@0.27.0
 unchained:core-messaging@0.26.0
 unchained:core-orders@0.26.0
-unchained:core-payment@0.26.0
+unchained:core-payment@0.27.0
 unchained:core-pricing@0.26.0
 unchained:core-products@0.26.0
 unchained:core-quotations@0.26.0
@@ -99,7 +100,7 @@ unchained:core-users@0.26.0
 unchained:core-warehousing@0.26.0
 unchained:platform@0.26.0
 unchained:roles@0.26.0
-unchained:utils@0.26.0
+unchained:utils@0.27.0
 underscore@1.0.10
 url@1.2.0
 webapp@1.7.4

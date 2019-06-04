@@ -4,5 +4,17 @@ mutation SetOrderPaymentProvider($orderId: ID!, $paymentProviderId: ID!) {
     paymentProviderId: $paymentProviderId
   ) {
     _id
+    payment {
+      provider {
+        _id
+        interface {
+          _id
+          label
+        }
+      }
+      ... on OrderPaymentPaypal {
+        clientToken
+      }
+    }
   }
 }

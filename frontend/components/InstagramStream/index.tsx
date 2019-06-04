@@ -31,7 +31,12 @@ const InstagramStream = () => {
   return (
     <div className={css.InstagramStream}>
       {posts.map(post => (
-        <a href={post.link} target="_blank" className={css.post}>
+        <a
+          key={post.link}
+          href={post.link}
+          target="_blank"
+          className={css.post}
+        >
           <img src={post.image} className={css.image} />
           <div className={css.caption}>{post.caption}</div>
         </a>

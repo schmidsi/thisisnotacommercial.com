@@ -1,5 +1,7 @@
+import { Fragment } from "react";
 import { Query, ApolloConsumer } from "react-apollo";
 import { Formik, Form, Field, ErrorMessage } from "formik";
+import Router from "next/router";
 import * as yup from "yup";
 import * as R from "ramda";
 
@@ -9,7 +11,6 @@ import SetOrderDeliveryProvider from "../queries/SetOrderDeliveryProvider.gql";
 import CheckoutCart from "../queries/CheckoutCart.gql";
 
 import css from "./main.css";
-import Router from "next/router";
 
 const getProviderDescription = provider => {
   const description = provider.configuration.find(c => c.key === "description");
@@ -63,10 +64,10 @@ const Order = () => (
           <h1>Your order</h1>
           <dl>
             {R.toPairs(order).map(([name, value]) => (
-              <>
+              <Fragment key={`${name}-${value}`}>
                 <dt key={"dt-" + name}>{name}</dt>
                 <dd key={"dd-" + name}>{value}</dd>
-              </>
+              </Fragment>
             ))}
           </dl>
           <ApolloConsumer>
@@ -74,13 +75,15 @@ const Order = () => (
               <Formik
                 initialValues={initialValues}
                 onSubmit={async (values, { setSubmitting }) => {
-                  await client.mutate({
+                  const updatedOrder = await client.mutate({
                     mutation: SetOrderPaymentProvider,
                     variables: {
                       paymentProviderId: values.paymentProviderId,
                       orderId: cart._id
                     }
                   });
+
+                  console.log(updatedOrder);
 
                   await client.mutate({
                     mutation: SetOrderDeliveryProvider,
