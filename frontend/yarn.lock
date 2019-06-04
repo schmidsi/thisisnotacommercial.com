@@ -1527,7 +1527,15 @@ braces@^2.3.1, braces@^2.3.2:
     split-string "^3.0.2"
     to-regex "^3.0.1"
 
-braintree-web-drop-in@^1.18.0:
+braintree-web-drop-in-react@^1.0.7:
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/braintree-web-drop-in-react/-/braintree-web-drop-in-react-1.0.7.tgz#4ae13caf1d5a1c6fdb0c1d5d609fc8c3eedd17c8"
+  integrity sha512-pTtZibFkKenISz3n2xpjDwt+KPekpS86o0qdSkiCGPW3RODIFUOG+IHwm23VWc8LGHnbIFSvsGc3B+y2uJCNxQ==
+  dependencies:
+    braintree-web-drop-in "^1.17.1"
+    prop-types "^15.7.0"
+
+braintree-web-drop-in@^1.17.1, braintree-web-drop-in@^1.18.0:
   version "1.18.0"
   resolved "https://registry.yarnpkg.com/braintree-web-drop-in/-/braintree-web-drop-in-1.18.0.tgz#13e0c4c89fed685c2a73d7f66b230aabb95e10f9"
   integrity sha512-AlQD6VepIb2VahUmXd1EStIACVAOZ6UApsrU9VlhWcNJnCmPkgGQ4OivYXNkzbri3lp/bViBqjKtRXKqfTpDNw==
@@ -4477,7 +4485,7 @@ prop-types@15.6.2:
     loose-envify "^1.3.1"
     object-assign "^4.1.1"
 
-prop-types@^15.6.1, prop-types@^15.6.2, prop-types@^15.7.2:
+prop-types@^15.6.1, prop-types@^15.6.2, prop-types@^15.7.0, prop-types@^15.7.2:
   version "15.7.2"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.7.2.tgz#52c41e75b8c87e72b9d9360e0206b99dcbffa6c5"
   integrity sha512-8QQikdH7//R2vurIJSutZ1smHYTcLpRWEOlHnzcWHmBYrOGUysKwSsrC89BCiFj3CbrfJ/nXFdJepOVrY1GCHQ==

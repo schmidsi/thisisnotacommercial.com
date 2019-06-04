@@ -71,15 +71,21 @@ class Braintree extends PaymentAdapter {
   }
 
   async charge({ paypalPaymentMethodNonce }) {
+    console.log('CHARGE', paypalPaymentMethodNonce);
     if (!paypalPaymentMethodNonce)
       throw new Error(
         'You have to provide paypalPaymentMethodNonce in paymentContext'
       );
+    console.log('Blub');
     const braintree = require('braintree'); // eslint-disable-line
+    console.log('iomporrt');
     const gateway = this.gateway(braintree);
+    console.log('gateway', gateway);
     const address = this.context.order.billingAddress || {};
     const pricing = this.context.order.pricing();
+    console.log('pricing', pricing);
     const rounded = Math.round(pricing.total().amount / 10 || 0) * 10;
+    console.log('rounded', rounded);
     const saleRequest = {
       amount: rounded / 100,
       merchantAccountId: this.context.order.currency,
@@ -101,7 +107,10 @@ class Braintree extends PaymentAdapter {
       }
     };
 
+    console.log('sale req', saleRequest);
+
     const result = await gateway.transaction.sale(saleRequest);
+    console.log('result', result);
     if (result.success) {
       return result;
     }

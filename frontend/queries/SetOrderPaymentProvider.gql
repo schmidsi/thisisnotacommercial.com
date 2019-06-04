@@ -7,10 +7,7 @@ mutation SetOrderPaymentProvider($orderId: ID!, $paymentProviderId: ID!) {
     payment {
       provider {
         _id
-        interface {
-          _id
-          label
-        }
+        type
       }
       ... on OrderPaymentPaypal {
         clientToken

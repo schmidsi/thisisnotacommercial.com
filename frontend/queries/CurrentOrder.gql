@@ -5,6 +5,7 @@ query CurrentOrder {
       status
       total {
         amount
+        currency
       }
       meta
       billingAddress {
