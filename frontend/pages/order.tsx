@@ -28,6 +28,7 @@ const getProviderDescription = provider => {
 const Order = () => {
   const [clientToken, setClientToken] = useState("");
   const [braintreeInstance, setBraintreeInstance] = useState();
+  const [coinbaseChargeCode, setCoinbaseChargeCode] = useState();
 
   return (
     <Query query={CurrentOrder}>
@@ -118,12 +119,18 @@ const Order = () => {
                 <Formik
                   initialValues={initialValues}
                   onSubmit={async (values, { setSubmitting }) => {
-                    let paypalPaymentMethodNonce;
+                    const paymentContext: any = {};
 
-                    if (braintreeInstance) {
+                    const providerInterface =
+                      paymentProviderIdMap[values.paymentProviderId as any];
+
+                    if (providerInterface === "Braintree") {
                       const result = await braintreeInstance.requestPaymentMethod();
-                      console.log(result);
-                      paypalPaymentMethodNonce = result.nonce;
+                      paymentContext.paypalPaymentMethodNonce = result.nonce;
+                    }
+
+                    if (providerInterface === "Coinbase") {
+                      paymentContext.chargeCode = coinbaseChargeCode;
                     }
 
                     await client.mutate({
@@ -134,12 +141,12 @@ const Order = () => {
                       }
                     });
 
-                    console.log(paypalPaymentMethodNonce);
+                    console.log(paymentContext);
 
                     await client.mutate({
                       mutation: CheckoutCart,
                       variables: {
-                        paymentContext: { paypalPaymentMethodNonce }
+                        paymentContext
                       }
                     });
 
@@ -149,11 +156,12 @@ const Order = () => {
                       pathname: "/thankyou"
                     });
                   }}
-                  validationSchema={yup
-                    .object()
-                    .shape({ paymentProviderId: yup.string().required() })}
+                  validationSchema={yup.object().shape({
+                    paymentProviderId: yup.string().required(),
+                    deliveryProviderId: yup.string().required()
+                  })}
                 >
-                  {({ isSubmitting }) => (
+                  {({ isSubmitting, submitForm, validateForm, values }) => (
                     <Form>
                       {isSubmitting}
                       <h2>Payment</h2>
@@ -176,26 +184,21 @@ const Order = () => {
                                 {provider.label}
                               </label>
                             ))}
-                            {paymentProviderIdMap[field.value] ===
-                              "Braintree" && (
-                              <DropIn
-                                options={{
-                                  authorization: clientToken,
-                                  paypal: {
-                                    flow: "checkout",
-                                    amount: order.total,
-                                    currency: order.currency
-                                  }
-                                }}
-                                onInstance={setBraintreeInstance}
-                              />
-                            )}
-                            {paymentProviderIdMap[field.value] ===
-                              "Coinbase" && (
-                              <CoinbaseCommerceButton
-                                checkoutId={clientToken}
-                              />
-                            )}
+                            {clientToken &&
+                              paymentProviderIdMap[field.value] ===
+                                "Braintree" && (
+                                <DropIn
+                                  options={{
+                                    authorization: clientToken,
+                                    paypal: {
+                                      flow: "checkout",
+                                      amount: order.total,
+                                      currency: order.currency
+                                    }
+                                  }}
+                                  onInstance={setBraintreeInstance}
+                                />
+                              )}
                           </Fragment>
                         )}
                       </Field>
@@ -218,13 +221,32 @@ const Order = () => {
                           ))
                         }
                       </Field>
-                      <button
-                        type="submit"
-                        disabled={isSubmitting}
-                        className={css.button}
-                      >
-                        Submit
-                      </button>
+                      {clientToken &&
+                      paymentProviderIdMap[
+                        values.paymentProviderId as string
+                      ] === "Coinbase" ? (
+                        <CoinbaseCommerceButton
+                          styled
+                          checkoutId={clientToken}
+                          onLoad={async () => {
+                            const valid = await validateForm();
+                            console.log({ valid });
+                            if (!R.isEmpty(valid)) throw new Error("CLOSE")!;
+                          }}
+                          onChargeSuccess={({ code }) => {
+                            setCoinbaseChargeCode(code);
+                            submitForm();
+                          }}
+                        />
+                      ) : (
+                        <button
+                          type="submit"
+                          disabled={isSubmitting}
+                          className={css.button}
+                        >
+                          Submit
+                        </button>
+                      )}
                     </Form>
                   )}
                 </Formik>

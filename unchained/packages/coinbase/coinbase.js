@@ -88,18 +88,25 @@ class Coinbase extends PaymentAdapter {
     }
   }
 
-  async charge({ chargeId }) {
-    const charge = await coinbase.resources.Charge.retrieve(chargeId);
+  async charge({ chargeCode }) {
+    try {
+      const clientObj = coinbase.Client.init(COINBASE_COMMERCE_KEY);
+      clientObj.setRequestTimeout(10000);
+      const charge = await coinbase.resources.Charge.retrieve(chargeCode);
 
-    const completed = !!charge.timeline.find(
-      (statusUpdate = statusUpdate.status === 'COMPLETED')
-    );
+      const completed = !!charge.timeline.find(
+        statusUpdate => statusUpdate.status === 'COMPLETED'
+      );
 
-    if (completed) {
-      return charge;
+      if (completed) {
+        return charge;
+      }
+      console.log(charge);
+      throw new Error('Charge not completed');
+    } catch (e) {
+      console.error(e);
+      throw e;
     }
-    console.log(charge);
-    throw new Error('Charge not completed');
   }
 }
 
