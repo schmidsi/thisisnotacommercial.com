@@ -21,6 +21,8 @@ import 'meteor/unchained:core-pricing/plugins/product-catalog-price';
 // import 'meteor/unchained:core-pricing/plugins/product-swiss-tax';
 import 'meteor/unchained:core-quotations/plugins/manual';
 import 'meteor/thisisnotacommercial:pricing';
+import 'meteor/thisisnotacommercial:paypal-checkout';
+import 'meteor/thisisnotacommercial:coinbase';
 // import 'meteor/thisisnotacommercial:braintree';
 
 import { ProductTypes, ProductStatus } from 'meteor/unchained:core-products';
@@ -80,12 +82,6 @@ const initializeDatabase = () => {
 
     const paymentProviders = [
       Factory.create('paymentProvider', {
-        adapterKey: () => 'shop.unchained.invoice-prepaid',
-        type: () => PaymentProviderType.INVOICE,
-        configuration: [{ key: 'description', value: 'Pay via invoice' }],
-        ...initialTimestamps
-      }),
-      Factory.create('paymentProvider', {
         adapterKey: () => 'com.coinbase',
         type: () => PaymentProviderType.PAYPAL,
         configuration: [
@@ -102,6 +98,12 @@ const initializeDatabase = () => {
             value: 'Paypal/Credit Card'
           }
         ],
+        ...initialTimestamps
+      }),
+      Factory.create('paymentProvider', {
+        adapterKey: () => 'shop.unchained.invoice-prepaid',
+        type: () => PaymentProviderType.INVOICE,
+        configuration: [{ key: 'description', value: 'Pay via invoice' }],
         ...initialTimestamps
       })
     ];

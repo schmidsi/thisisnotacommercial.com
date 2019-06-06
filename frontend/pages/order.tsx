@@ -1,11 +1,11 @@
 import React, { Fragment, useState } from "react";
-import ReactDOM from "react-dom";
+// import ReactDOM from "react-dom";
 import { Query, ApolloConsumer } from "react-apollo";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import Router from "next/router";
 import * as yup from "yup";
 import * as R from "ramda";
-import DropIn from "braintree-web-drop-in-react";
+// import DropIn from "braintree-web-drop-in-react";
 
 import CurrentOrder from "../queries/CurrentOrder.gql";
 import SetOrderPaymentProvider from "../queries/SetOrderPaymentProvider.gql";
@@ -27,44 +27,28 @@ const getProviderDescription = provider => {
 
 const Order = () => {
   const [clientToken, setClientToken] = useState("");
-  const [braintreeInstance, setBraintreeInstance] = useState();
   const [coinbaseChargeCode, setCoinbaseChargeCode] = useState();
   const [paypalLoaded, setPaypalLoaded] = useState(false);
-
-  if ((process as any).browser) {
-    const script = document.createElement("script");
-    script.type = "application/javascript";
-    script.src =
-      "https://www.paypal.com/sdk/js?client-id=AZRXnT8N0lHETThEPR5XVvMB_yJ8S7KpWA_gdwCb80IRJsDv6MhtQVnyle9gfIDadQGCNSLv_-f7b8Vc";
-    script.onload = e => {
-      console.log(e, (window as any).paypal);
-      setPaypalLoaded(true);
-    };
-    document.body.appendChild(script);
-  }
+  const [paymentProviderInterface, setPaymentProviderInterface] = useState();
 
   const CoinbaseCommerceButton = (process as any).browser
-    ? require("react-coinbase-commerce")
+    ? require("react-coinbase-commerce").default
     : () => <div />;
 
-  const PayPalButton =
-    (process as any).browser && paypalLoaded ? (
-      (window as any).paypal.Buttons.driver("react", { React, ReactDOM })
-    ) : (
-      <div />
-    );
+  // const PayPalButton =
+  //   (process as any).browser && paypalLoaded ? (
+  //     (window as any).paypal.Buttons.driver("react", { React, ReactDOM })
+  //   ) : (
+  //     <div />
+  //   );
+
+  // console.log(PayPalButton);
 
   return (
     <>
       <Query query={CurrentOrder}>
         {(result: any) => {
           const cart = R.pathOr({}, ["data", "me", "cart"], result);
-
-          // if ((process as any).browser) {
-          //   console.log(window.paypal);
-
-          //   const CoinbaseCommerceButton = require("react-coinbase-commerce");
-          // }
 
           const order = {
             firstName: R.pathOr("", ["billingAddress", "firstName"], cart),
@@ -104,6 +88,67 @@ const Order = () => {
             {}
           );
 
+          if (
+            (process as any).browser &&
+            !paypalLoaded &&
+            paymentProviderInterface === "PaypalCheckout"
+          ) {
+            const script = document.createElement("script");
+            script.type = "application/javascript";
+            script.src = `https://www.paypal.com/sdk/js?client-id=${clientToken}&currency=${
+              order.currency
+            }`;
+            script.onload = e => {
+              console.log(e, (window as any).paypal);
+              setPaypalLoaded(true);
+            };
+            document.body.appendChild(script);
+          }
+
+          paymentProviderInterface === "PaypalCheckout" &&
+            paypalLoaded &&
+            window.setTimeout(() => {
+              (window as any).paypal
+                .Buttons({
+                  createOrder: function(data, actions) {
+                    // Set up the transaction
+                    return actions.order.create({
+                      intent: "CAPTURE",
+                      payer: {
+                        name: {
+                          given_name: order.firstName,
+                          surname: order.lastName
+                        },
+                        email_address: order.emailAddress,
+                        address: {
+                          address_line_1: order.addressLine,
+                          admin_area_2: order.city,
+                          postal_code: order.postalCode,
+                          country_code: order.countryCode
+                        }
+                      },
+                      purchase_units: [
+                        {
+                          amount: {
+                            value: order.total
+                          },
+                          description:
+                            "Custom art painting by Veli & Amos and friends"
+                        }
+                      ]
+                    });
+                  },
+                  onApprove: function(data, actions) {
+                    // Capture the funds from the transaction
+                    return actions.order.capture().then(function(details) {
+                      // Show a success message to your buyer
+                      console.log(data, actions, details);
+                    });
+                  }
+                })
+                .render("#paypal-checkout");
+            }, 100);
+
           const setPaymentProvider = async (client, paymentProviderId) => {
             const updatedOrder = await client.mutate({
               mutation: SetOrderPaymentProvider,
@@ -132,8 +177,10 @@ const Order = () => {
 
             setClientToken(clientToken);
 
-            // Reset the braintree instance. It will be set by the braintree widget after loading
-            setBraintreeInstance(null);
+            const providerInterface =
+              paymentProviderIdMap[paymentProviderId as any];
+
+            setPaymentProviderInterface(providerInterface);
 
             console.log({ type, clientToken });
           };
@@ -159,11 +206,6 @@ const Order = () => {
 
                       const providerInterface =
                         paymentProviderIdMap[values.paymentProviderId as any];
-
-                      if (providerInterface === "Braintree") {
-                        const result = await braintreeInstance.requestPaymentMethod();
-                        paymentContext.paypalPaymentMethodNonce = result.nonce;
-                      }
 
                       if (providerInterface === "Coinbase") {
                         paymentContext.chargeCode = coinbaseChargeCode;
@@ -227,21 +269,6 @@ const Order = () => {
                                   </label>
                                 )
                               )}
-                              {clientToken &&
-                                paymentProviderIdMap[field.value] ===
-                                  "Braintree" && (
-                                  <DropIn
-                                    options={{
-                                      authorization: clientToken,
-                                      paypal: {
-                                        flow: "checkout",
-                                        amount: order.total,
-                                        currency: order.currency
-                                      }
-                                    }}
-                                    onInstance={setBraintreeInstance}
-                                  />
-                                )}
                             </Fragment>
                           )}
                         </Field>
@@ -268,23 +295,23 @@ const Order = () => {
                           }
                         </Field>
                         {clientToken &&
-                        paymentProviderIdMap[
-                          values.paymentProviderId as string
-                        ] === "Coinbase" ? (
-                          <CoinbaseCommerceButton
-                            styled
-                            checkoutId={clientToken}
-                            onLoad={async () => {
-                              const valid = await validateForm();
-                              console.log({ valid });
-                              if (!R.isEmpty(valid)) throw new Error("CLOSE")!;
-                            }}
-                            onChargeSuccess={({ code }) => {
-                              setCoinbaseChargeCode(code);
-                              submitForm();
-                            }}
-                          />
-                        ) : (
+                          paymentProviderInterface === "Coinbase" && (
+                            <CoinbaseCommerceButton
+                              styled
+                              checkoutId={clientToken}
+                              onChargeSuccess={({ code }) => {
+                                setCoinbaseChargeCode(code);
+                                submitForm();
+                              }}
+                            />
+                          )}
+                        {clientToken &&
+                          paymentProviderInterface === "PaypalCheckout" && (
+                            <div id="paypal-checkout" />
+                          )}
+
+                        {paymentProviderInterface ===
+                          "Invoice Prepaid (manually)" && (
                           <button
                             type="submit"
                             disabled={isSubmitting}
