@@ -6,6 +6,8 @@ import {
   PaymentError
 } from 'meteor/unchained:core-payment';
 
+import { OrderPricingSheet } from 'meteor/unchained:core-pricing';
+
 const { COINBASE_COMMERCE_KEY } = process.env;
 
 class Coinbase extends PaymentAdapter {
@@ -55,25 +57,35 @@ class Coinbase extends PaymentAdapter {
 
   // HACK: We abuse the Paypal type to use clientToken for checkoutId
   // https://github.com/coinbase/coinbase-commerce-node#create
-  async clientToken() {
-    console.log('clientToken', this);
+  async clientToken([order]) {
+    try {
+      const pricing = new OrderPricingSheet({
+        calculation: order.calculation,
+        currency: order.currency
+      });
 
-    const pricing = this.context.order.pricing();
-    const rounded = Math.round(pricing.total().amount / 10 || 0) * 10;
+      const rounded = Math.round(pricing.total().amount / 10 || 0) * 10;
 
-    const checkout = await coinbase.resources.Checkout.create({
-      name: 'Postcard',
-      description: 'Handpainted by Veli & Amos and friends',
-      pricing_type: 'fixed_price',
-      local_price: {
-        amount: `${rounded / 100}.00`,
-        currency: this.context.order.currency
-      }
-    });
+      const clientObj = coinbase.Client.init(COINBASE_COMMERCE_KEY);
+      clientObj.setRequestTimeout(10000);
 
-    console.log(checkout);
+      const config = {
+        name: 'Postcard',
+        description: 'Handpainted by Veli & Amos and friends',
+        pricing_type: 'fixed_price',
+        local_price: {
+          amount: `${rounded / 100}.00`,
+          currency: order.currency
+        },
+        requested_info: []
+      };
 
-    return checkout.id;
+      const checkout = await coinbase.resources.Checkout.create(config);
+      return checkout.id;
+    } catch (e) {
+      console.error(e);
+      throw e;
+    }
   }
 
   async charge({ chargeId }) {
