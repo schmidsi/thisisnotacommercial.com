@@ -5,6 +5,7 @@ import Router from "next/router";
 import * as yup from "yup";
 import * as R from "ramda";
 import DropIn from "braintree-web-drop-in-react";
+import CoinbaseCommerceButton from "react-coinbase-commerce";
 
 import CurrentOrder from "../queries/CurrentOrder.gql";
 import SetOrderPaymentProvider from "../queries/SetOrderPaymentProvider.gql";
@@ -56,7 +57,8 @@ const Order = () => {
           cart.supportedPaymentProviders || []
         ).map((provider: any) => ({
           id: provider._id,
-          label: getProviderDescription(provider)
+          label: getProviderDescription(provider),
+          interface: provider.interface.label
         }));
 
         const supportedDeliveryProviders = (
@@ -65,6 +67,11 @@ const Order = () => {
           id: provider._id,
           label: getProviderDescription(provider)
         }));
+
+        const paymentProviderIdMap = supportedPaymentProviders.reduce(
+          (carry, current) => ({ ...carry, [current.id]: current.interface }),
+          {}
+        );
 
         const setPaymentProvider = async (client, paymentProviderId) => {
           const updatedOrder = await client.mutate({
@@ -87,6 +94,9 @@ const Order = () => {
           );
 
           setClientToken(clientToken);
+
+          // Reset the braintree instance. It will be set by the braintree widget after loading
+          setBraintreeInstance(null);
 
           console.log({ type, clientToken });
         };
@@ -149,39 +159,46 @@ const Order = () => {
                       <h2>Payment</h2>
                       <ErrorMessage name="paymentProviderId" component="div" />
                       <Field name="paymentProviderId">
-                        {({ field }) =>
-                          supportedPaymentProviders.map((provider: any) => (
-                            <label key={provider.id}>
-                              <input
-                                type="radio"
-                                value={provider.id}
-                                name={field.name}
-                                onChange={e =>
-                                  setPaymentProvider(client, provider.id) &&
-                                  field.onChange(e)
-                                }
-                                checked={field.value === provider.id}
+                        {({ field }) => (
+                          <Fragment>
+                            {supportedPaymentProviders.map((provider: any) => (
+                              <label key={provider.id}>
+                                <input
+                                  type="radio"
+                                  value={provider.id}
+                                  name={field.name}
+                                  onChange={e =>
+                                    setPaymentProvider(client, provider.id) &&
+                                    field.onChange(e)
+                                  }
+                                  checked={field.value === provider.id}
+                                />
+                                {provider.label}
+                              </label>
+                            ))}
+                            {paymentProviderIdMap[field.value] ===
+                              "Braintree" && (
+                              <DropIn
+                                options={{
+                                  authorization: clientToken,
+                                  paypal: {
+                                    flow: "checkout",
+                                    amount: order.total,
+                                    currency: order.currency
+                                  }
+                                }}
+                                onInstance={setBraintreeInstance}
                               />
-                              {provider.label}
-                            </label>
-                          ))
-                        }
+                            )}
+                            {paymentProviderIdMap[field.value] ===
+                              "Coinbase" && (
+                              <CoinbaseCommerceButton
+                                checkoutId={clientToken}
+                              />
+                            )}
+                          </Fragment>
+                        )}
                       </Field>
-                      {clientToken ? (
-                        <DropIn
-                          options={{
-                            authorization: clientToken,
-                            paypal: {
-                              flow: "checkout",
-                              amount: order.total,
-                              currency: order.currency
-                            }
-                          }}
-                          onInstance={setBraintreeInstance}
-                        />
-                      ) : (
-                        setBraintreeInstance(null)
-                      )}
 
                       <h2>Delivery</h2>
                       <ErrorMessage name="deliveryProviderId" component="div" />

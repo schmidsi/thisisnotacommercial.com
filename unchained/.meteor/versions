@@ -74,6 +74,7 @@ standard-minifier-css@1.5.3
 standard-minifier-js@2.4.1
 standard-minifiers@1.1.0
 thisisnotacommercial:braintree@0.0.1
+thisisnotacommercial:coinbase@0.0.1
 thisisnotacommercial:pricing@0.0.1
 tmeasday:check-npm-versions@0.3.2
 tracker@1.2.0

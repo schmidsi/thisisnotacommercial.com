@@ -26,7 +26,7 @@ class Braintree extends PaymentAdapter {
   ];
 
   static typeSupported(type) {
-    return type === 'PAYPAL' || type === 'CARD';
+    return type === 'PAYPAL';
   }
 
   configurationError() {

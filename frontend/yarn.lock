@@ -4613,6 +4613,11 @@ react-apollo@^2.5.4:
     ts-invariant "^0.3.2"
     tslib "^1.9.3"
 
+react-coinbase-commerce@^1.3.1:
+  version "1.3.1"
+  resolved "https://registry.yarnpkg.com/react-coinbase-commerce/-/react-coinbase-commerce-1.3.1.tgz#2cd53607dd43973f3fe7199eb19888305105bd4a"
+  integrity sha512-R1BO60tba/c1iiRgSyhflJYWIkvQWgIVfKXOniYkBXEe/DyX3BOF537lFJdCdE9dBcRqjE+/IN6beRkkULfKmQ==
+
 react-dom@^16.8.6:
   version "16.8.6"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.8.6.tgz#71d6303f631e8b0097f56165ef608f051ff6e10f"

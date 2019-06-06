@@ -16,6 +16,7 @@ class MyApp extends App {
             name="viewport"
             content="initial-scale=1.0, width=device-width"
           />
+          <link rel="stylesheet" href="/static/coinbase-commerce-button.css" />
           <link
             key="apple-touch-icon-57x57"
             rel="apple-touch-icon"

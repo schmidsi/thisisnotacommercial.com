@@ -46,7 +46,7 @@ const initializeDatabase = () => {
       });
       return language.isoCode;
     });
-    const currencies = ['CHF'].map(code => {
+    const currencies = ['EUR'].map(code => {
       const currency = Factory.create('currency', {
         isoCode: code,
         isActive: true,
@@ -65,6 +65,14 @@ const initializeDatabase = () => {
       });
       return country.isoCode;
     });
+    
+    // const paymentProviders = [
+    //   Factory.create('paymentProvider', {
+    //     adapterKey: () => 'shop.unchained.invoice',
+    //     type: () => PaymentProviderType.INVOICE,
+    //     configuration
+    //   })
+    // ]
     logger.log(`
       initialized database with
       \ncountries: ${countries.join(',')}
