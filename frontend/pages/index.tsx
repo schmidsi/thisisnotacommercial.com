@@ -204,7 +204,11 @@ const Home = () => (
                       className={css.button}
                       style={{ marginBottom: 40 }}
                     >
-                      <img src="/static/iwantone.png" alt="I want one" />
+                      {isSubmitting ? (
+                        <img src="/static/spinner.gif" />
+                      ) : (
+                        <img src="/static/iwantone.png" alt="I want one" />
+                      )}
                     </button>
 
                     <img

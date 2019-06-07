@@ -260,9 +260,10 @@ const Order = () => {
                               .render("#paypal-checkout");
                         }, 100);
 
-                      return (
+                      return isSubmitting ? (
+                        <img src="/static/spinner.gif" />
+                      ) : (
                         <Form>
-                          {isSubmitting}
                           <h2>Payment</h2>
                           <ErrorMessage
                             name="paymentProviderId"
@@ -273,10 +274,7 @@ const Order = () => {
                               <div className={css.paymentOption}>
                                 {supportedPaymentProviders.map(
                                   (provider: any) => (
-                                    <label
-                                      key={provider.id}
-                                      
-                                    >
+                                    <label key={provider.id}>
                                       <input
                                         type="radio"
                                         value={provider.id}
@@ -320,7 +318,7 @@ const Order = () => {
                               )
                             }
                           </Field> */}
-                          {!isSubmitting && clientToken &&
+                          {clientToken &&
                             paymentProviderInterface === "Coinbase" && (
                               <CoinbaseCommerceButton
                                 styled
@@ -331,7 +329,7 @@ const Order = () => {
                                 }}
                               />
                             )}
-                          {!isSubmitting && clientToken &&
+                          {clientToken &&
                             paymentProviderInterface === "PaypalCheckout" && (
                               <div id="paypal-checkout" />
                             )}
@@ -342,13 +340,11 @@ const Order = () => {
                               type="submit"
                               disabled={isSubmitting}
                               className={css.button}
-                              style={{ marginTop: 0}}
+                              style={{ marginTop: 0 }}
                             >
                               Submit
                             </button>
                           )}
-
-                          {isSubmitting && <img src="/static/spinner.gif" />}
                         </Form>
                       );
                     }}
