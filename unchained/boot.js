@@ -164,6 +164,16 @@ const initializeDatabase = () => {
   }
 };
 
+RavenLogger.initialize({
+  client: 'https://7ff1270109f14669bfe2edbec0529457@sentry.io/1477328',
+  server: 'https://7ff1270109f14669bfe2edbec0529457@sentry.io/1477328'
+}, {
+  patchGlobal: function() {
+    console.log('Bye, bye, world');
+    process.exit(1);
+  }
+});
+
 Meteor.startup(() => {
   configureEmailTemplates();
   initializeDatabase();

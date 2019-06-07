@@ -3,9 +3,14 @@ import Head from "next/head";
 import React from "react";
 import { ApolloProvider } from "react-apollo";
 import Router from "next/router";
+import * as Sentry from "@sentry/browser";
 
 import * as gtag from "../lib/gtag";
 import withApolloClient from "../lib/withApolloClient";
+
+Sentry.init({
+  dsn: "https://10b298d24c9c461b9310ebd5205604a7@sentry.io/1469145"
+});
 
 Router.events.on("routeChangeComplete", url => gtag.pageview(url));
 
