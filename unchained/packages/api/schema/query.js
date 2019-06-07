@@ -1,6 +1,8 @@
 export default [
   /* GraphQL */ `
     type Query {
+      soldItems: Int
+
       """
       Currently logged in user
       """

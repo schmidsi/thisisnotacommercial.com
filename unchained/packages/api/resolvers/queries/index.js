@@ -35,6 +35,7 @@ import translatedAssortmentTexts from './translatedAssortmentTexts';
 import translatedFilterTexts from './translatedFilterTexts';
 import logs from './logs';
 import shopInfo from './shopInfo';
+import soldItems from './soldItems';
 import productReview from './productReview';
 import productReviews from './productReviews';
 import quotation from './quotation';
@@ -42,6 +43,7 @@ import quotations from './quotations';
 
 export default {
   me,
+  soldItems,
   user: acl(actions.viewUser)(user),
   users: acl(actions.viewUsers)(users),
   product: acl(actions.viewProduct)(product),

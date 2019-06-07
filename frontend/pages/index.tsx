@@ -25,6 +25,8 @@ const Home = () => (
         result
       );
 
+      const soldItems = R.pathOr(0, ["data", "soldItems"], result);
+
       const productId = R.path(["data", "product", "_id"], result);
 
       return (
@@ -49,8 +51,12 @@ const Home = () => (
             </div>
 
             <div className={css.priceText}>
+              No: <br />
+              <span>{soldItems + 1}</span>
+              <br />
               Current price: <br />
               <span>{price / 100} €</span>
+              <br />
             </div>
           </div>
 

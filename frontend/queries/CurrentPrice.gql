@@ -1,4 +1,5 @@
 query CurrentPrice {
+  soldItems
   product(slug: "postcard") {
     _id
     texts {
