@@ -84,15 +84,6 @@ export default (
   momentDate.locale('de-CH');
   const orderDate = momentDate.format('lll');
 
-  console.log(
-    'confirmation',
-    {
-      ...texts[langCode],
-      ...meta
-    },
-    context
-  );
-
   return {
     to: to => to || 'admin@localhost',
     from: from => from || EMAIL_FROM,

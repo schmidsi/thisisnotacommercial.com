@@ -37,15 +37,6 @@ const Order = () => {
     ? require("react-coinbase-commerce").default
     : () => <div />;
 
-  // const PayPalButton =
-  //   (process as any).browser && paypalLoaded ? (
-  //     (window as any).paypal.Buttons.driver("react", { React, ReactDOM })
-  //   ) : (
-  //     <div />
-  //   );
-
-  // console.log(PayPalButton);
-
   return (
     <>
       <Query query={CurrentOrder}>
@@ -79,8 +70,6 @@ const Order = () => {
             label: getProviderDescription(provider),
             interface: provider.interface.label
           }));
-
-          // console.log(R.path([0, "id"], supportedDeliveryProviders));
 
           const initialValues = {
             paymentProviderId: R.path(["payment", "provider", "_id"], cart)
@@ -126,8 +115,6 @@ const Order = () => {
               paymentProviderIdMap[paymentProviderId as any];
 
             setPaymentProviderInterface(providerInterface);
-
-            console.log({ type, clientToken });
           };
 
           return (
@@ -147,8 +134,6 @@ const Order = () => {
                   <Formik
                     initialValues={initialValues}
                     onSubmit={async (values, { setSubmitting }) => {
-                      console.log("submit", values);
-
                       const paymentContext: any = {};
 
                       const providerInterface =
@@ -157,8 +142,6 @@ const Order = () => {
                       if (providerInterface === "Coinbase") {
                         paymentContext.chargeCode = coinbaseChargeCode;
                       }
-
-                      console.log({ providerInterface, paypalOrderId });
 
                       if (providerInterface === "PaypalCheckout") {
                         paymentContext.orderID = paypalOrderId;
@@ -174,8 +157,6 @@ const Order = () => {
                           orderId: cart._id
                         }
                       });
-
-                      console.log(paymentContext);
 
                       await client.mutate({
                         mutation: CheckoutCart,
@@ -207,7 +188,6 @@ const Order = () => {
                           order.currency
                         }`;
                         script.onload = e => {
-                          console.log(e, (window as any).paypal);
                           setPaypalLoaded(true);
                         };
                         document.body.appendChild(script);
@@ -254,13 +234,7 @@ const Order = () => {
                                     .capture()
                                     .then(function(details) {
                                       // Show a success message to your buyer
-                                      console.log(data, actions, details);
                                       setPaypalOrderId(data.orderID);
-                                      console.log(
-                                        "after set paypala order id",
-                                        data.orderID,
-                                        paypalOrderId
-                                      );
                                       submitForm();
                                     });
                                 }

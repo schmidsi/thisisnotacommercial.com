@@ -73,8 +73,6 @@ export default (meta, context, { renderToText, renderMjmlToHtml }) => {
   momentDate.locale('de-CH');
   const orderDate = momentDate.format('lll');
 
-  console.log(meta, context);
-
   return {
     to: to => to || 'admin@localhost',
     cc: cc => cc || null,
