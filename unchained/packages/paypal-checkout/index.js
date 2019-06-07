@@ -64,6 +64,7 @@ class PaypalCheckout extends PaymentAdapter {
       const paypalTotal = order.result.purchase_units[0].amount.value;
 
       if (ourTotal === paypalTotal) {
+        console.log('PRICE MATCH');
         return order;
       }
 
@@ -71,7 +72,7 @@ class PaypalCheckout extends PaymentAdapter {
       console.log('OUR ORDER', this.context.order);
       console.log('OUR PRICE', pricing);
 
-      throw new Error(`Payment misatch`);
+      throw new Error(`Payment mismatch`);
     } catch (e) {
       console.error(e);
       throw new Error(e);

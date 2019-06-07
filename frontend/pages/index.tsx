@@ -43,7 +43,7 @@ const Home = () => (
                   countryCode: "CH",
                   city: "Zürich",
                   emailAddress: "asdf@asdf.ch",
-                  message: "Test"
+                  message: "Test Message"
                 }}
                 validationSchema={yup.object().shape({
                   firstName: yup.string().required(),

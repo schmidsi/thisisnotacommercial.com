@@ -11,14 +11,6 @@ const mjmlTemplate = `
           </mj-text>
         </mj-column>
       </mj-section>
-
-      <mj-section padding-bottom="20px" background-color="#F3F3F3">
-        <mj-column>
-          <mj-button href="{{meta.url}}" font-family="Helvetica" background-color="#31302E" color="#FFFFFF">
-           {{meta.buttonText}}
-         </mj-button>
-        </mj-column>
-      </mj-section>
   </mj-body>
 </mjml>
 `;
@@ -28,9 +20,6 @@ const { EMAIL_FROM, EMAIL_WEBSITE_NAME, EMAIL_WEBSITE_URL } = process.env;
 const textTemplate = `
   {{meta.thankyou}} {{shopName}}\n
   \n
-  -----------------\n
-  {{meta.buttonText}}: {{meta.url}}\n
-  -----------------\n
 `;
 
 const texts = {
