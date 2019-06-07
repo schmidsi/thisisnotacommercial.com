@@ -27,11 +27,36 @@ const Home = () => (
 
       return (
         <div className={css.container}>
-          <img src="/static/titile.jpg" alt="Postcard by Veli &amp; Amos" />
-          <h1>This is not a commercial</h1>
-          <div>Current price: {price / 100}€</div>
+          <header className={css.header}>
+            <div className={css.logoHolder}>
+              <img
+                src="/static/logo.jpg"
+                alt="This is not a commercial logo"
+                className={css.logo}
+              />
+            </div>
+            <div className={css.titleHolder}>
+              <h1>This is not a commercial</h1>
+              <p className={css.subtitle}>Art Project by Veli &amp; Amos</p>
+            </div>
+          </header>
 
-          <h1>Order</h1>
+          <div className={css.priceBox}>
+            <div>
+              <img src="/static/price-up.png" />
+            </div>
+
+            <div className={css.priceText}>
+              Current price: <br />
+              <span>{price / 100} €</span>
+            </div>
+          </div>
+
+          <img
+            src="/static/postcard-empty.jpg"
+            alt="ORDER - an original painting by Veli &amp; Amos. Guest artists to be announced"
+          />
+
           <ApolloConsumer>
             {client => (
               <Formik
@@ -96,7 +121,7 @@ const Home = () => (
                 {({ isSubmitting }) => (
                   <Form>
                     <label>
-                      <h2 className={css.label}>First Name</h2>
+                      <h3 className={css.label}>First Name</h3>
                       <ErrorMessage name="firstName" component="div" />
                       <Field
                         type="string"
@@ -106,7 +131,7 @@ const Home = () => (
                     </label>
 
                     <label>
-                      <h2 className={css.label}>Last Name</h2>
+                      <h3 className={css.label}>Last Name</h3>
                       <ErrorMessage name="lastName" component="div" />
                       <Field
                         type="string"
@@ -116,7 +141,7 @@ const Home = () => (
                     </label>
 
                     <label>
-                      <h2 className={css.label}>Address</h2>
+                      <h3 className={css.label}>Address</h3>
                       <ErrorMessage name="addressLine" component="div" />
                       <Field
                         type="string"
@@ -126,7 +151,7 @@ const Home = () => (
                     </label>
 
                     <label>
-                      <h2 className={css.label}>Country Code</h2>
+                      <h3 className={css.label}>Country Code</h3>
                       <ErrorMessage name="countryCode" component="div" />
                       <Field
                         type="string"
@@ -136,7 +161,7 @@ const Home = () => (
                     </label>
 
                     <label>
-                      <h2 className={css.label}>Postal Code</h2>
+                      <h3 className={css.label}>Postal Code</h3>
                       <ErrorMessage name="postalCode" component="div" />
                       <Field
                         type="string"
@@ -146,13 +171,13 @@ const Home = () => (
                     </label>
 
                     <label>
-                      <h2 className={css.label}>City</h2>
+                      <h3 className={css.label}>City</h3>
                       <ErrorMessage name="city" component="div" />
                       <Field type="string" name="city" className={css.field} />
                     </label>
 
                     <label>
-                      <h2 className={css.label}>Email</h2>
+                      <h3 className={css.label}>Email</h3>
                       <ErrorMessage name="emailAddress" component="div" />
                       <Field
                         type="email"
@@ -162,7 +187,7 @@ const Home = () => (
                     </label>
 
                     <label>
-                      <h2 className={css.label}>Message (optional)</h2>
+                      <h3 className={css.label}>Message (optional)</h3>
                       <ErrorMessage name="message" component="div" />
                       <Field
                         component="textarea"
@@ -175,14 +200,35 @@ const Home = () => (
                       type="submit"
                       disabled={isSubmitting}
                       className={css.button}
+                      style={{ marginBottom: 40 }}
                     >
-                      Submit
+                      <img src="/static/iwantone.png" alt="I want one" />
                     </button>
+
+                    <img
+                      src="/static/free-shipping.png"
+                      alt="Free shipping - world wide"
+                    />
+                    <a href="mailto:veliandamos@gmail.com">
+                      <img
+                        src="/static/mail.png"
+                        alt="If you have any questions, mail us"
+                      />
+                    </a>
                   </Form>
                 )}
               </Formik>
             )}
           </ApolloConsumer>
+
+          <h2>Gallery</h2>
+          <a
+            href="https://www.instagram.com/this_is_not_a_commercial/"
+            className={css.followUs}
+          >
+            <img src="/static/instagram.png" />
+            <span>Follow us on Instagram: @this_is_not_a_commercial</span>
+          </a>
           <InstagramStream />
         </div>
       );
