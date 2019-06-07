@@ -9,7 +9,7 @@ import * as gtag from "../lib/gtag";
 import withApolloClient from "../lib/withApolloClient";
 
 Sentry.init({
-  dsn: "https://10b298d24c9c461b9310ebd5205604a7@sentry.io/1469145"
+  dsn: "https://7ff1270109f14669bfe2edbec0529457@sentry.io/1477328"
 });
 
 Router.events.on("routeChangeComplete", url => gtag.pageview(url));

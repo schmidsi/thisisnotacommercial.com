@@ -45,193 +45,203 @@ const Home = () => (
             </div>
           </header>
 
-          <div className={css.priceBox}>
+          {result.loading ? (
+            <img src="/static/spinner.gif" />
+          ) : (
             <div>
-              <img src="/static/price-up.png" />
-            </div>
+              <div className={css.priceBox}>
+                <div>
+                  <img src="/static/price-up.png" />
+                </div>
 
-            <div className={css.priceText}>
-              No: <br />
-              <span>{soldItems + 1}</span>
-              <br />
-              Current price: <br />
-              <span>{price / 100} €</span>
-              <br />
-            </div>
-          </div>
+                <div className={css.priceText}>
+                  No: <br />
+                  <span>{soldItems + 1}</span>
+                  <br />
+                  Current price: <br />
+                  <span>{price / 100} €</span>
+                  <br />
+                </div>
+              </div>
 
-          <img
-            src="/static/postcard-empty.jpg"
-            alt="ORDER - an original painting by Veli &amp; Amos. Guest artists to be announced"
-          />
+              <img
+                src="/static/postcard-empty.jpg"
+                alt="ORDER - an original painting by Veli &amp; Amos. Guest artists to be announced"
+              />
 
-          <ApolloConsumer>
-            {client => (
-              <Formik
-                initialValues={{
-                  firstName: isDev ? "Hans" : "",
-                  lastName: isDev ? "Muster" : "",
-                  addressLine: isDev ? "Bahnhofstrasse 1" : "",
-                  postalCode: isDev ? "8001" : "",
-                  countryCode: "CH",
-                  city: isDev ? "Zürich" : "",
-                  emailAddress: isDev ? "asdf@asdf.ch" : "",
-                  message: isDev ? "Test Message" : ""
-                }}
-                validationSchema={yup.object().shape({
-                  firstName: yup.string().required(),
-                  lastName: yup.string().required(),
-                  addressLine: yup.string().required(),
-                  postalCode: yup.string().required(),
-                  countryCode: yup.string().required(),
-                  city: yup.string().required(),
-                  emailAddress: yup
-                    .string()
-                    .email("Invalid email address")
-                    .required("Please provide an email address"),
-                  message: yup.string()
-                })}
-                onSubmit={async (values, { setSubmitting }) => {
-                  const loginAsGuestResult = await client.mutate({
-                    mutation: LoginAsGuest
-                  });
+              <ApolloConsumer>
+                {client => (
+                  <Formik
+                    initialValues={{
+                      firstName: isDev ? "Hans" : "",
+                      lastName: isDev ? "Muster" : "",
+                      addressLine: isDev ? "Bahnhofstrasse 1" : "",
+                      postalCode: isDev ? "8001" : "",
+                      countryCode: "CH",
+                      city: isDev ? "Zürich" : "",
+                      emailAddress: isDev ? "asdf@asdf.ch" : "",
+                      message: isDev ? "Test Message" : ""
+                    }}
+                    validationSchema={yup.object().shape({
+                      firstName: yup.string().required(),
+                      lastName: yup.string().required(),
+                      addressLine: yup.string().required(),
+                      postalCode: yup.string().required(),
+                      countryCode: yup.string().required(),
+                      city: yup.string().required(),
+                      emailAddress: yup
+                        .string()
+                        .email("Invalid email address")
+                        .required("Please provide an email address"),
+                      message: yup.string()
+                    })}
+                    onSubmit={async (values, { setSubmitting }) => {
+                      const loginAsGuestResult = await client.mutate({
+                        mutation: LoginAsGuest
+                      });
 
-                  const token = R.pathOr(
-                    "",
-                    ["data", "loginAsGuest", "token"],
-                    loginAsGuestResult
-                  );
+                      const token = R.pathOr(
+                        "",
+                        ["data", "loginAsGuest", "token"],
+                        loginAsGuestResult
+                      );
 
-                  if (window && window.localStorage)
-                    window.localStorage.setItem("token", token);
+                      if (window && window.localStorage)
+                        window.localStorage.setItem("token", token);
 
-                  await client.mutate({
-                    mutation: AddCartProduct,
-                    variables: { productId }
-                  });
+                      await client.mutate({
+                        mutation: AddCartProduct,
+                        variables: { productId }
+                      });
 
-                  await client.mutate({
-                    mutation: UpdateCart,
-                    variables: {
-                      ...values,
-                      meta: { message: values.message }
-                    }
-                  });
+                      await client.mutate({
+                        mutation: UpdateCart,
+                        variables: {
+                          ...values,
+                          meta: { message: values.message }
+                        }
+                      });
 
-                  setSubmitting(false);
+                      setSubmitting(false);
 
-                  Router.push({
-                    pathname: "/order"
-                    // query: { token }
-                  });
-                }}
-              >
-                {({ isSubmitting }) => (
-                  <Form>
-                    <label>
-                      <h3 className={css.label}>First Name</h3>
-                      <ErrorMessage name="firstName" component="div" />
-                      <Field
-                        type="string"
-                        name="firstName"
-                        className={css.field}
-                      />
-                    </label>
+                      Router.push({
+                        pathname: "/order"
+                        // query: { token }
+                      });
+                    }}
+                  >
+                    {({ isSubmitting }) => (
+                      <Form>
+                        <label>
+                          <h3 className={css.label}>First Name</h3>
+                          <ErrorMessage name="firstName" component="div" />
+                          <Field
+                            type="string"
+                            name="firstName"
+                            className={css.field}
+                          />
+                        </label>
 
-                    <label>
-                      <h3 className={css.label}>Last Name</h3>
-                      <ErrorMessage name="lastName" component="div" />
-                      <Field
-                        type="string"
-                        name="lastName"
-                        className={css.field}
-                      />
-                    </label>
+                        <label>
+                          <h3 className={css.label}>Last Name</h3>
+                          <ErrorMessage name="lastName" component="div" />
+                          <Field
+                            type="string"
+                            name="lastName"
+                            className={css.field}
+                          />
+                        </label>
 
-                    <label>
-                      <h3 className={css.label}>Address</h3>
-                      <ErrorMessage name="addressLine" component="div" />
-                      <Field
-                        type="string"
-                        name="addressLine"
-                        className={css.field}
-                      />
-                    </label>
+                        <label>
+                          <h3 className={css.label}>Address</h3>
+                          <ErrorMessage name="addressLine" component="div" />
+                          <Field
+                            type="string"
+                            name="addressLine"
+                            className={css.field}
+                          />
+                        </label>
 
-                    <label>
-                      <h3 className={css.label}>Country Code</h3>
-                      <ErrorMessage name="countryCode" component="div" />
-                      <Field
-                        type="string"
-                        name="countryCode"
-                        className={css.field}
-                      />
-                    </label>
+                        <label>
+                          <h3 className={css.label}>Country Code</h3>
+                          <ErrorMessage name="countryCode" component="div" />
+                          <Field
+                            type="string"
+                            name="countryCode"
+                            className={css.field}
+                          />
+                        </label>
 
-                    <label>
-                      <h3 className={css.label}>Postal Code</h3>
-                      <ErrorMessage name="postalCode" component="div" />
-                      <Field
-                        type="string"
-                        name="postalCode"
-                        className={css.field}
-                      />
-                    </label>
+                        <label>
+                          <h3 className={css.label}>Postal Code</h3>
+                          <ErrorMessage name="postalCode" component="div" />
+                          <Field
+                            type="string"
+                            name="postalCode"
+                            className={css.field}
+                          />
+                        </label>
 
-                    <label>
-                      <h3 className={css.label}>City</h3>
-                      <ErrorMessage name="city" component="div" />
-                      <Field type="string" name="city" className={css.field} />
-                    </label>
+                        <label>
+                          <h3 className={css.label}>City</h3>
+                          <ErrorMessage name="city" component="div" />
+                          <Field
+                            type="string"
+                            name="city"
+                            className={css.field}
+                          />
+                        </label>
 
-                    <label>
-                      <h3 className={css.label}>Email</h3>
-                      <ErrorMessage name="emailAddress" component="div" />
-                      <Field
-                        type="email"
-                        name="emailAddress"
-                        className={css.field}
-                      />
-                    </label>
+                        <label>
+                          <h3 className={css.label}>Email</h3>
+                          <ErrorMessage name="emailAddress" component="div" />
+                          <Field
+                            type="email"
+                            name="emailAddress"
+                            className={css.field}
+                          />
+                        </label>
 
-                    <label>
-                      <h3 className={css.label}>Message (optional)</h3>
-                      <ErrorMessage name="message" component="div" />
-                      <Field
-                        component="textarea"
-                        name="message"
-                        className={css.field}
-                      />
-                    </label>
+                        <label>
+                          <h3 className={css.label}>Message (optional)</h3>
+                          <ErrorMessage name="message" component="div" />
+                          <Field
+                            component="textarea"
+                            name="message"
+                            className={css.field}
+                          />
+                        </label>
 
-                    <button
-                      type="submit"
-                      disabled={isSubmitting}
-                      className={css.button}
-                      style={{ marginBottom: 40 }}
-                    >
-                      {isSubmitting ? (
-                        <img src="/static/spinner.gif" />
-                      ) : (
-                        <img src="/static/iwantone.png" alt="I want one" />
-                      )}
-                    </button>
+                        <button
+                          type="submit"
+                          disabled={isSubmitting}
+                          className={css.button}
+                          style={{ marginBottom: 40 }}
+                        >
+                          {isSubmitting ? (
+                            <img src="/static/spinner.gif" />
+                          ) : (
+                            <img src="/static/iwantone.png" alt="I want one" />
+                          )}
+                        </button>
 
-                    <img
-                      src="/static/free-shipping.png"
-                      alt="Free shipping - world wide"
-                    />
-                    <a href="mailto:veliandamos@gmail.com">
-                      <img
-                        src="/static/mail.png"
-                        alt="If you have any questions, mail us"
-                      />
-                    </a>
-                  </Form>
+                        <img
+                          src="/static/free-shipping.png"
+                          alt="Free shipping - world wide"
+                        />
+                        <a href="mailto:veliandamos@gmail.com">
+                          <img
+                            src="/static/mail.png"
+                            alt="If you have any questions, mail us"
+                          />
+                        </a>
+                      </Form>
+                    )}
+                  </Formik>
                 )}
-              </Formik>
-            )}
-          </ApolloConsumer>
+              </ApolloConsumer>
+            </div>
+          )}
 
           <h2>Gallery</h2>
           <a

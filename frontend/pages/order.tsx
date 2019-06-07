@@ -133,169 +133,183 @@ const Order = () => {
                 </div>
               </header>
 
-              <h2>Your order:</h2>
-              <dl className={css.dl}>
-                {R.toPairs(order).map(([name, value]) => (
-                  <Fragment key={`${name}-${value}`}>
-                    <div>
-                      <dt key={"dt-" + name}>{humanizeString(name)}:</dt>
-                      <dd key={"dd-" + name}>{value}</dd>
-                    </div>
-                  </Fragment>
-                ))}
-              </dl>
-              <ApolloConsumer>
-                {client => (
-                  <Formik
-                    initialValues={initialValues}
-                    onSubmit={async (values, { setSubmitting }) => {
-                      const paymentContext: any = {};
+              {result.loading ? (
+                <img src="/static/spinner.gif" />
+              ) : (
+                <div>
+                  <h2>Your order:</h2>
+                  <dl className={css.dl}>
+                    {R.toPairs(order).map(([name, value]) => (
+                      <Fragment key={`${name}-${value}`}>
+                        <div>
+                          <dt key={"dt-" + name}>{humanizeString(name)}:</dt>
+                          <dd key={"dd-" + name}>{value}</dd>
+                        </div>
+                      </Fragment>
+                    ))}
+                  </dl>
+                  <ApolloConsumer>
+                    {client => (
+                      <Formik
+                        initialValues={initialValues}
+                        onSubmit={async (values, { setSubmitting }) => {
+                          const paymentContext: any = {};
 
-                      const providerInterface =
-                        paymentProviderIdMap[values.paymentProviderId as any];
+                          const providerInterface =
+                            paymentProviderIdMap[
+                              values.paymentProviderId as any
+                            ];
 
-                      if (providerInterface === "Coinbase") {
-                        paymentContext.chargeCode = coinbaseChargeCode;
-                      }
+                          if (providerInterface === "Coinbase") {
+                            paymentContext.chargeCode = coinbaseChargeCode;
+                          }
 
-                      if (providerInterface === "PaypalCheckout") {
-                        paymentContext.orderID = paypalOrderId;
-                      }
+                          if (providerInterface === "PaypalCheckout") {
+                            paymentContext.orderID = paypalOrderId;
+                          }
 
-                      await client.mutate({
-                        mutation: SetOrderDeliveryProvider,
-                        variables: {
-                          deliveryProviderId: R.path(
-                            [0, "id"],
-                            supportedDeliveryProviders
-                          ), // values.deliveryProviderId,
-                          orderId: cart._id
-                        }
-                      });
+                          await client.mutate({
+                            mutation: SetOrderDeliveryProvider,
+                            variables: {
+                              deliveryProviderId: R.path(
+                                [0, "id"],
+                                supportedDeliveryProviders
+                              ), // values.deliveryProviderId,
+                              orderId: cart._id
+                            }
+                          });
 
-                      await client.mutate({
-                        mutation: CheckoutCart,
-                        variables: {
-                          paymentContext
-                        }
-                      });
+                          await client.mutate({
+                            mutation: CheckoutCart,
+                            variables: {
+                              paymentContext
+                            }
+                          });
 
-                      setSubmitting(false);
+                          setSubmitting(false);
 
-                      Router.push({
-                        pathname: "/thankyou"
-                      });
-                    }}
-                    validationSchema={yup.object().shape({
-                      paymentProviderId: yup.string().required()
-                      // deliveryProviderId: yup.string().required()
-                    })}
-                  >
-                    {({ isSubmitting, submitForm, validateForm, values }) => {
-                      if (
-                        (process as any).browser &&
-                        !paypalLoaded &&
-                        paymentProviderInterface === "PaypalCheckout"
-                      ) {
-                        const script = document.createElement("script");
-                        script.type = "application/javascript";
-                        script.src = `https://www.paypal.com/sdk/js?client-id=${clientToken}&currency=${
-                          order.currency
-                        }`;
-                        script.onload = e => {
-                          setPaypalLoaded(true);
-                        };
-                        document.body.appendChild(script);
-                      }
+                          Router.push({
+                            pathname: "/thankyou"
+                          });
+                        }}
+                        validationSchema={yup.object().shape({
+                          paymentProviderId: yup.string().required()
+                          // deliveryProviderId: yup.string().required()
+                        })}
+                      >
+                        {({
+                          isSubmitting,
+                          submitForm,
+                          validateForm,
+                          values
+                        }) => {
+                          if (
+                            (process as any).browser &&
+                            !paypalLoaded &&
+                            paymentProviderInterface === "PaypalCheckout"
+                          ) {
+                            const script = document.createElement("script");
+                            script.type = "application/javascript";
+                            script.src = `https://www.paypal.com/sdk/js?client-id=${clientToken}&currency=${
+                              order.currency
+                            }`;
+                            script.onload = e => {
+                              setPaypalLoaded(true);
+                            };
+                            document.body.appendChild(script);
+                          }
 
-                      paymentProviderInterface === "PaypalCheckout" &&
-                        paypalLoaded &&
-                        window.setTimeout(() => {
-                          !paypalRendered &&
-                            (window as any).paypal
-                              .Buttons({
-                                createOrder: function(data, actions) {
-                                  setPaypalRendered(true);
-                                  // Set up the transaction
-                                  return actions.order.create({
-                                    intent: "CAPTURE",
-                                    payer: {
-                                      email_address: order.emailAddress
-                                    },
-                                    purchase_units: [
-                                      {
-                                        amount: {
-                                          value: order.total
+                          paymentProviderInterface === "PaypalCheckout" &&
+                            paypalLoaded &&
+                            window.setTimeout(() => {
+                              !paypalRendered &&
+                                (window as any).paypal
+                                  .Buttons({
+                                    createOrder: function(data, actions) {
+                                      setPaypalRendered(true);
+                                      // Set up the transaction
+                                      return actions.order.create({
+                                        intent: "CAPTURE",
+                                        payer: {
+                                          email_address: order.emailAddress
                                         },
-                                        description:
-                                          "Custom art painting by Veli & Amos and friends",
-                                        shipping: {
-                                          name: {
-                                            full_name: `${order.firstName} ${
-                                              order.lastName
-                                            }`
-                                          },
-                                          address: {
-                                            address_line_1: order.addressLine,
-                                            admin_area_2: order.city,
-                                            postal_code: order.postalCode,
-                                            country_code: order.countryCode
+                                        purchase_units: [
+                                          {
+                                            amount: {
+                                              value: order.total
+                                            },
+                                            description:
+                                              "Custom art painting by Veli & Amos and friends",
+                                            shipping: {
+                                              name: {
+                                                full_name: `${
+                                                  order.firstName
+                                                } ${order.lastName}`
+                                              },
+                                              address: {
+                                                address_line_1:
+                                                  order.addressLine,
+                                                admin_area_2: order.city,
+                                                postal_code: order.postalCode,
+                                                country_code: order.countryCode
+                                              }
+                                            }
                                           }
-                                        }
-                                      }
-                                    ]
-                                  });
-                                },
-                                onApprove: function(data, actions) {
-                                  // Capture the funds from the transaction
-                                  return actions.order
-                                    .capture()
-                                    .then(function(details) {
-                                      // Show a success message to your buyer
-                                      setPaypalOrderId(data.orderID);
-                                      submitForm();
-                                    });
-                                }
-                              })
-                              .render("#paypal-checkout");
-                        }, 100);
+                                        ]
+                                      });
+                                    },
+                                    onApprove: function(data, actions) {
+                                      // Capture the funds from the transaction
+                                      return actions.order
+                                        .capture()
+                                        .then(function(details) {
+                                          // Show a success message to your buyer
+                                          setPaypalOrderId(data.orderID);
+                                          submitForm();
+                                        });
+                                    }
+                                  })
+                                  .render("#paypal-checkout");
+                            }, 100);
 
-                      return isSubmitting ? (
-                        <img src="/static/spinner.gif" />
-                      ) : (
-                        <Form>
-                          <h2>Payment</h2>
-                          <ErrorMessage
-                            name="paymentProviderId"
-                            component="div"
-                          />
-                          <Field name="paymentProviderId">
-                            {({ field }) => (
-                              <div className={css.paymentOption}>
-                                {supportedPaymentProviders.map(
-                                  (provider: any) => (
-                                    <label key={provider.id}>
-                                      <input
-                                        type="radio"
-                                        value={provider.id}
-                                        name={field.name}
-                                        onChange={e =>
-                                          setPaymentProvider(
-                                            client,
-                                            provider.id
-                                          ) && field.onChange(e)
-                                        }
-                                        checked={field.value === provider.id}
-                                      />
-                                      {provider.label}
-                                    </label>
-                                  )
+                          return isSubmitting ? (
+                            <img src="/static/spinner.gif" />
+                          ) : (
+                            <Form>
+                              <h2>Payment</h2>
+                              <ErrorMessage
+                                name="paymentProviderId"
+                                component="div"
+                              />
+                              <Field name="paymentProviderId">
+                                {({ field }) => (
+                                  <div className={css.paymentOption}>
+                                    {supportedPaymentProviders.map(
+                                      (provider: any) => (
+                                        <label key={provider.id}>
+                                          <input
+                                            type="radio"
+                                            value={provider.id}
+                                            name={field.name}
+                                            onChange={e =>
+                                              setPaymentProvider(
+                                                client,
+                                                provider.id
+                                              ) && field.onChange(e)
+                                            }
+                                            checked={
+                                              field.value === provider.id
+                                            }
+                                          />
+                                          {provider.label}
+                                        </label>
+                                      )
+                                    )}
+                                  </div>
                                 )}
-                              </div>
-                            )}
-                          </Field>
+                              </Field>
 
-                          {/* <h2>Delivery</h2>
+                              {/* <h2>Delivery</h2>
                           <ErrorMessage
                             name="deliveryProviderId"
                             component="div"
@@ -318,39 +332,42 @@ const Order = () => {
                               )
                             }
                           </Field> */}
-                          {clientToken &&
-                            paymentProviderInterface === "Coinbase" && (
-                              <CoinbaseCommerceButton
-                                styled
-                                checkoutId={clientToken}
-                                onChargeSuccess={({ code }) => {
-                                  setCoinbaseChargeCode(code);
-                                  submitForm();
-                                }}
-                              />
-                            )}
-                          {clientToken &&
-                            paymentProviderInterface === "PaypalCheckout" && (
-                              <div id="paypal-checkout" />
-                            )}
+                              {clientToken &&
+                                paymentProviderInterface === "Coinbase" && (
+                                  <CoinbaseCommerceButton
+                                    styled
+                                    checkoutId={clientToken}
+                                    onChargeSuccess={({ code }) => {
+                                      setCoinbaseChargeCode(code);
+                                      submitForm();
+                                    }}
+                                  />
+                                )}
+                              {clientToken &&
+                                paymentProviderInterface ===
+                                  "PaypalCheckout" && (
+                                  <div id="paypal-checkout" />
+                                )}
 
-                          {paymentProviderInterface ===
-                            "Invoice Prepaid (manually)" && (
-                            <button
-                              type="submit"
-                              disabled={isSubmitting}
-                              className={css.button}
-                              style={{ marginTop: 0 }}
-                            >
-                              Submit
-                            </button>
-                          )}
-                        </Form>
-                      );
-                    }}
-                  </Formik>
-                )}
-              </ApolloConsumer>
+                              {paymentProviderInterface ===
+                                "Invoice Prepaid (manually)" && (
+                                <button
+                                  type="submit"
+                                  disabled={isSubmitting}
+                                  className={css.button}
+                                  style={{ marginTop: 0 }}
+                                >
+                                  Submit
+                                </button>
+                              )}
+                            </Form>
+                          );
+                        }}
+                      </Formik>
+                    )}
+                  </ApolloConsumer>
+                </div>
+              )}
 
               <img
                 style={{ marginTop: 50 }}
