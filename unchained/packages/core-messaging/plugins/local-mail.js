@@ -36,7 +36,7 @@ class LocalMail extends MessagingAdapter {
       from: renderer.from(from),
       to: renderer.to(to),
       cc: renderer.cc ? renderer.cc(cc) : undefined,
-      bcc: EMAIL_BCC || undefined,
+      bcc: EMAIL_BCC.split(',') || undefined,
       subject: renderer.subject(subject),
       text: renderer.text && renderer.text(),
       html: renderer.html && renderer.html()
