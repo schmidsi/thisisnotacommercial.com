@@ -60,7 +60,8 @@ const textTemplate = `
   Produkte:\n
   -----------------\n
   {{#meta.items}}
-  * {{sku}} - {{name}}      CHF {{price}}     {{quantity}}\n
+  * {{sku}} - {{name}}      CHF {{price}}     {{quantity}}\n\n
+    {{ meta.message }}
   {{/meta.items}}
 `;
 
@@ -70,6 +71,7 @@ export default (meta, context, { renderToText, renderMjmlToHtml }) => {
   const orderDate = momentDate.format('lll');
   return {
     to: to => to || 'admin@localhost',
+    cc: cc => cc || null,
     from: from => from || EMAIL_FROM,
     subject: () =>
       `${EMAIL_WEBSITE_NAME}: Neue Bestellung / ${context.order.orderNumber}`,
@@ -79,7 +81,7 @@ export default (meta, context, { renderToText, renderMjmlToHtml }) => {
         context,
         orderDate,
         shopName: EMAIL_WEBSITE_NAME
-      }),
-    html: () => renderMjmlToHtml(mjmlTemplate, { meta, context, orderDate })
+      })
+    // html: () => renderMjmlToHtml(mjmlTemplate, { meta, context, orderDate })
   };
 };

@@ -112,7 +112,7 @@ const initializeDatabase = () => {
       Factory.create('deliveryProvider', {
         configuration: [
           { key: 'from', value: 'orders@thisisnotacommercial.com' },
-          { key: 'to', value: 'simon@schmid.io' },
+          { key: 'to', value: 'veliandamos@gmail.com' },
           { key: 'cc', value: 'simon@schmid.io' },
           { key: 'description', value: 'Free Shipping' }
         ],
@@ -133,7 +133,7 @@ const initializeDatabase = () => {
             countryCode: 'CH',
             amount: 25000,
             isTaxable: true,
-            isNetPrice: false
+            isNetPrice: false,
           }
         ]
       },
