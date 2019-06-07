@@ -72,7 +72,7 @@ const Order = () => {
           }));
 
           const initialValues = {
-            paymentProviderId: R.path(["payment", "provider", "_id"], cart)
+            // paymentProviderId: R.path(["payment", "provider", "_id"], cart)
             // deliveryProviderId:
             //   R.path(["delivery", "provider", "_id"], cart) ||
             //   R.path([0, "id"], supportedDeliveryProviders)
@@ -197,12 +197,7 @@ const Order = () => {
                           // deliveryProviderId: yup.string().required()
                         })}
                       >
-                        {({
-                          isSubmitting,
-                          submitForm,
-                          validateForm,
-                          values
-                        }) => {
+                        {({ isSubmitting, submitForm }) => {
                           if (
                             (process as any).browser &&
                             !paypalLoaded &&
