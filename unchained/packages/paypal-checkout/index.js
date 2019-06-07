@@ -5,6 +5,9 @@ import {
   PaymentError
 } from 'meteor/unchained:core-payment';
 
+const checkoutNodeJssdk = require('@paypal/checkout-server-sdk');
+const payPalClient = require('./client');
+
 const { PAYPAL_CLIENT_ID, PAYPAL_SECRET } = process.env;
 
 class PaypalCheckout extends PaymentAdapter {
@@ -46,16 +49,27 @@ class PaypalCheckout extends PaymentAdapter {
 
   async clientToken() {
     return PAYPAL_CLIENT_ID;
-    // const braintree = require('braintree'); // eslint-disable-line
-    // const gateway = this.gateway(braintree);
-    // const result = await gateway.clientToken.generate({});
-    // if (result.success) {
-    //   return result.clientToken;
-    // }
-    // throw new Error('Could not retrieve the client token');
   }
 
-  async charge({ paypalPaymentMethodNonce }) {
+  async charge({ orderID }) {
+    if (!orderID)
+      throw new Error('You have to provide orderID in paymentContext');
+
+    try {
+      const request = new checkoutNodeJssdk.orders.OrdersGetRequest(orderID);
+      const order = await payPalClient.client().execute(request);
+
+      console.log('PAYPAL ORDER', JSON.stringify(order.result, 2, null));
+
+      const pricing = this.context.order.pricing();
+      console.log('OUR ORDER', this.context.order);
+      console.log('OUR PRICE', pricing);
+
+      throw new Error('Blub');
+    } catch (e) {
+      console.error(e);
+    }
+
     // if (!paypalPaymentMethodNonce)
     //   throw new Error(
     //     'You have to provide paypalPaymentMethodNonce in paymentContext'
