@@ -33,7 +33,7 @@ const logger = console;
 const initializeDatabase = () => {
   const initialTimestamps = {
     created: new Date(),
-    updated: null
+    updated: new Date()
   }
 
   try {

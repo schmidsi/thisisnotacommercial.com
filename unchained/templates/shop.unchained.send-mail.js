@@ -44,31 +44,37 @@ const mjmlTemplate = `
 const { EMAIL_FROM, EMAIL_WEBSITE_NAME } = process.env;
 
 const textTemplate = `
-  Bestellnummer: {{context.order.orderNumber}}\n
-  Bestelldatum: {{orderDate}}\n
-  \n
-  Lieferadresse:\n
-  -----------------\n
-  {{meta.firstName}} {{meta.lastName}}\n
-  {{meta.company}}\n
-  {{meta.addressLine}}\n
-  {{meta.addressLine2}}\n
-  {{meta.postalCode}} {{meta.city}}\n
-  {{meta.regionCode}}\n
-  {{meta.countryCode}}\n
-  \n
-  Produkte:\n
-  -----------------\n
+  Bestellnummer: {{context.order.orderNumber}}
+  Bestelldatum: {{orderDate}}
+
+  Lieferadresse:
+  -----------------
+  {{meta.firstName}} {{meta.lastName}}
+  {{meta.company}}
+  {{meta.addressLine}}
+  {{meta.addressLine2}}
+  {{meta.postalCode}} {{meta.city}}
+  {{meta.regionCode}}
+  {{meta.countryCode}}
+
+  Produkte:
+  -----------------
   {{#meta.items}}
-  * {{sku}} - {{name}}      CHF {{price}}     {{quantity}}\n\n
-    {{ meta.message }}
+  * {{sku}} - {{name}}      CHF {{price}}     {{quantity}}
   {{/meta.items}}
+
+  Message:
+  -----------------
+  {{context.order.context.message}}
 `;
 
 export default (meta, context, { renderToText, renderMjmlToHtml }) => {
   const momentDate = moment(context.order.ordered);
   momentDate.locale('de-CH');
   const orderDate = momentDate.format('lll');
+
+  console.log(meta, context);
+
   return {
     to: to => to || 'admin@localhost',
     cc: cc => cc || null,
