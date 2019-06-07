@@ -14,6 +14,8 @@ import UpdateCart from "../queries/UpdateCart.gql";
 
 import css from "./main.css";
 
+const isDev = process.env.NODE_ENV !== "production";
+
 const Home = () => (
   <Query query={CurrentPrice}>
     {(result: any) => {
@@ -61,14 +63,14 @@ const Home = () => (
             {client => (
               <Formik
                 initialValues={{
-                  firstName: "Hans",
-                  lastName: "Muster",
-                  addressLine: "Bahnhofstrasse 1",
-                  postalCode: "8001",
+                  firstName: isDev ? "Hans" : "",
+                  lastName: isDev ? "Muster" : "",
+                  addressLine: isDev ? "Bahnhofstrasse 1" : "",
+                  postalCode: isDev ? "8001" : "",
                   countryCode: "CH",
-                  city: "Zürich",
-                  emailAddress: "asdf@asdf.ch",
-                  message: "Test Message"
+                  city: isDev ? "Zürich" : "",
+                  emailAddress: isDev ? "asdf@asdf.ch" : "",
+                  message: isDev ? "Test Message" : ""
                 }}
                 validationSchema={yup.object().shape({
                   firstName: yup.string().required(),

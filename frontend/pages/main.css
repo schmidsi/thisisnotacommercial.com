@@ -104,3 +104,35 @@ h1 {
 .followUs span {
   font-weight: bold;
 }
+
+.dl dt,
+.dl dd {
+  display: inline-block;
+}
+
+.dl dt {
+  width: 9em;
+  font-weight: bold;
+  margin-bottom: 0.2em;
+}
+
+.dl dd {
+  margin: 0;
+}
+
+.dl div {
+  border-bottom: 1px solid lightgrey;
+  margin-bottom: 0.5em;
+}
+
+.paymentOption {
+  display: flex;
+  margin-bottom: 2em;
+}
+
+.paymentOption label {
+  width: 33%;
+  display: inline-block;
+  padding: 10px;
+  border: 2px solid black;
+}

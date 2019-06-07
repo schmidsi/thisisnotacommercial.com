@@ -1,5 +1,5 @@
 import React, { Fragment, useState } from "react";
-// import ReactDOM from "react-dom";
+import humanizeString from "humanize-string";
 import { Query, ApolloConsumer } from "react-apollo";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import Router from "next/router";
@@ -52,8 +52,8 @@ const Order = () => {
             city: R.pathOr("", ["billingAddress", "city"], cart),
             emailAddress: R.pathOr("", ["contact", "emailAddress"], cart),
             message: R.pathOr("", ["meta", "message"], cart),
-            total: (R.pathOr("", ["total", "amount"], cart) / 100).toFixed(2),
-            currency: R.pathOr("", ["total", "currency"], cart)
+            currency: R.pathOr("", ["total", "currency"], cart),
+            total: (R.pathOr("", ["total", "amount"], cart) / 100).toFixed(2)
           };
 
           const supportedDeliveryProviders = (
@@ -119,13 +119,28 @@ const Order = () => {
 
           return (
             <div className={css.container} key="main">
-              <img src="/static/titile.jpg" alt="Postcard by Veli &amp; Amos" />
-              <h1>Your order</h1>
-              <dl>
+              <header className={css.header}>
+                <div className={css.logoHolder}>
+                  <img
+                    src="/static/logo.jpg"
+                    alt="This is not a commercial logo"
+                    className={css.logo}
+                  />
+                </div>
+                <div className={css.titleHolder}>
+                  <h1>This is not a commercial</h1>
+                  <p className={css.subtitle}>Art Project by Veli &amp; Amos</p>
+                </div>
+              </header>
+
+              <h2>Your order:</h2>
+              <dl className={css.dl}>
                 {R.toPairs(order).map(([name, value]) => (
                   <Fragment key={`${name}-${value}`}>
-                    <dt key={"dt-" + name}>{name}</dt>
-                    <dd key={"dd-" + name}>{value}</dd>
+                    <div>
+                      <dt key={"dt-" + name}>{humanizeString(name)}:</dt>
+                      <dd key={"dd-" + name}>{value}</dd>
+                    </div>
                   </Fragment>
                 ))}
               </dl>
@@ -255,10 +270,13 @@ const Order = () => {
                           />
                           <Field name="paymentProviderId">
                             {({ field }) => (
-                              <Fragment>
+                              <div className={css.paymentOption}>
                                 {supportedPaymentProviders.map(
                                   (provider: any) => (
-                                    <label key={provider.id}>
+                                    <label
+                                      key={provider.id}
+                                      
+                                    >
                                       <input
                                         type="radio"
                                         value={provider.id}
@@ -275,7 +293,7 @@ const Order = () => {
                                     </label>
                                   )
                                 )}
-                              </Fragment>
+                              </div>
                             )}
                           </Field>
 
@@ -302,7 +320,7 @@ const Order = () => {
                               )
                             }
                           </Field> */}
-                          {clientToken &&
+                          {!isSubmitting && clientToken &&
                             paymentProviderInterface === "Coinbase" && (
                               <CoinbaseCommerceButton
                                 styled
@@ -313,7 +331,7 @@ const Order = () => {
                                 }}
                               />
                             )}
-                          {clientToken &&
+                          {!isSubmitting && clientToken &&
                             paymentProviderInterface === "PaypalCheckout" && (
                               <div id="paypal-checkout" />
                             )}
@@ -324,16 +342,31 @@ const Order = () => {
                               type="submit"
                               disabled={isSubmitting}
                               className={css.button}
+                              style={{ marginTop: 0}}
                             >
                               Submit
                             </button>
                           )}
+
+                          {isSubmitting && <img src="/static/spinner.gif" />}
                         </Form>
                       );
                     }}
                   </Formik>
                 )}
               </ApolloConsumer>
+
+              <img
+                style={{ marginTop: 50 }}
+                src="/static/free-shipping.png"
+                alt="Free shipping - world wide"
+              />
+              <a href="mailto:veliandamos@gmail.com">
+                <img
+                  src="/static/mail.png"
+                  alt="If you have any questions, mail us"
+                />
+              </a>
             </div>
           );
         }}
