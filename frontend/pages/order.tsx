@@ -39,7 +39,7 @@ const Order = () => {
 
   return (
     <>
-      <Query query={CurrentOrder}>
+      <Query query={CurrentOrder} fetchPolicy="cache-and-network">
         {(result: any) => {
           const cart = R.pathOr({}, ["data", "me", "cart"], result);
 

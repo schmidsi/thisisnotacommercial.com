@@ -11,13 +11,14 @@ import CurrentPrice from "../queries/CurrentPrice.gql";
 import LoginAsGuest from "../queries/LoginAsGuest.gql";
 import AddCartProduct from "../queries/AddCartProduct.gql";
 import UpdateCart from "../queries/UpdateCart.gql";
+import PaintNumber from "../components/PaintNumber";
 
 import css from "./main.css";
 
 const isDev = process.env.NODE_ENV !== "production";
 
 const Home = () => (
-  <Query query={CurrentPrice}>
+  <Query query={CurrentPrice} pollInterval={60000}>
     {(result: any) => {
       const price = R.pathOr(
         0,
@@ -56,10 +57,14 @@ const Home = () => (
 
                 <div className={css.priceText}>
                   No: <br />
-                  <span>{soldItems + 1}</span>
+                  <span>
+                    <PaintNumber>{soldItems + 1}</PaintNumber>
+                  </span>
                   <br />
                   Current price: <br />
-                  <span>{price / 100} €</span>
+                  <span>
+                    <PaintNumber euro>{price / 100}</PaintNumber>
+                  </span>
                   <br />
                 </div>
               </div>
