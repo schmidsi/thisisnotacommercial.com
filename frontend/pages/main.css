@@ -31,18 +31,6 @@
   width: 65%;
 }
 
-@media only screen and (max-width: 500px) {
-  .logo {
-    margin-right: 0;
-  }
-
-  .titleHolder,
-  .logoHolder {
-    width: 100%;
-    display: block;
-  }
-}
-
 .priceBox {
   display: flex;
   font-size: 20px;
@@ -60,6 +48,25 @@
 
 .priceBox div {
   width: 50%;
+}
+
+@media only screen and (max-width: 500px) {
+  .priceBox {
+    display: block;
+  }
+
+  .priceBox div {
+    width: 100%;
+  }
+  .logo {
+    margin-right: 0;
+  }
+
+  .titleHolder,
+  .logoHolder {
+    width: 100%;
+    display: block;
+  }
 }
 
 h1 {
