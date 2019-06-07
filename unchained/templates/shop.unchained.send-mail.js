@@ -50,12 +50,10 @@ const textTemplate = `
   Lieferadresse:
   -----------------
   {{meta.firstName}} {{meta.lastName}}
-  {{meta.company}}
   {{meta.addressLine}}
-  {{meta.addressLine2}}
   {{meta.postalCode}} {{meta.city}}
-  {{meta.regionCode}}
   {{meta.countryCode}}
+  {{meta.contact.emailAddress}}
 
   Produkte:
   -----------------

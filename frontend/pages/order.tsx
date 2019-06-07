@@ -205,17 +205,7 @@ const Order = () => {
                                   return actions.order.create({
                                     intent: "CAPTURE",
                                     payer: {
-                                      name: {
-                                        given_name: order.firstName,
-                                        surname: order.lastName
-                                      },
-                                      email_address: order.emailAddress,
-                                      address: {
-                                        address_line_1: order.addressLine,
-                                        admin_area_2: order.city,
-                                        postal_code: order.postalCode,
-                                        country_code: order.countryCode
-                                      }
+                                      email_address: order.emailAddress
                                     },
                                     purchase_units: [
                                       {
@@ -223,7 +213,20 @@ const Order = () => {
                                           value: order.total
                                         },
                                         description:
-                                          "Custom art painting by Veli & Amos and friends"
+                                          "Custom art painting by Veli & Amos and friends",
+                                        shipping: {
+                                          name: {
+                                            full_name: `${order.firstName} ${
+                                              order.lastName
+                                            }`
+                                          },
+                                          address: {
+                                            address_line_1: order.addressLine,
+                                            admin_area_2: order.city,
+                                            postal_code: order.postalCode,
+                                            country_code: order.countryCode
+                                          }
+                                        }
                                       }
                                     ]
                                   });
