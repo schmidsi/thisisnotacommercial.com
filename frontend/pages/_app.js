@@ -2,8 +2,12 @@ import App, { Container } from "next/app";
 import Head from "next/head";
 import React from "react";
 import { ApolloProvider } from "react-apollo";
+import Router from "next/router";
 
+import * as gtag from "../lib/gtag";
 import withApolloClient from "../lib/withApolloClient";
+
+Router.events.on("routeChangeComplete", url => gtag.pageview(url));
 
 class MyApp extends App {
   render() {
@@ -15,6 +19,12 @@ class MyApp extends App {
           <meta
             name="viewport"
             content="initial-scale=1.0, width=device-width"
+          />
+          <script
+            async
+            src={`https://www.googletagmanager.com/gtag/js?id=${
+              gtag.GA_TRACKING_ID
+            }`}
           />
           <link rel="stylesheet" href="/static/coinbase-commerce-button.css" />
           <link
