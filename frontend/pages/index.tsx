@@ -1,34 +1,34 @@
-import React from "react";
-import Router from "next/router";
-import { Query, ApolloConsumer } from "react-apollo";
-import { Formik, Form, Field, ErrorMessage } from "formik";
-import * as yup from "yup";
-import * as R from "ramda";
+import React from 'react';
+import Router from 'next/router';
+import { Query, ApolloConsumer } from 'react-apollo';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
+import * as yup from 'yup';
+import * as R from 'ramda';
 
-import InstagramStream from "../components/InstagramStream";
+import InstagramStream from '../components/InstagramStream';
 
-import CurrentPrice from "../queries/CurrentPrice.gql";
-import LoginAsGuest from "../queries/LoginAsGuest.gql";
-import AddCartProduct from "../queries/AddCartProduct.gql";
-import UpdateCart from "../queries/UpdateCart.gql";
-import PaintNumber from "../components/PaintNumber";
+import CurrentPrice from '../queries/CurrentPrice.gql';
+import LoginAsGuest from '../queries/LoginAsGuest.gql';
+import AddCartProduct from '../queries/AddCartProduct.gql';
+import UpdateCart from '../queries/UpdateCart.gql';
+import PaintNumber from '../components/PaintNumber';
 
-import css from "./main.css";
+import css from './main.css';
 
-const isDev = process.env.NODE_ENV !== "production";
+const isDev = false; // process.env.NODE_ENV !== "production";
 
 const Home = () => (
   <Query query={CurrentPrice} pollInterval={60000}>
     {(result: any) => {
       const price = R.pathOr(
         0,
-        ["data", "product", "simulatedPrice", "price", "amount"],
+        ['data', 'product', 'simulatedPrice', 'price', 'amount'],
         result
       );
 
-      const soldItems = R.pathOr(0, ["data", "soldItems"], result);
+      const soldItems = R.pathOr(0, ['data', 'soldItems'], result);
 
-      const productId = R.path(["data", "product", "_id"], result);
+      const productId = R.path(['data', 'product', '_id'], result);
 
       return (
         <div className={css.container}>
@@ -78,14 +78,14 @@ const Home = () => (
                 {client => (
                   <Formik
                     initialValues={{
-                      firstName: isDev ? "Hans" : "",
-                      lastName: isDev ? "Muster" : "",
-                      addressLine: isDev ? "Bahnhofstrasse 1" : "",
-                      postalCode: isDev ? "8001" : "",
-                      countryCode: "CH",
-                      city: isDev ? "Zürich" : "",
-                      emailAddress: isDev ? "asdf@asdf.ch" : "",
-                      message: isDev ? "Test Message" : ""
+                      firstName: isDev ? 'Hans' : '',
+                      lastName: isDev ? 'Muster' : '',
+                      addressLine: isDev ? 'Bahnhofstrasse 1' : '',
+                      postalCode: isDev ? '8001' : '',
+                      countryCode: 'CH',
+                      city: isDev ? 'Zürich' : '',
+                      emailAddress: isDev ? 'asdf@asdf.ch' : '',
+                      message: isDev ? 'Test Message' : ''
                     }}
                     validationSchema={yup.object().shape({
                       firstName: yup.string().required(),
@@ -96,8 +96,8 @@ const Home = () => (
                       city: yup.string().required(),
                       emailAddress: yup
                         .string()
-                        .email("Invalid email address")
-                        .required("Please provide an email address"),
+                        .email('Invalid email address')
+                        .required('Please provide an email address'),
                       message: yup.string()
                     })}
                     onSubmit={async (values, { setSubmitting }) => {
@@ -106,13 +106,13 @@ const Home = () => (
                       });
 
                       const token = R.pathOr(
-                        "",
-                        ["data", "loginAsGuest", "token"],
+                        '',
+                        ['data', 'loginAsGuest', 'token'],
                         loginAsGuestResult
                       );
 
                       if (window && window.localStorage)
-                        window.localStorage.setItem("token", token);
+                        window.localStorage.setItem('token', token);
 
                       await client.mutate({
                         mutation: AddCartProduct,
@@ -130,7 +130,7 @@ const Home = () => (
                       setSubmitting(false);
 
                       Router.push({
-                        pathname: "/order"
+                        pathname: '/order'
                         // query: { token }
                       });
                     }}
@@ -143,6 +143,7 @@ const Home = () => (
                           <Field
                             type="string"
                             name="firstName"
+                            placeholder="Hans Ulrich"
                             className={css.field}
                           />
                         </label>
@@ -153,6 +154,7 @@ const Home = () => (
                           <Field
                             type="string"
                             name="lastName"
+                            placeholder="Obrist"
                             className={css.field}
                           />
                         </label>
@@ -163,6 +165,7 @@ const Home = () => (
                           <Field
                             type="string"
                             name="addressLine"
+                            placeholder="Kunststrasse 12"
                             className={css.field}
                           />
                         </label>
@@ -173,6 +176,7 @@ const Home = () => (
                           <Field
                             type="string"
                             name="countryCode"
+                            placeholder="CH"
                             className={css.field}
                           />
                         </label>
@@ -183,6 +187,7 @@ const Home = () => (
                           <Field
                             type="string"
                             name="postalCode"
+                            placeholder="8001"
                             className={css.field}
                           />
                         </label>
@@ -193,6 +198,7 @@ const Home = () => (
                           <Field
                             type="string"
                             name="city"
+                            placeholder="Zurich"
                             className={css.field}
                           />
                         </label>
@@ -203,6 +209,7 @@ const Home = () => (
                           <Field
                             type="email"
                             name="emailAddress"
+                            placeholder="hans.ulrich.obrist@example.com"
                             className={css.field}
                           />
                         </label>
@@ -213,6 +220,7 @@ const Home = () => (
                           <Field
                             component="textarea"
                             name="message"
+                            placeholder="We might add this to the painting."
                             className={css.field}
                           />
                         </label>
