@@ -15,7 +15,7 @@ import PaintNumber from '../components/PaintNumber';
 
 import css from './main.css';
 
-const isDev = false; // process.env.NODE_ENV !== "production";
+const isDev = process.env.NODE_ENV !== 'production';
 
 const Home = () => (
   <Query query={CurrentPrice} pollInterval={60000}>
@@ -237,17 +237,6 @@ const Home = () => (
                             <img src="/static/iwantone.png" alt="I want one" />
                           )}
                         </button>
-
-                        <img
-                          src="/static/free-shipping.png"
-                          alt="Free shipping - world wide"
-                        />
-                        <a href="mailto:veliandamos@gmail.com">
-                          <img
-                            src="/static/mail.png"
-                            alt="If you have any questions, mail us"
-                          />
-                        </a>
                       </Form>
                     )}
                   </Formik>
@@ -255,6 +244,32 @@ const Home = () => (
               </ApolloConsumer>
             </div>
           )}
+          <img
+            src="/static/free-shipping.png"
+            alt="Free shipping - world wide"
+          />
+          <img
+            className={css.paymentIcons}
+            src="/static/bitcoin.png"
+            alt="bitcoin"
+          />
+          <img
+            className={css.paymentIcons}
+            src="/static/litecoin-ether.png"
+            alt="litecoin and ether"
+          />
+          <img
+            className={css.paymentIcons}
+            src="/static/paypal_cc.png"
+            alt="CC payment methods"
+          />
+
+          <a href="mailto:veliandamos@gmail.com">
+            <img
+              src="/static/mail.png"
+              alt="If you have any questions, mail us"
+            />
+          </a>
 
           <h2>Gallery</h2>
           <a

@@ -137,6 +137,10 @@ h1 {
   margin-bottom: 2em;
 }
 
+.paymentIcons {
+  height: 70px;
+}
+
 .paymentOption label {
   width: 33%;
   display: inline-block;
