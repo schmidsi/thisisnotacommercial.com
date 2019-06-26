@@ -26,6 +26,11 @@
   display: inline-block;
 }
 
+.logoOrder {
+  display: inline-block;
+  height: 150px;
+}
+
 .titleHolder {
   display: inline-block;
   width: 65%;

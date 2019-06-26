@@ -16,7 +16,7 @@ import PaintNumber from '../components/PaintNumber';
 
 import css from './main.css';
 
-const isDev = false; //process.env.NODE_ENV !== 'production';
+const isDev = process.env.NODE_ENV !== 'production';
 
 const Home = () => (
   <Query query={CurrentPrice} pollInterval={60000}>
