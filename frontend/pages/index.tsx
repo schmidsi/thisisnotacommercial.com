@@ -262,6 +262,13 @@ const Home = () => (
                           />
                         </label>
 
+                        {Object.keys(errors).length > 0 ? (
+                          <div className={css.finalError}>
+                            Please fix the errors before proceeding.{' '}
+                          </div>
+                        ) : (
+                          <div />
+                        )}
                         <button
                           type="submit"
                           disabled={isSubmitting}
