@@ -1,5 +1,6 @@
 import React from 'react';
 import Router from 'next/router';
+import classNames from 'classnames';
 import { Query, ApolloConsumer } from 'react-apollo';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as yup from 'yup';
@@ -15,7 +16,7 @@ import PaintNumber from '../components/PaintNumber';
 
 import css from './main.css';
 
-const isDev = process.env.NODE_ENV !== 'production';
+const isDev = false; //process.env.NODE_ENV !== 'production';
 
 const Home = () => (
   <Query query={CurrentPrice} pollInterval={60000}>
@@ -88,12 +89,20 @@ const Home = () => (
                       message: isDev ? 'Test Message' : ''
                     }}
                     validationSchema={yup.object().shape({
-                      firstName: yup.string().required(),
-                      lastName: yup.string().required(),
-                      addressLine: yup.string().required(),
-                      postalCode: yup.string().required(),
-                      countryCode: yup.string().required(),
-                      city: yup.string().required(),
+                      firstName: yup
+                        .string()
+                        .required('First name is required.'),
+                      lastName: yup.string().required('Last name is required.'),
+                      addressLine: yup
+                        .string()
+                        .required('Address is required.'),
+                      postalCode: yup
+                        .string()
+                        .required('Post code is required.'),
+                      countryCode: yup
+                        .string()
+                        .required('Country code is required.'),
+                      city: yup.string().required('City is required.'),
                       emailAddress: yup
                         .string()
                         .email('Invalid email address')
@@ -135,11 +144,15 @@ const Home = () => (
                       });
                     }}
                   >
-                    {({ isSubmitting }) => (
+                    {({ isSubmitting, errors }) => (
                       <Form>
                         <label>
                           <h3 className={css.label}>First Name</h3>
-                          <ErrorMessage name="firstName" component="div" />
+                          <ErrorMessage
+                            className={css.labelError}
+                            name="firstName"
+                            component="div"
+                          />
                           <Field
                             type="string"
                             name="firstName"
@@ -150,7 +163,11 @@ const Home = () => (
 
                         <label>
                           <h3 className={css.label}>Last Name</h3>
-                          <ErrorMessage name="lastName" component="div" />
+                          <ErrorMessage
+                            className={css.labelError}
+                            name="lastName"
+                            component="div"
+                          />
                           <Field
                             type="string"
                             name="lastName"
@@ -161,7 +178,11 @@ const Home = () => (
 
                         <label>
                           <h3 className={css.label}>Address</h3>
-                          <ErrorMessage name="addressLine" component="div" />
+                          <ErrorMessage
+                            className={css.labelError}
+                            name="addressLine"
+                            component="div"
+                          />
                           <Field
                             type="string"
                             name="addressLine"
@@ -172,7 +193,11 @@ const Home = () => (
 
                         <label>
                           <h3 className={css.label}>Country Code</h3>
-                          <ErrorMessage name="countryCode" component="div" />
+                          <ErrorMessage
+                            className={css.labelError}
+                            name="countryCode"
+                            component="div"
+                          />
                           <Field
                             type="string"
                             name="countryCode"
@@ -183,7 +208,11 @@ const Home = () => (
 
                         <label>
                           <h3 className={css.label}>Postal Code</h3>
-                          <ErrorMessage name="postalCode" component="div" />
+                          <ErrorMessage
+                            className={css.labelError}
+                            name="postalCode"
+                            component="div"
+                          />
                           <Field
                             type="string"
                             name="postalCode"
@@ -194,7 +223,11 @@ const Home = () => (
 
                         <label>
                           <h3 className={css.label}>City</h3>
-                          <ErrorMessage name="city" component="div" />
+                          <ErrorMessage
+                            className={css.labelError}
+                            name="city"
+                            component="div"
+                          />
                           <Field
                             type="string"
                             name="city"
@@ -205,7 +238,11 @@ const Home = () => (
 
                         <label>
                           <h3 className={css.label}>Email</h3>
-                          <ErrorMessage name="emailAddress" component="div" />
+                          <ErrorMessage
+                            className={css.labelError}
+                            name="emailAddress"
+                            component="div"
+                          />
                           <Field
                             type="email"
                             name="emailAddress"
