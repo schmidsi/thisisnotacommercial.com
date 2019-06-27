@@ -1,12 +1,12 @@
 import React from 'react';
 import Router from 'next/router';
-import classNames from 'classnames';
 import { Query, ApolloConsumer } from 'react-apollo';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as yup from 'yup';
 import * as R from 'ramda';
 
-import InstagramStream from '../components/InstagramStream';
+import PaymentIcons from '../components/PaymentIcons';
+import Gallery from '../components/Gallery';
 
 import CurrentPrice from '../queries/CurrentPrice.gql';
 import LoginAsGuest from '../queries/LoginAsGuest.gql';
@@ -288,49 +288,9 @@ const Home = () => (
               </ApolloConsumer>
             </div>
           )}
-          <img
-            src="/static/free-shipping.png"
-            alt="Free shipping - world wide"
-          />
-          <img
-            className={css.paymentIcons}
-            src="/static/bitcoin.png"
-            alt="bitcoin"
-          />
-          <img
-            className={css.paymentIcons}
-            src="/static/litecoin-ether.png"
-            alt="litecoin and ether"
-          />
-          <img
-            className={css.paymentIcons}
-            src="/static/paypal_cc.png"
-            alt="CC payment methods"
-          />
 
-          <a href="mailto:veliandamos@gmail.com">
-            <img
-              src="/static/mail.png"
-              alt="If you have any questions, mail us"
-            />
-          </a>
-
-          <h2>Gallery</h2>
-          <a
-            href="https://www.instagram.com/this_is_not_a_commercial/"
-            className={css.followUs}
-          >
-            <img src="/static/instagram.png" />
-            <span>Follow us on Instagram: @this_is_not_a_commercial</span>
-          </a>
-          <InstagramStream />
-          <a
-            href="https://www.instagram.com/this_is_not_a_commercial/"
-            className={css.followUs}
-          >
-            <img src="/static/instagram.png" />
-            <span>Follow us on Instagram: @this_is_not_a_commercial</span>
-          </a>
+          <PaymentIcons />
+          <Gallery />
         </div>
       );
     }}

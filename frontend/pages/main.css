@@ -117,19 +117,6 @@ h1 {
   cursor: pointer;
 }
 
-.followUs {
-  text-decoration: none;
-}
-
-.followUs img {
-  height: 1.5em;
-  margin-right: 1em;
-}
-
-.followUs span {
-  font-weight: bold;
-}
-
 .dl dt,
 .dl dd {
   display: inline-block;
@@ -153,10 +140,6 @@ h1 {
 .paymentOption {
   display: flex;
   margin-bottom: 2em;
-}
-
-.paymentIcons {
-  height: 70px;
 }
 
 .paymentOption label {
