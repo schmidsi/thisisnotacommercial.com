@@ -10,6 +10,13 @@
   max-width: 100%;
 }
 
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+}
+
 .container {
   max-width: 600px;
   margin: 0 auto;
@@ -34,6 +41,11 @@
 .titleHolder {
   display: inline-block;
   width: 65%;
+}
+
+.paintedLabel {
+  height: 60px;
+  width: 200px;
 }
 
 .priceBox {

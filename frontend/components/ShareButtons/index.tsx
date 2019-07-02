@@ -3,7 +3,7 @@ import css from './style.css';
 
 const ShareButtons = () => {
   return (
-    <div>
+    <div className={css.center}>
       <link
         href="http://netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.css"
         rel="stylesheet"

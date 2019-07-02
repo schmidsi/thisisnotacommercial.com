@@ -147,7 +147,11 @@ const Home = () => (
                     {({ isSubmitting, errors }) => (
                       <Form>
                         <label>
-                          <h3 className={css.label}>First Name</h3>
+                          <img
+                            className={css.paintedLabel}
+                            src="/static/first-name.png"
+                            alt="First Name"
+                          />
                           <ErrorMessage
                             className={css.labelError}
                             name="firstName"
@@ -162,7 +166,11 @@ const Home = () => (
                         </label>
 
                         <label>
-                          <h3 className={css.label}>Last Name</h3>
+                          <img
+                            className={css.paintedLabel}
+                            src="/static/last-name.png"
+                            alt="Last Name"
+                          />
                           <ErrorMessage
                             className={css.labelError}
                             name="lastName"
@@ -177,7 +185,11 @@ const Home = () => (
                         </label>
 
                         <label>
-                          <h3 className={css.label}>Address</h3>
+                          <img
+                            className={css.paintedLabel}
+                            src="/static/address.png"
+                            alt="Address"
+                          />
                           <ErrorMessage
                             className={css.labelError}
                             name="addressLine"
@@ -192,7 +204,11 @@ const Home = () => (
                         </label>
 
                         <label>
-                          <h3 className={css.label}>Country Code</h3>
+                          <img
+                            className={css.paintedLabel}
+                            src="/static/country-code.png"
+                            alt="Country Code"
+                          />
                           <ErrorMessage
                             className={css.labelError}
                             name="countryCode"
@@ -207,7 +223,11 @@ const Home = () => (
                         </label>
 
                         <label>
-                          <h3 className={css.label}>Postal Code</h3>
+                          <img
+                            className={css.paintedLabel}
+                            src="/static/postal-code.png"
+                            alt="Postal Code"
+                          />
                           <ErrorMessage
                             className={css.labelError}
                             name="postalCode"
@@ -222,7 +242,11 @@ const Home = () => (
                         </label>
 
                         <label>
-                          <h3 className={css.label}>City</h3>
+                          <img
+                            src="/static/city.png"
+                            alt="City"
+                            className={css.paintedLabel}
+                          />
                           <ErrorMessage
                             className={css.labelError}
                             name="city"
@@ -237,7 +261,11 @@ const Home = () => (
                         </label>
 
                         <label>
-                          <h3 className={css.label}>Email</h3>
+                          <img
+                            className={css.paintedLabel}
+                            src="/static/email.png"
+                            alt="Email"
+                          />
                           <ErrorMessage
                             className={css.labelError}
                             name="emailAddress"
@@ -252,7 +280,11 @@ const Home = () => (
                         </label>
 
                         <label>
-                          <h3 className={css.label}>Message (optional)</h3>
+                          <img
+                            className={css.paintedLabel}
+                            src="/static/message-optional.png"
+                            alt="Message (optional)"
+                          />
                           <ErrorMessage name="message" component="div" />
                           <Field
                             component="textarea"
