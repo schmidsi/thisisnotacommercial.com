@@ -198,7 +198,7 @@ const Home = () => (
                           <Field
                             type="string"
                             name="addressLine"
-                            placeholder="Kunststrasse 12"
+                            placeholder="Engelstrasse 12"
                             className={css.field}
                           />
                         </label>
@@ -236,7 +236,7 @@ const Home = () => (
                           <Field
                             type="string"
                             name="postalCode"
-                            placeholder="8001"
+                            placeholder="8004"
                             className={css.field}
                           />
                         </label>

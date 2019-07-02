@@ -127,10 +127,6 @@ const Order = () => {
                     className={css.logoOrder}
                   />
                 </div>
-                <div className={css.titleHolder}>
-                  <h1>This is not a commercial</h1>
-                  <p className={css.subtitle}>Art Project by Veli &amp; Amos</p>
-                </div>
               </header>
 
               {result.loading ? (
