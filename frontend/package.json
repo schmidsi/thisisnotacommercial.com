@@ -11,6 +11,7 @@
     "apollo-link-context": "^1.0.17",
     "braintree-web-drop-in": "^1.18.0",
     "braintree-web-drop-in-react": "^1.0.7",
+    "classnames": "^2.2.6",
     "formik": "^1.5.2",
     "graphql": "^14.2.1",
     "humanize-string": "^2.1.0",

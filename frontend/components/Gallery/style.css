@@ -1,0 +1,12 @@
+.followUs {
+  text-decoration: none;
+}
+
+.followUs img {
+  height: 1.5em;
+  margin-right: 1em;
+}
+
+.followUs span {
+  font-weight: bold;
+}

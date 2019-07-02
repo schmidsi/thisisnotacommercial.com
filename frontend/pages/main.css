@@ -26,6 +26,11 @@
   display: inline-block;
 }
 
+.logoOrder {
+  display: inline-block;
+  height: 150px;
+}
+
 .titleHolder {
   display: inline-block;
   width: 65%;
@@ -89,6 +94,19 @@ h1 {
   padding: 0.5em;
 }
 
+.labelError {
+  color: red;
+}
+
+.fieldError {
+  border-color: red;
+}
+
+.finalError {
+  color: red;
+  margin-top: 2em;
+}
+
 .button {
   margin-top: 2em;
   width: 100%;
@@ -97,19 +115,6 @@ h1 {
   font-size: 1em;
   padding: 0.5em;
   cursor: pointer;
-}
-
-.followUs {
-  text-decoration: none;
-}
-
-.followUs img {
-  height: 1.5em;
-  margin-right: 1em;
-}
-
-.followUs span {
-  font-weight: bold;
 }
 
 .dl dt,
@@ -135,10 +140,6 @@ h1 {
 .paymentOption {
   display: flex;
   margin-bottom: 2em;
-}
-
-.paymentIcons {
-  height: 70px;
 }
 
 .paymentOption label {

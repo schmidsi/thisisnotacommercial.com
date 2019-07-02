@@ -1,15 +1,17 @@
-import { Query } from "react-apollo";
+import { Query } from 'react-apollo';
 
-import CurrentOrder from "../queries/CurrentOrder.gql";
+import ShareButtons from '../components/ShareButtons/index';
+import CurrentOrder from '../queries/CurrentOrder.gql';
 
-import css from "./main.css";
+import css from './main.css';
 
 const ThankYou = () => (
   <Query query={CurrentOrder}>
     {result => (
       <div className={css.container} key="main">
         <img src="/static/titile.jpg" alt="Postcard by Veli &amp; Amos" />
-        <h1>Thank you</h1>
+        <h1>Thank you for your order!</h1>
+        <ShareButtons />
       </div>
     )}
   </Query>
