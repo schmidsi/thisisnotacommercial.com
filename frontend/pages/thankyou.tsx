@@ -9,8 +9,15 @@ const ThankYou = () => (
   <Query query={CurrentOrder}>
     {result => (
       <div className={css.container} key="main">
-        <img src="/static/titile.jpg" alt="Postcard by Veli &amp; Amos" />
-        <h1>Thank you for your order!</h1>
+        <img
+          className={css.center}
+          src="/static/thank-you.png"
+          alt="Thank you for your order!"
+        />
+        <img
+          src="/static/send-us-a-pic.png"
+          alt="Please send us a picture when you get it!"
+        />
         <ShareButtons />
       </div>
     )}
