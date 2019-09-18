@@ -43,7 +43,7 @@ const Home = () => (
             </div>
             <div className={css.titleHolder}>
               <h1>This is not a commercial</h1>
-              <p className={css.subtitle}>Art Project by Veli &amp; Amos</p>
+              <p className={css.subtitle}>Art by Veli &amp; Amos</p>
             </div>
           </header>
 
@@ -71,7 +71,7 @@ const Home = () => (
               </div>
 
               <img
-                src="/static/postcard-empty.jpg"
+                src="/static/new-postcard-empty.jpg"
                 alt="ORDER - an original painting by Veli &amp; Amos. Guest artists to be announced"
               />
 
