@@ -1,5 +1,6 @@
 import React from 'react';
 import Router from 'next/router';
+import Link from 'next/link';
 import { Query, ApolloConsumer } from 'react-apollo';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as yup from 'yup';
@@ -45,6 +46,19 @@ const Home = () => (
               <h1>This is not a commercial</h1>
               <p className={css.subtitle}>Art by Veli &amp; Amos</p>
             </div>
+            <Link href="/page">
+              <a className={css.pageOffer}>
+                <div className={css.pageOfferLead}>Limited time offer</div>
+                <div className={css.pageOfferText}>
+                  Buy a whole page in our upcoming book on edition patrick frey
+                  and put in whatever you want :D (No dick-pics though).
+                </div>
+                <div className={css.pageOfferCTA}>
+                  Click here to get it now for only €{100}. Price goes up 4%
+                  with every sale 🤑😱.
+                </div>
+              </a>
+            </Link>
           </header>
 
           {result.loading ? (
