@@ -2,7 +2,7 @@ import {
   ProductPricingDirector,
   ProductPricingAdapter
 } from 'meteor/unchained:core-pricing';
-import { Orders } from 'meteor/unchained:core-orders';
+import soldItems from './soldItems';
 
 const compoundInterest = (initialValue, interest, iterations) =>
   initialValue * (1 + interest) ** iterations;
@@ -35,9 +35,7 @@ class CompoundInterestPrice extends ProductPricingAdapter {
       page: 0.04
     };
 
-    const confirmedOrders = Orders.find({
-      confirmed: { $exists: true }
-    }).count();
+    const confirmedOrders = soldItems(slug);
 
     const nextPrice = compoundInterest(
       price.amount,
@@ -58,3 +56,6 @@ class CompoundInterestPrice extends ProductPricingAdapter {
 }
 
 ProductPricingDirector.registerAdapter(CompoundInterestPrice);
+
+// eslint-disable-next-line import/prefer-default-export
+export { soldItems };

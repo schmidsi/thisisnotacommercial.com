@@ -1,17 +1,18 @@
-import * as R from "ramda";
+import * as R from 'ramda';
 
 const PaintNumber = ({
   children,
   euro = false,
   style = {},
-  className = ""
+  className = ''
 }) => {
-  const chars = children.toString().split("");
+  const chars = children.toString().split('');
 
   return (
-    <div style={style} className={"root " + className}>
-      {chars.map(char => (
-        <div key={char}
+    <div style={style} className={'root ' + className}>
+      {chars.map((char, index) => (
+        <div
+          key={`${char}-${index}`}
           className="img"
           style={{ backgroundImage: `url(/static/chars/${char}.png)` }}
         />
@@ -22,7 +23,7 @@ const PaintNumber = ({
           style={{ backgroundImage: `url(/static/chars/eur.png)` }}
         />
       ) : (
-        ""
+        ''
       )}
       <style jsx>{`
         .root {
