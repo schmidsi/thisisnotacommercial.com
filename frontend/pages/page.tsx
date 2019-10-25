@@ -35,27 +35,18 @@ const Home = () => (
       return (
         <div className={css.container}>
           <header className={css.header}>
-            <div className={css.logoHolder}>
-              <img
-                src="/static/logo.jpg"
-                alt="This is not a commercial logo"
-                className={css.logo}
-              />
-            </div>
-            <div className={css.titleHolder}>
-              <h1>This is not a commercial</h1>
-              <p className={css.subtitle}>Art by Veli &amp; Amos</p>
-            </div>
-            <Link href="/page">
-              <a className={css.pageOffer}>
-                <div className={css.pageOfferLead}>Limited time offer</div>
-                <div className={css.pageOfferText}>
-                  Buy a whole page in our upcoming book on edition patrick frey
-                  and put in whatever you want :D (No dick-pics though).
+            <Link href="/">
+              <a>
+                <div className={css.logoHolder}>
+                  <img
+                    src="/static/logo.jpg"
+                    alt="This is not a commercial logo"
+                    className={css.logo}
+                  />
                 </div>
-                <div className={css.pageOfferCTA}>
-                  Click here to get it now for only €{100}. Price goes up 4%
-                  with every sale 🤑😱.
+                <div className={css.titleHolder}>
+                  <h1>This is not a commercial</h1>
+                  <p className={css.subtitle}>Art by Veli &amp; Amos</p>
                 </div>
               </a>
             </Link>
@@ -65,16 +56,23 @@ const Home = () => (
             <img src="/static/spinner.gif" />
           ) : (
             <div>
-              <div className={css.priceBox}>
-                <div>
-                  <img src="/static/price-up.png" />
+              <div className={css.pageOffer}>
+                <div className={css.pageOfferLead}>Limited time offer</div>
+                <div className={css.pageOfferText}>
+                  Buy a whole page in our upcoming book on edition patrick frey
+                  and put in whatever you want :D (No dick-pics though).
                 </div>
+                <div className={css.pageOfferCTA}>
+                  Price goes up 4% with every sale 🤑😱.
+                </div>
+              </div>
 
+              <div className={css.priceBox}>
+                No: <br />
+                <span>
+                  <PaintNumber>{soldItems + 1}</PaintNumber>
+                </span>
                 <div className={css.priceText}>
-                  No: <br />
-                  <span>
-                    <PaintNumber>{soldItems + 1}</PaintNumber>
-                  </span>
                   <br />
                   Current price: <br />
                   <span>
@@ -83,11 +81,6 @@ const Home = () => (
                   <br />
                 </div>
               </div>
-
-              <img
-                src="/static/new-postcard-empty.jpg"
-                alt="ORDER - an original painting by Veli &amp; Amos. Guest artists to be announced"
-              />
 
               <ApolloConsumer>
                 {client => (
@@ -334,12 +327,8 @@ const Home = () => (
               </ApolloConsumer>
             </div>
           )}
-          <img
-            src="/static/free-shipping.png"
-            alt="Free shipping - world wide"
-          />
+
           <PaymentIcons />
-          <Gallery />
         </div>
       );
     }}

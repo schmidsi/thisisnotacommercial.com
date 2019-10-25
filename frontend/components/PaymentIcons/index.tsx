@@ -5,7 +5,6 @@ import css from './style.css';
 const PaymentIcons = () => {
   return (
     <div>
-      <img src="/static/free-shipping.png" alt="Free shipping - world wide" />
       <img
         className={css.paymentIcons}
         src="/static/bitcoin.png"
