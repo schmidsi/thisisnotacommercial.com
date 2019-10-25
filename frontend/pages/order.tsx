@@ -53,6 +53,11 @@ const Order = () => {
             emailAddress: R.pathOr('', ['contact', 'emailAddress'], cart),
             message: R.pathOr('', ['meta', 'message'], cart),
             currency: R.pathOr('', ['total', 'currency'], cart),
+            article: R.pathOr(
+              '',
+              ['items', 0, 'product', 'texts', 'title'],
+              cart
+            ),
             total: (R.pathOr('', ['total', 'amount'], cart) / 100).toFixed(2)
           };
 
