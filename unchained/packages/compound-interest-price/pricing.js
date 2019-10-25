@@ -28,11 +28,22 @@ class CompoundInterestPrice extends ProductPricingAdapter {
     const { product, country } = this.context;
     const price = product.price({ country });
 
+    const slug = product.slugs[0];
+
+    const slugIncreaseMap = {
+      postcard: 0.01,
+      page: 0.04
+    };
+
     const confirmedOrders = Orders.find({
       confirmed: { $exists: true }
     }).count();
 
-    const nextPrice = compoundInterest(price.amount, 0.01, confirmedOrders);
+    const nextPrice = compoundInterest(
+      price.amount,
+      slugIncreaseMap[slug],
+      confirmedOrders
+    );
     const premium = getRoundedPremium(price.amount, nextPrice);
 
     this.result.addItem({

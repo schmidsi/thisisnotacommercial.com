@@ -1,7 +1,7 @@
 export default [
   /* GraphQL */ `
     type Query {
-      soldItems: Int
+      soldItems(slug: String!): Int
 
       """
       Currently logged in user

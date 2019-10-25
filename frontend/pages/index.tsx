@@ -21,16 +21,22 @@ const isDev = process.env.NODE_ENV !== 'production';
 
 const Home = () => (
   <Query query={CurrentPrice} pollInterval={60000}>
-    {(result: any) => {
-      const price = R.pathOr(
+    {({ data, loading }: any) => {
+      const postcardPrice = R.pathOr(
         0,
-        ['data', 'product', 'simulatedPrice', 'price', 'amount'],
-        result
+        ['postcard', 'simulatedPrice', 'price', 'amount'],
+        data
+      );
+      const pagePrice = R.pathOr(
+        0,
+        ['page', 'simulatedPrice', 'price', 'amount'],
+        data
       );
 
-      const soldItems = R.pathOr(0, ['data', 'soldItems'], result);
+      const postcardsSold = R.pathOr(0, ['postcardsSold'], data);
+      const pagesSold = R.pathOr(0, ['pagesSold'], data);
 
-      const productId = R.path(['data', 'product', '_id'], result);
+      const postcardProductId = R.path(['postcard', '_id'], data);
 
       return (
         <div className={css.container}>
@@ -51,17 +57,18 @@ const Home = () => (
                 <div className={css.pageOfferLead}>Limited time offer</div>
                 <div className={css.pageOfferText}>
                   Buy a whole page in our upcoming book on edition patrick frey
-                  and put in whatever you want :D (No dick-pics though).
+                  and put in whatever you want :p.
                 </div>
                 <div className={css.pageOfferCTA}>
-                  Click here to get it now for only €{100}. Price goes up 4%
-                  with every sale 🤑😱.
+                  Click here to get it now for only €{pagePrice / 100}. Price
+                  goes up 4% with every sale 🤑. {pagesSold} are already sold 😱
+                  #FOMO.
                 </div>
               </a>
             </Link>
           </header>
 
-          {result.loading ? (
+          {loading ? (
             <img src="/static/spinner.gif" />
           ) : (
             <div>
@@ -73,12 +80,12 @@ const Home = () => (
                 <div className={css.priceText}>
                   No: <br />
                   <span>
-                    <PaintNumber>{soldItems + 1}</PaintNumber>
+                    <PaintNumber>{postcardsSold + 1}</PaintNumber>
                   </span>
                   <br />
                   Current price: <br />
                   <span>
-                    <PaintNumber euro>{price / 100}</PaintNumber>
+                    <PaintNumber euro>{postcardPrice / 100}</PaintNumber>
                   </span>
                   <br />
                 </div>
@@ -139,7 +146,7 @@ const Home = () => (
 
                       await client.mutate({
                         mutation: AddCartProduct,
-                        variables: { productId }
+                        variables: { productId: postcardProductId }
                       });
 
                       await client.mutate({

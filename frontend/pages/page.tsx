@@ -7,7 +7,6 @@ import * as yup from 'yup';
 import * as R from 'ramda';
 
 import PaymentIcons from '../components/PaymentIcons';
-import Gallery from '../components/Gallery';
 
 import CurrentPrice from '../queries/CurrentPrice.gql';
 import LoginAsGuest from '../queries/LoginAsGuest.gql';
@@ -22,15 +21,16 @@ const isDev = process.env.NODE_ENV !== 'production';
 const Home = () => (
   <Query query={CurrentPrice} pollInterval={60000}>
     {(result: any) => {
-      const price = R.pathOr(
+      const { data } = result;
+
+      const pagePrice = R.pathOr(
         0,
-        ['data', 'product', 'simulatedPrice', 'price', 'amount'],
-        result
+        ['page', 'simulatedPrice', 'price', 'amount'],
+        data
       );
 
-      const soldItems = R.pathOr(0, ['data', 'soldItems'], result);
-
-      const productId = R.path(['data', 'product', '_id'], result);
+      const pagesSold = R.pathOr(0, ['pagesSold'], data);
+      const pageProductId = R.path(['page', '_id'], data);
 
       return (
         <div className={css.container}>
@@ -60,7 +60,7 @@ const Home = () => (
                 <div className={css.pageOfferLead}>Limited time offer</div>
                 <div className={css.pageOfferText}>
                   Buy a whole page in our upcoming book on edition patrick frey
-                  and put in whatever you want :D (No dick-pics though).
+                  and put in whatever you want :D
                 </div>
                 <div className={css.pageOfferCTA}>
                   Price goes up 4% with every sale 🤑😱.
@@ -70,13 +70,13 @@ const Home = () => (
               <div className={css.priceBox}>
                 No: <br />
                 <span>
-                  <PaintNumber>{soldItems + 1}</PaintNumber>
+                  <PaintNumber>{pagesSold + 1}</PaintNumber>
                 </span>
                 <div className={css.priceText}>
                   <br />
                   Current price: <br />
                   <span>
-                    <PaintNumber euro>{price / 100}</PaintNumber>
+                    <PaintNumber euro>{pagePrice / 100}</PaintNumber>
                   </span>
                   <br />
                 </div>
@@ -132,7 +132,7 @@ const Home = () => (
 
                       await client.mutate({
                         mutation: AddCartProduct,
-                        variables: { productId }
+                        variables: { productId: pageProductId }
                       });
 
                       await client.mutate({

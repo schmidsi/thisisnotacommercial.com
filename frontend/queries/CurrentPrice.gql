@@ -1,6 +1,28 @@
 query CurrentPrice {
-  soldItems
-  product(slug: "postcard") {
+  postcardsSold: soldItems(slug: "postcard")
+  pagesSold: soldItems(slug: "page")
+  postcard: product(slug: "postcard") {
+    _id
+    texts {
+      title
+      slug
+    }
+    ... on SimpleProduct {
+      simulatedPrice {
+        price {
+          amount
+          currency
+        }
+      }
+      catalogPrice {
+        price {
+          amount
+          currency
+        }
+      }
+    }
+  }
+  page: product(slug: "page") {
     _id
     texts {
       title
