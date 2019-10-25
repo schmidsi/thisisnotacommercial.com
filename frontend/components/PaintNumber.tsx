@@ -11,7 +11,7 @@ const PaintNumber = ({
   return (
     <div style={style} className={"root " + className}>
       {chars.map(char => (
-        <div
+        <div key={char}
           className="img"
           style={{ backgroundImage: `url(/static/chars/${char}.png)` }}
         />

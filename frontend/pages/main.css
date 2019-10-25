@@ -105,7 +105,7 @@ h1 {
   border: 1px solid black;
   font-size: 1.2em;
   padding: 0.5em;
-  font-family: 'Courier New', Courier, monospace
+  font-family: 'Courier New', Courier, monospace;
 }
 
 .labelError {
@@ -171,4 +171,11 @@ h1 {
   .paymentOption label {
     width: 100%;
   }
+}
+
+.unchained {
+  position: fixed;
+  width: 100px;
+  bottom: 0;
+  right: 10px;
 }

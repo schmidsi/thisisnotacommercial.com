@@ -14,8 +14,8 @@
 - [x] Increasing price
 - [x] Instagram Stream
 - [ ] Paypal
-- [ ] Coinbase
-- [ ] Styling
+- [x] Coinbase
+- [x] Styling
 - [ ] Change order
 - [ ] Stripe
 - [ ] Login through URL (Emailing --> To order confirmation page)

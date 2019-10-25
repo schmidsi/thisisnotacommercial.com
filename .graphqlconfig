@@ -1,0 +1,13 @@
+{
+  "projects": {
+    "thisisnotacommercial.com": {
+      "schemaPath": "schema.graphql",
+      "extensions": {
+        "endpoints": {
+          "dev": "http://localhost:4010/graphql",
+          "prod": "https://unchained.thisisnotacommercial.com/graphql"
+        }
+      }
+    }
+  }
+}

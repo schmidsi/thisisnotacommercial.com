@@ -1,18 +1,20 @@
-import App, { Container } from "next/app";
-import Head from "next/head";
-import React from "react";
-import { ApolloProvider } from "react-apollo";
-import Router from "next/router";
-import * as Sentry from "@sentry/browser";
+import App, { Container } from 'next/app';
+import Head from 'next/head';
+import React from 'react';
+import { ApolloProvider } from 'react-apollo';
+import Router from 'next/router';
+import * as Sentry from '@sentry/browser';
 
-import * as gtag from "../lib/gtag";
-import withApolloClient from "../lib/withApolloClient";
+import * as gtag from '../lib/gtag';
+import withApolloClient from '../lib/withApolloClient';
+
+import css from './main.css';
 
 Sentry.init({
-  dsn: "https://7ff1270109f14669bfe2edbec0529457@sentry.io/1477328"
+  dsn: 'https://7ff1270109f14669bfe2edbec0529457@sentry.io/1477328'
 });
 
-Router.events.on("routeChangeComplete", url => gtag.pageview(url));
+Router.events.on('routeChangeComplete', url => gtag.pageview(url));
 
 class MyApp extends App {
   render() {
@@ -134,6 +136,16 @@ class MyApp extends App {
         <Container>
           <ApolloProvider client={apolloClient}>
             <Component {...pageProps} />
+            <a
+              href="https://unchained.shop"
+              target="_blank"
+              className={css.unchained}
+            >
+              <img
+                src="/static/powered-by-unchained.svg"
+                alt="Powered by unchained.shop"
+              />
+            </a>
           </ApolloProvider>
         </Container>
       </>
