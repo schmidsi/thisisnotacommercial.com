@@ -144,9 +144,11 @@ h1 {
 
 .dl dd {
   margin: 0;
+  max-width: calc(100% - 9em);
 }
 
 .dl div {
+  display: flex;
   border-bottom: 1px solid lightgrey;
   margin-bottom: 0.5em;
 }

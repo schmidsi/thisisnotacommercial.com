@@ -61,6 +61,8 @@ const Order = () => {
             total: (R.pathOr('', ['total', 'amount'], cart) / 100).toFixed(2)
           };
 
+          const image = R.path(['documents', 0], cart);
+
           const supportedDeliveryProviders = (
             cart.supportedDeliveryProviders || []
           ).map(provider => ({
@@ -144,6 +146,14 @@ const Order = () => {
                   </h2>
                   <h2>Your order:</h2>
                   <dl className={css.dl}>
+                    {image && (
+                      <div>
+                        <dt>Image:</dt>
+                        <dd>
+                          <img src={image.url} />
+                        </dd>
+                      </div>
+                    )}
                     {R.toPairs(order).map(([name, value]) => (
                       <Fragment key={`${name}-${value}`}>
                         <div>
