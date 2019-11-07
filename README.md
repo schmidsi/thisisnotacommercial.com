@@ -26,3 +26,5 @@
 - Control Panel & Frontend on now.sh
 
 Check [package.json#scripts](./package.json) for deployment scripts
+
+Irgendöppis!
