@@ -24,6 +24,10 @@ class MyApp extends App {
         <Head>
           <title>Postcard by Veli &amp; Amos: Hand-painted art piece</title>
           <meta
+            name="generator"
+            content="Unchained Engine - https://unchained.shop/"
+          />
+          <meta
             name="viewport"
             content="initial-scale=1.0, width=device-width"
           />

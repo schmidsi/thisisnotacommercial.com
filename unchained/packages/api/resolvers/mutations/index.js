@@ -40,6 +40,7 @@ import addProductAssignment from './addProductAssignment';
 import removeProductAssignment from './removeProductAssignment';
 import createCart from './createCart';
 import addCartProduct from './addCartProduct';
+import addCartProductAttachment from './addCartProductAttachment';
 import addCartDiscount from './addCartDiscount';
 import addCartQuotation from './addCartQuotation';
 import updateCart from './updateCart';
@@ -155,6 +156,7 @@ export default {
 
   createCart: acl(actions.createCart)(createCart),
   addCartProduct: acl(actions.updateCart)(addCartProduct),
+  addCartProductAttachment: acl(actions.updateCart)(addCartProductAttachment),
   addCartDiscount: acl(actions.updateCart)(addCartDiscount),
   addCartQuotation: acl(actions.updateCart)(addCartQuotation),
   updateCart: acl(actions.updateCart)(updateCart),

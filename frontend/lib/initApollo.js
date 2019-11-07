@@ -3,11 +3,11 @@ import {
   InMemoryCache,
   HttpLink,
   NormalizedCacheObject
-} from "apollo-boost";
-import { setContext } from "apollo-link-context";
-import { createHttpLink } from "apollo-link-http";
-import fetch from "isomorphic-unfetch";
-import getConfig from "next/config";
+} from 'apollo-boost';
+import { setContext } from 'apollo-link-context';
+import { createUploadLink } from 'apollo-upload-client';
+import fetch from 'isomorphic-unfetch';
+import getConfig from 'next/config';
 
 let apolloClient = null;
 
@@ -17,18 +17,18 @@ if (!process.browser) {
 }
 
 function create(initialState) {
-  const httpLink = createHttpLink({
-    uri: process.env.GRAPHQL_ENDPOINT || "http://localhost:4010/graphql",
-    credentials: "same-origin"
+  const httpLink = createUploadLink({
+    uri: process.env.GRAPHQL_ENDPOINT || 'http://localhost:4010/graphql',
+    credentials: 'same-origin'
   });
 
   const authLink = setContext((_, { headers }) => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem('token');
 
     return {
       headers: {
         ...headers,
-        authorization: token ? `Bearer ${token}` : ""
+        authorization: token ? `Bearer ${token}` : ''
       }
     };
   });

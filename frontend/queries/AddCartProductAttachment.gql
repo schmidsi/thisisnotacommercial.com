@@ -1,0 +1,7 @@
+mutation AddCartProductAttachment($productId: ID!, $attachment: Upload!) {
+  addCartProductAttachment(productId: $productId, attachment: $attachment) {
+    total {
+      amount
+    }
+  }
+}
