@@ -112,7 +112,7 @@ const Home = () => {
                         countryCode: 'CH',
                         city: isDev ? 'Zürich' : '',
                         emailAddress: isDev ? 'asdf@asdf.ch' : '',
-                        message: isDev ? 'Test Message' : ''
+                        confirm: false
                       }}
                       validationSchema={yup.object().shape({
                         firstName: yup
@@ -135,7 +135,13 @@ const Home = () => {
                           .string()
                           .email('Invalid email address')
                           .required('Please provide an email address'),
-                        message: yup.string()
+                        confirm: yup
+                          .bool()
+                          .test(
+                            'is-true',
+                            'Must agree to terms to continue',
+                            value => value === true
+                          )
                       })}
                       onSubmit={async (values, { setSubmitting }) => {
                         const loginAsGuestResult = await client.mutate({
@@ -330,6 +336,26 @@ const Home = () => {
                               <Uploader setFile={setFile} />
                               <img src={file && URL.createObjectURL(file)} />
                             </div>
+                          </label>
+
+                          <label
+                            className={css.field}
+                            style={{ marginTop: 20 }}
+                          >
+                            <p>
+                              <Field
+                                type="checkbox"
+                                name="confirm"
+                                style={{ fontSize: 20 }}
+                              />
+                              I hereby confirm that I have the rights for the
+                              uploaded image to be published
+                            </p>
+                            <ErrorMessage
+                              className={css.labelError}
+                              name="confirm"
+                              component="div"
+                            />
                           </label>
 
                           {Object.keys(errors).length > 0 ? (

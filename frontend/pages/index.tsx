@@ -104,6 +104,9 @@ const Home = () => {
               <p>
                 <b>And get one free copy!</b>
               </p>
+              <p>
+                <b>Dont wait to loose money!</b>
+              </p>
             </div>
             <div className={css.pageOfferCTA}>
               Click here to get it now for only €{pagePrice / 100}. Price goes
