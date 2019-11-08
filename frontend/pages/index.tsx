@@ -93,7 +93,7 @@ const Home = () => {
       </div>
 
       <Link href="/page">
-        <a className={css.pageOffer}>
+        <a className={css.pageOfferFlex}>
           <div className={css.offerLeft}>
             <div className={css.pageOfferLead}>Limited time offer</div>
             <div className={css.pageOfferText}>
@@ -146,6 +146,7 @@ const Home = () => {
               alt="ORDER - an original painting by Veli &amp; Amos. Guest artists to be announced"
             />
 
+            <h2 style={{ marginTop: 80 }}>Order your personal Postcard:</h2>
             <Formik
               initialValues={{
                 firstName: isDev ? 'Hans' : '',

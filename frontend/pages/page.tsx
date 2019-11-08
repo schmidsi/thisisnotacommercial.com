@@ -25,13 +25,15 @@ const Uploader = ({ setFile }) => {
 
   return (
     <div>
-      <input type="file" onChange={onChange} className={css.field} />
+      <input type="file" onChange={onChange} />
     </div>
   );
 };
 
 const Home = () => {
   const [file, setFile] = useState();
+
+  file && console.log(URL.createObjectURL(file));
 
   return (
     <Query query={CurrentPrice} pollInterval={60000}>
@@ -96,6 +98,8 @@ const Home = () => {
                     <br />
                   </div>
                 </div>
+
+                <h2 style={{ marginTop: 80 }}>Order your page in our book:</h2>
 
                 <ApolloConsumer>
                   {client => (
@@ -310,11 +314,22 @@ const Home = () => {
                           <label>
                             <img
                               className={css.paintedLabel}
-                              src="/static/email.png"
+                              src="/static/upload-image.png"
                               alt="Image"
                             />
-
-                            <Uploader setFile={setFile} />
+                            <div className={css.field}>
+                              <b>Format:</b> 1 Fullpage Landscape:
+                              <br />
+                              260 × 195 mm or
+                              <br />
+                              3071 × 2303 px
+                              <br />
+                              <b>Resolution:</b> 300 dpi
+                              <br />
+                              <b>File format: </b>pdf, jpg, tif, png
+                              <Uploader setFile={setFile} />
+                              <img src={file && URL.createObjectURL(file)} />
+                            </div>
                           </label>
 
                           {Object.keys(errors).length > 0 ? (
