@@ -5,7 +5,6 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import Router from 'next/router';
 import * as yup from 'yup';
 import * as R from 'ramda';
-// import DropIn from "braintree-web-drop-in-react";
 
 import CurrentOrder from '../queries/CurrentOrder.gql';
 import SetOrderPaymentProvider from '../queries/SetOrderPaymentProvider.gql';
