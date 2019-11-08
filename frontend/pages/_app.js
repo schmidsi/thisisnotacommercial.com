@@ -1,8 +1,7 @@
-import App, { Container } from 'next/app';
+import App from 'next/app';
 import Head from 'next/head';
 import React from 'react';
 import { ApolloProvider } from '@apollo/react-hooks';
-import { ApolloProvider as ApolloProviderLegacy } from 'react-apollo';
 import Router from 'next/router';
 import * as Sentry from '@sentry/browser';
 
@@ -140,23 +139,20 @@ class MyApp extends App {
           />
           <meta key="theme-color" name="theme-color" content="#ffffff" />
         </Head>
-        <Container>
-          <ApolloProviderLegacy client={apolloClient}>
-            <ApolloProvider client={apolloClient}>
-              <Component {...pageProps} />
-              <a
-                href="https://unchained.shop"
-                target="_blank"
-                className={css.unchained}
-              >
-                <img
-                  src="/static/powered-by-unchained.svg"
-                  alt="Powered by unchained.shop"
-                />
-              </a>
-            </ApolloProvider>
-          </ApolloProviderLegacy>
-        </Container>
+
+        <ApolloProvider client={apolloClient}>
+          <Component {...pageProps} />
+          <a
+            href="https://unchained.shop"
+            target="_blank"
+            className={css.unchained}
+          >
+            <img
+              src="/static/powered-by-unchained.svg"
+              alt="Powered by unchained.shop"
+            />
+          </a>
+        </ApolloProvider>
       </>
     );
   }
