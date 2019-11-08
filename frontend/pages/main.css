@@ -183,24 +183,76 @@ h1 {
 }
 
 .pageOffer {
+  position: relative;
   background-color: deeppink;
   color: white;
   text-decoration: none;
-  display: block;
   padding: 10px;
   margin-bottom: 40px;
+  margin-top: 40px;
+  display: flex;
 }
 
 .pageOfferLead {
-  font-size: 30px;
+  font-size: 40px;
   text-transform: uppercase;
 }
 
 .pageOfferText {
   margin-bottom: 10px;
+  font-size: 20px;
 }
 
 .pageOfferCTA {
   font-size: 26px;
   font-weight: bold;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  z-index: 1000;
+}
+
+.offerLeft {
+  display: flex;
+  margin-right: 10px;
+  width: 50%;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.videoHolder {
+  width: 50%;
+  padding-bottom: 50%;
+  position: relative;
+}
+
+.videoHolder iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  width: 100%;
+  height: 100%;
+}
+
+@media only screen and (max-width: 800px) {
+  .pageOffer {
+    display: block;
+  }
+
+  .offerLeft {
+    margin-right: 0;
+    width: 100%;
+  }
+
+  .videoHolder {
+    width: 100%;
+    padding-bottom: 50%;
+  }
 }

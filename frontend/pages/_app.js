@@ -1,7 +1,8 @@
 import App, { Container } from 'next/app';
 import Head from 'next/head';
 import React from 'react';
-import { ApolloProvider } from 'react-apollo';
+import { ApolloProvider } from '@apollo/react-hooks';
+import { ApolloProvider as ApolloProviderLegacy } from 'react-apollo';
 import Router from 'next/router';
 import * as Sentry from '@sentry/browser';
 
@@ -10,11 +11,13 @@ import withApolloClient from '../lib/withApolloClient';
 
 import css from './main.css';
 
-Sentry.init({
-  dsn: 'https://7ff1270109f14669bfe2edbec0529457@sentry.io/1477328'
-});
+if (process.env.NODE_ENV === 'production') {
+  Sentry.init({
+    dsn: 'https://7ff1270109f14669bfe2edbec0529457@sentry.io/1477328'
+  });
 
-Router.events.on('routeChangeComplete', url => gtag.pageview(url));
+  Router.events.on('routeChangeComplete', url => gtag.pageview(url));
+}
 
 class MyApp extends App {
   render() {
@@ -136,21 +139,27 @@ class MyApp extends App {
             content="/static/favicon/ms-icon-144x144.png"
           />
           <meta key="theme-color" name="theme-color" content="#ffffff" />
+          <link
+            href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css"
+            rel="stylesheet"
+          />
         </Head>
         <Container>
-          <ApolloProvider client={apolloClient}>
-            <Component {...pageProps} />
-            <a
-              href="https://unchained.shop"
-              target="_blank"
-              className={css.unchained}
-            >
-              <img
-                src="/static/powered-by-unchained.svg"
-                alt="Powered by unchained.shop"
-              />
-            </a>
-          </ApolloProvider>
+          <ApolloProviderLegacy client={apolloClient}>
+            <ApolloProvider client={apolloClient}>
+              <Component {...pageProps} />
+              <a
+                href="https://unchained.shop"
+                target="_blank"
+                className={css.unchained}
+              >
+                <img
+                  src="/static/powered-by-unchained.svg"
+                  alt="Powered by unchained.shop"
+                />
+              </a>
+            </ApolloProvider>
+          </ApolloProviderLegacy>
         </Container>
       </>
     );
