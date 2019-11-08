@@ -139,16 +139,12 @@ class MyApp extends App {
             content="/static/favicon/ms-icon-144x144.png"
           />
           <meta key="theme-color" name="theme-color" content="#ffffff" />
-          <link
-            href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css"
-            rel="stylesheet"
-          />
         </Head>
         <Container>
           <ApolloProviderLegacy client={apolloClient}>
             <ApolloProvider client={apolloClient}>
               <Component {...pageProps} />
-              <a
+              {/* <a
                 href="https://unchained.shop"
                 target="_blank"
                 className={css.unchained}
@@ -157,7 +153,7 @@ class MyApp extends App {
                   src="/static/powered-by-unchained.svg"
                   alt="Powered by unchained.shop"
                 />
-              </a>
+              </a> */}
             </ApolloProvider>
           </ApolloProviderLegacy>
         </Container>
