@@ -130,7 +130,7 @@ const Page = () => {
           <div className={css.pageOffer}>
             <div className={css.pageOfferLead}>Limited time offer</div>
             <div className={css.pageOfferText}>
-              Buy a whole page in our upcoming book on edition patrick frey and
+              Buy a whole page in our upcoming book by edition patrick frey and
               put in whatever you want :D
             </div>
             <div className={css.pageOfferCTA}>
