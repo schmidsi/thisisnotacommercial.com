@@ -125,9 +125,11 @@ const Home = () => {
           <div className={css.offerLeft}>
             <div className={css.pageOfferLead}>Limited time offer</div>
             <div className={css.pageOfferText}>
+              <p>Do you have something to say?</p>
               <p>
-                Rent a whole page in our upcoming book on{' '}
-                <b>Edition Patrick Frey</b> and put in whatever you want :p.
+                Buy a whole page in our upcoming book published by{' '}
+                <b>edition patrick frey</b> – put in whatever you want :D Click
+                here to get one now...
               </p>
               <p>
                 <b>And get one free copy!</b>
@@ -138,7 +140,7 @@ const Home = () => {
             </div>
             <div className={css.pageOfferCTA}>
               Click here to get it now for only €{pagePrice / 100}. Price goes
-              up 4% with every sale 🤑. {pagesSold} are already sold 😱 #FOMO.
+              up 4% with every sale 🤑. {pagesSold} are already sold 😱 #NOFOMO.
             </div>
           </div>
           <div className={css.videoHolder}>

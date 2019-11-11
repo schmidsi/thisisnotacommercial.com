@@ -320,6 +320,22 @@ const Page = () => {
               {formik.touched.confirm && formik.errors.confirm ? (
                 <div className={css.labelError}>{formik.errors.confirm}</div>
               ) : null}
+              <p className={css.small}>
+                The author(s) affirm that he/she/they is/are solely entitled to
+                dispose of the copyright in the uploaded work or has/have
+                obtained the corresponding rights. This does not include the
+                graphics and illustrations, for the reprinting of which the
+                author shall endeavor to obtain authorization to the best of
+                his/her knowledge and belief and as far as possible. The Author
+                hereby grants the Publisher for the legal term of copyright the
+                sole and exclusive rights to publish, reproduce and distribute
+                his/her work.
+                <br />
+                <br />
+                © for the uploaded works: the author(s)
+                <br />© for the upcoming book by Veli&amp;Amos This is not a
+                commercial (Spring 2020): Edition Patrick Frey
+              </p>
             </label>
 
             {Object.keys(touchedErrors).length > 0 ? (

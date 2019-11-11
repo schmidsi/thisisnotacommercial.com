@@ -142,7 +142,7 @@ class MyApp extends App {
 
         <ApolloProvider client={apolloClient}>
           <Component {...pageProps} />
-          <a
+          {/* <a
             href="https://unchained.shop"
             target="_blank"
             className={css.unchained}
@@ -151,7 +151,7 @@ class MyApp extends App {
               src="/static/powered-by-unchained.svg"
               alt="Powered by unchained.shop"
             />
-          </a>
+          </a> */}
         </ApolloProvider>
       </>
     );

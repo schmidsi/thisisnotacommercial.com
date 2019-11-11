@@ -222,7 +222,7 @@ h1 {
   left: 0;
   height: 100%;
   width: 100%;
-  z-index: 1000;
+  z-index: 10;
 }
 
 .offerLeft {
@@ -237,6 +237,7 @@ h1 {
   width: 50%;
   padding-bottom: 50%;
   position: relative;
+  z-index: 20;
 }
 
 .videoHolder iframe {
@@ -263,4 +264,9 @@ h1 {
     width: 100%;
     padding-bottom: 50%;
   }
+}
+
+.small {
+  font-size: 9px;
+  line-height: 12px;
 }
