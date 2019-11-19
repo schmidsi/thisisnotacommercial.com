@@ -21,13 +21,26 @@ import YoutubePlayer from '../components/YoutubePlayer';
 const isDev = process.env.NODE_ENV !== 'production';
 
 const Home = () => {
+  const [initial, setInitial] = useState(true);
   const [popupShown, showPopup] = useState(false);
+  const [renderPopup, setRenderPopup] = useState(true);
 
   useEffect(() => {
     if (process.browser) {
       setTimeout(() => showPopup(true), 1000);
     }
   }, []);
+
+  useEffect(() => {
+    if (!popupShown && initial) {
+      setInitial(false);
+      return;
+    }
+
+    if (!popupShown && process.browser) {
+      setTimeout(() => setRenderPopup(false), 1000);
+    }
+  }, [popupShown]);
 
   const escFunction = useCallback(event => {
     if (event.keyCode === 27) {
@@ -144,49 +157,52 @@ const Home = () => {
         </header>
       </div>
 
-      <Link href="/page">
-        <a className={css.pageOfferFlex} data-open={popupShown}>
-          <div className={css.offerLeft}>
-            <div className={css.pageOfferLead}>
-              <img src="/static/limited-time-offer.png" />
+      {renderPopup && (
+        <Link href="/page">
+          <a className={css.pageOfferFlex} data-open={popupShown}>
+            <div className={css.offerLeft}>
+              <div className={css.pageOfferLead}>
+                <img src="/static/limited-time-offer.png" />
+              </div>
+              <div className={css.pageOfferText}>
+                <p>Do you have something to say?</p>
+                <p>
+                  Buy a whole page in our upcoming book published by{' '}
+                  <b>edition patrick frey</b> – put in whatever you want :D
+                  Click here to get one now...
+                </p>
+                <p>
+                  <b>And get one free copy!</b>
+                </p>
+                <p>
+                  <b>Dont wait to loose money!</b>
+                </p>
+              </div>
+              <div className={css.pageOfferCTA}>
+                Click here to get it now for only €{pagePrice / 100}. Price goes
+                up 4% with every sale 🤑. {pagesSold} are already sold 😱
+                #NOFOMO.
+              </div>
+              <div>
+                <img src="/static/book-now.png" />
+              </div>
             </div>
-            <div className={css.pageOfferText}>
-              <p>Do you have something to say?</p>
-              <p>
-                Buy a whole page in our upcoming book published by{' '}
-                <b>edition patrick frey</b> – put in whatever you want :D Click
-                here to get one now...
-              </p>
-              <p>
-                <b>And get one free copy!</b>
-              </p>
-              <p>
-                <b>Dont wait to loose money!</b>
-              </p>
+            <div className={css.videoHolder}>
+              <YoutubePlayer />
             </div>
-            <div className={css.pageOfferCTA}>
-              Click here to get it now for only €{pagePrice / 100}. Price goes
-              up 4% with every sale 🤑. {pagesSold} are already sold 😱 #NOFOMO.
-            </div>
-            <div>
-              <img src="/static/book-now.png" />
-            </div>
-          </div>
-          <div className={css.videoHolder}>
-            <YoutubePlayer />
-          </div>
-          <div className={css.overlay}></div>
-          <input
-            type="image"
-            className={css.closeButton}
-            src="/static/jamaica-x.png"
-            onClick={event => {
-              event.preventDefault();
-              showPopup(!popupShown);
-            }}
-          />
-        </a>
-      </Link>
+            <div className={css.overlay}></div>
+            <input
+              type="image"
+              className={css.closeButton}
+              src="/static/jamaica-x.png"
+              onClick={event => {
+                event.preventDefault();
+                showPopup(!popupShown);
+              }}
+            />
+          </a>
+        </Link>
+      )}
 
       <div className={css.container}>
         {loading ? (
