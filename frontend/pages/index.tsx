@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Router from 'next/router';
 import Link from 'next/link';
 import { useQuery, useApolloClient } from '@apollo/react-hooks';
@@ -21,6 +21,14 @@ import YoutubePlayer from '../components/YoutubePlayer';
 const isDev = process.env.NODE_ENV !== 'production';
 
 const Home = () => {
+  const [popupShown, showPopup] = useState(false);
+
+  useEffect(() => {
+    if (process.browser) {
+      setTimeout(() => showPopup(true), 1000);
+    }
+  }, []);
+
   const client = useApolloClient();
   const { data, loading } = useQuery(CurrentPrice, { pollInterval: 60000 });
   const postcardPrice = R.pathOr(
@@ -121,9 +129,11 @@ const Home = () => {
       </div>
 
       <Link href="/page">
-        <a className={css.pageOfferFlex}>
+        <a className={css.pageOfferFlex} data-open={popupShown}>
           <div className={css.offerLeft}>
-            <div className={css.pageOfferLead}>Limited time offer</div>
+            <div className={css.pageOfferLead}>
+              <img src="/static/limited-time-offer.png" />
+            </div>
             <div className={css.pageOfferText}>
               <p>Do you have something to say?</p>
               <p>
@@ -142,11 +152,23 @@ const Home = () => {
               Click here to get it now for only €{pagePrice / 100}. Price goes
               up 4% with every sale 🤑. {pagesSold} are already sold 😱 #NOFOMO.
             </div>
+            <div>
+              <img src="/static/book-now.png" />
+            </div>
           </div>
           <div className={css.videoHolder}>
             <YoutubePlayer />
           </div>
-          <div className={css.overlay} />
+          <div className={css.overlay}></div>
+          <input
+            type="image"
+            className={css.closeButton}
+            src="/static/jamaica-x.png"
+            onClick={event => {
+              event.preventDefault();
+              showPopup(!popupShown);
+            }}
+          />
         </a>
       </Link>
 

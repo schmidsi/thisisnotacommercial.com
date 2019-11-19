@@ -128,7 +128,9 @@ const Page = () => {
       ) : (
         <div>
           <div className={css.pageOffer}>
-            <div className={css.pageOfferLead}>Limited time offer</div>
+            <div className={css.pageOfferLead}>
+              <img src="/static/limited-time-offer.png" />
+            </div>
             <div className={css.pageOfferText}>
               Buy a whole page in our upcoming book by edition patrick frey and
               put in whatever you want :D
