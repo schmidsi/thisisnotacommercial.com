@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Router from 'next/router';
 import Link from 'next/link';
 import { useQuery, useApolloClient } from '@apollo/react-hooks';
@@ -26,6 +26,22 @@ const Home = () => {
   useEffect(() => {
     if (process.browser) {
       setTimeout(() => showPopup(true), 1000);
+    }
+  }, []);
+
+  const escFunction = useCallback(event => {
+    if (event.keyCode === 27) {
+      showPopup(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (process.browser) {
+      document.addEventListener('keydown', escFunction, false);
+
+      return () => {
+        document.removeEventListener('keydown', escFunction, false);
+      };
     }
   }, []);
 
@@ -177,6 +193,12 @@ const Home = () => {
           <img src="/static/spinner.gif" />
         ) : (
           <div>
+            <img
+              src="/static/new-postcard-empty.jpg"
+              alt="ORDER - an original painting by Veli &amp; Amos. Guest artists to be announced"
+              style={{ marginBottom: 20 }}
+            />
+
             <div className={css.priceBox}>
               <div>
                 <img src="/static/price-up.png" />
@@ -196,12 +218,7 @@ const Home = () => {
               </div>
             </div>
 
-            <img
-              src="/static/new-postcard-empty.jpg"
-              alt="ORDER - an original painting by Veli &amp; Amos. Guest artists to be announced"
-            />
-
-            <h2 style={{ marginTop: 80 }}>Order your personal Postcard:</h2>
+            <h2 style={{ marginTop: 20 }}>Order your personal Postcard:</h2>
             <form onSubmit={formik.handleSubmit}>
               <label>
                 <img
