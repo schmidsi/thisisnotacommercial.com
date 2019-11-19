@@ -36,6 +36,7 @@ import translatedFilterTexts from './translatedFilterTexts';
 import logs from './logs';
 import shopInfo from './shopInfo';
 import soldItems from './soldItems';
+import lastPageUrl from './lastPageUrl';
 import productReview from './productReview';
 import productReviews from './productReviews';
 import quotation from './quotation';
@@ -44,6 +45,7 @@ import quotations from './quotations';
 export default {
   me,
   soldItems,
+  lastPageUrl,
   user: acl(actions.viewUser)(user),
   users: acl(actions.viewUsers)(users),
   product: acl(actions.viewProduct)(product),

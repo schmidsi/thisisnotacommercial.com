@@ -2,6 +2,7 @@ export default [
   /* GraphQL */ `
     type Query {
       soldItems(slug: String!): Int
+      lastPageUrl: String
 
       """
       Currently logged in user
