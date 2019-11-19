@@ -291,3 +291,46 @@ h1 {
   font-size: 9px;
   line-height: 12px;
 }
+
+.lastImage {
+  width: 55%;
+  padding-bottom: 74.91856678%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  position: absolute;
+  left: 45%;
+  top: 0%;
+  transform: rotate(-90deg);
+}
+
+.bookPreview {
+  width: 100%;
+  padding-bottom: 69.64656965%;
+  background-image: url(/static/book.png);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  position: relative;
+}
+
+.bookPreviewInner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+}
+
+.bookPreviewPrice {
+  composes: priceBox;
+  flex-direction: column;
+  width: 40%;
+  margin-top: 30px;
+}
+
+@media only screen and (max-width: 500px) {
+  .bookPreviewPrice {
+    display: flex;
+  }
+}

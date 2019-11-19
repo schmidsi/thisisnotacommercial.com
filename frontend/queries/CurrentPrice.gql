@@ -1,4 +1,5 @@
 query CurrentPrice {
+  lastPageUrl
   postcardsSold: soldItems(slug: "postcard")
   pagesSold: soldItems(slug: "page")
   postcard: product(slug: "postcard") {

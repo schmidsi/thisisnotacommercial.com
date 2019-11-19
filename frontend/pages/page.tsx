@@ -31,6 +31,7 @@ const Page = () => {
 
   const pagesSold = R.pathOr(0, ['pagesSold'], data);
   const pageProductId = R.path(['page', '_id'], data);
+  const lastPageUrl = R.pathOr('', ['lastPageUrl'], data);
 
   const formik = useFormik({
     initialValues: {
@@ -140,18 +141,27 @@ const Page = () => {
             </div>
           </div>
 
-          <div className={css.priceBox}>
-            No: <br />
-            <span>
-              <PaintNumber>{pagesSold + 1}</PaintNumber>
-            </span>
-            <div className={css.priceText}>
-              <br />
-              Current price: <br />
-              <span>
-                <PaintNumber euro>{pagePrice / 100}</PaintNumber>
-              </span>
-              <br />
+          <div className={css.bookPreview}>
+            <div className={css.bookPreviewInner}>
+              <div
+                style={{ backgroundImage: `url(${lastPageUrl})` }}
+                className={css.lastImage}
+              />
+
+              <div className={css.bookPreviewPrice}>
+                No: <br />
+                <span>
+                  <PaintNumber>{pagesSold + 1}</PaintNumber>
+                </span>
+                <div className={css.priceText}>
+                  <br />
+                  Current price: <br />
+                  <span>
+                    <PaintNumber euro>{pagePrice / 100}</PaintNumber>
+                  </span>
+                  <br />
+                </div>
+              </div>
             </div>
           </div>
 
