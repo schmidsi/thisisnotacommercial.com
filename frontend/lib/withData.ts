@@ -12,7 +12,7 @@ const GRAPHQL_ENDPOINT =
 
 const httpLink = new HttpLink({
   credentials: 'same-origin',
-  uri: process.env.GRAPHQL_ENDPOINT
+  uri: GRAPHQL_ENDPOINT
 });
 
 const authLink = setContext((_, { headers }) => {
