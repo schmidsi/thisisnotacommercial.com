@@ -35,9 +35,7 @@ class MyApp extends App {
           />
           <script
             async
-            src={`https://www.googletagmanager.com/gtag/js?id=${
-              gtag.GA_TRACKING_ID
-            }`}
+            src={`https://www.googletagmanager.com/gtag/js?id=${gtag.GA_TRACKING_ID}`}
           />
           <link rel="stylesheet" href="/static/coinbase-commerce-button.css" />
           <link
@@ -142,7 +140,7 @@ class MyApp extends App {
 
         <ApolloProvider client={apolloClient}>
           <Component {...pageProps} />
-          {/* <a
+          <a
             href="https://unchained.shop"
             target="_blank"
             className={css.unchained}
@@ -151,7 +149,7 @@ class MyApp extends App {
               src="/static/powered-by-unchained.svg"
               alt="Powered by unchained.shop"
             />
-          </a> */}
+          </a>
         </ApolloProvider>
       </>
     );
