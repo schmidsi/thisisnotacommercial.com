@@ -1,0 +1,16 @@
+frontend:
+  build:
+    context: ./frontend
+    dockerfile: Dockerfile
+controlpanel:
+  build:
+    context: ./controlpanel
+    dockerfile: Dockerfile
+unchained:
+  build:
+    context: ./unchained
+    dockerfile: Dockerfile
+unchaineddeployment:
+  image: buildpack-deps:curl
+  encrypted_env_file:
+    - deploy.env.encrypted

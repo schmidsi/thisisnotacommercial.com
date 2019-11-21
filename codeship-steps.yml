@@ -1,0 +1,81 @@
+- name: Tag images
+  type: serial
+  encrypted_dockercfg_path: dockercfg.encrypted
+  steps:
+    - service: frontend
+      type: push
+      image_name: "docker.pkg.github.com/unchainedshop/thisisnotacommercial.com/frontend"
+      image_tag: "{{.Branch}}-latest"
+      registry: docker.pkg.github.com
+    - service: controlpanel
+      type: push
+      image_name: "docker.pkg.github.com/unchainedshop/thisisnotacommercial.com/controlpanel"
+      image_tag: "{{.Branch}}-latest"
+      registry: docker.pkg.github.com
+    - service: unchained
+      type: push
+      image_name: "docker.pkg.github.com/unchainedshop/thisisnotacommercial.com/unchained"
+      image_tag: "{{.Branch}}-latest"
+      registry: docker.pkg.github.com
+
+- name: Tag images as latest
+  tag: develop
+  type: serial
+  encrypted_dockercfg_path: dockercfg.encrypted
+  steps:
+    - service: frontend
+      type: push
+      image_name: "docker.pkg.github.com/unchainedshop/thisisnotacommercial.com/frontend"
+      image_tag: "next"
+      registry: docker.pkg.github.com
+    - service: controlpanel
+      type: push
+      image_name: "docker.pkg.github.com/unchainedshop/thisisnotacommercial.com/controlpanel"
+      image_tag: "next"
+      registry: docker.pkg.github.com
+    - service: unchained
+      type: push
+      image_name: "docker.pkg.github.com/unchainedshop/thisisnotacommercial.com/unchained"
+      image_tag: "next"
+      registry: docker.pkg.github.com
+
+- name: Tag images as stable
+  tag: master
+  type: serial
+  encrypted_dockercfg_path: dockercfg.encrypted
+  steps:
+    - service: frontend
+      type: push
+      image_name: "docker.pkg.github.com/unchainedshop/thisisnotacommercial.com/frontend"
+      image_tag: "stable"
+      registry: docker.pkg.github.com
+    - service: controlpanel
+      type: push
+      image_name: "docker.pkg.github.com/unchainedshop/thisisnotacommercial.com/controlpanel"
+      image_tag: "stable"
+      registry: docker.pkg.github.com
+    - service: unchained
+      type: push
+      image_name: "docker.pkg.github.com/unchainedshop/thisisnotacommercial.com/unchained"
+      image_tag: "stable"
+      registry: docker.pkg.github.com
+
+- name: Deploy to Testing
+  tag: develop
+  type: parallel
+  services:
+    - unchaineddeployment
+  steps:
+    - command: /bin/sh -c "curl -X POST ${HOOK_URL_controlpanel}"
+    - command: /bin/sh -c "curl -X POST ${HOOK_URL_frontend}"
+    - command: /bin/sh -c "curl -X POST ${HOOK_URL_unchained}"
+
+- name: Deploy to Production
+  type: manual
+  tag: master
+  services:
+    - unchaineddeployment
+  steps:
+    - command: /bin/sh -c "curl -X POST ${HOOK_URL_controlpanel_PRODUCTION}"
+    - command: /bin/sh -c "curl -X POST ${HOOK_URL_frontend_PRODUCTION}"
+    - command: /bin/sh -c "curl -X POST ${HOOK_URL_unchained_PRODUCTION}"

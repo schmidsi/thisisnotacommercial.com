@@ -1,2 +1,6 @@
 node_modules
 .env
+deploy.env
+credentials.env
+codeship.aes
+dockercfg
