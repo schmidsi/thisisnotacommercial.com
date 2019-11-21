@@ -5,9 +5,9 @@ import { Factory } from 'meteor/dburles:factory';
 import configureEmailTemplates from './templates';
 
 import 'meteor/unchained:core-delivery/plugins/send-mail';
-import 'meteor/unchained:core-warehousing/plugins/google-sheets';
+// import 'meteor/unchained:core-warehousing/plugins/google-sheets';
 // import 'meteor/unchained:core-discounting/plugins/half-price';
-import 'meteor/unchained:core-documents/plugins/smallinvoice';
+// import 'meteor/unchained:core-documents/plugins/smallinvoice';
 import 'meteor/unchained:core-messaging/plugins/local-mail';
 // import 'meteor/unchained:core-payment/plugins/invoice';
 // import 'meteor/unchained:core-payment/plugins/paypal';
@@ -168,8 +168,8 @@ RavenLogger.initialize({
   client: 'https://7ff1270109f14669bfe2edbec0529457@sentry.io/1477328',
   server: 'https://7ff1270109f14669bfe2edbec0529457@sentry.io/1477328'
 }, {
-  patchGlobal: function() {
-    console.log('Bye, bye, world');
+  patchGlobal: function(a) {
+    console.error('Bye, bye, world', a);
     process.exit(1);
   }
 });
