@@ -27,7 +27,6 @@ module.exports = withCss({
     GRAPHQL_ENDPOINT: process.env.GRAPHQL_ENDPOINT,
     DEBUG: process.env.DEBUG
   },
-  target: 'serverless',
   webpack(config) {
     const newConfig = config;
     newConfig.module.rules.push({
