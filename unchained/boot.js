@@ -34,7 +34,7 @@ const initializeDatabase = () => {
   const initialTimestamps = {
     created: new Date(),
     updated: new Date()
-  }
+  };
 
   try {
     if (Users.find({ username: 'admin' }).count() > 0) {
@@ -45,7 +45,7 @@ const initializeDatabase = () => {
       roles: ['admin'],
       emails: [{ address: 'admin@localhost', verified: true }],
       guest: false,
-    ...initialTimestamps
+      ...initialTimestamps
     });
     const languages = ['en'].map((code, key) => {
       const isBase = key === 0;
@@ -133,7 +133,7 @@ const initializeDatabase = () => {
             countryCode: 'CH',
             amount: 25000,
             isTaxable: true,
-            isNetPrice: false,
+            isNetPrice: false
           }
         ]
       },
@@ -142,12 +142,12 @@ const initializeDatabase = () => {
 
     const postcardText = Factory.create('productText', {
       productId: postcardProduct._id,
-      locale: "en",
-      title: "Postcard",
-      vendor: "Veli & Amos",
-      subtitle: "",
-      slug: "Postcard",
-      description: "",
+      locale: 'en',
+      title: 'Postcard',
+      vendor: 'Veli & Amos',
+      subtitle: '',
+      slug: 'Postcard',
+      description: '',
       labels: [],
       ...initialTimestamps
     });
@@ -164,15 +164,15 @@ const initializeDatabase = () => {
   }
 };
 
-RavenLogger.initialize({
-  client: 'https://7ff1270109f14669bfe2edbec0529457@sentry.io/1477328',
-  server: 'https://7ff1270109f14669bfe2edbec0529457@sentry.io/1477328'
-}, {
-  patchGlobal: function(a) {
-    console.error('Bye, bye, world', a);
-    process.exit(1);
-  }
-});
+// RavenLogger.initialize({
+//   client: 'https://7ff1270109f14669bfe2edbec0529457@sentry.io/1477328',
+//   server: 'https://7ff1270109f14669bfe2edbec0529457@sentry.io/1477328'
+// }, {
+//   patchGlobal: function(a) {
+//     console.error('Bye, bye, world', a);
+//     process.exit(1);
+//   }
+// });
 
 Meteor.startup(() => {
   configureEmailTemplates();
