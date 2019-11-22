@@ -66,16 +66,12 @@
   services:
     - unchaineddeployment
   steps:
-    - command: /bin/sh -c "curl -X POST ${HOOK_URL_controlpanel}"
-    - command: /bin/sh -c "curl -X POST ${HOOK_URL_frontend}"
-    - command: /bin/sh -c "curl -X POST ${HOOK_URL_unchained}"
+    - command: /bin/sh -c "curl -X POST ${HOOK_URL}"
 
 - name: Deploy to Production
-  type: manual
   tag: master
+  type: parallel
   services:
     - unchaineddeployment
   steps:
-    - command: /bin/sh -c "curl -X POST ${HOOK_URL_controlpanel_PRODUCTION}"
-    - command: /bin/sh -c "curl -X POST ${HOOK_URL_frontend_PRODUCTION}"
-    - command: /bin/sh -c "curl -X POST ${HOOK_URL_unchained_PRODUCTION}"
+    - command: /bin/sh -c "curl -X POST ${HOOK_URL_PRODUCTION}"
