@@ -9,6 +9,13 @@ import { createUploadLink } from 'apollo-upload-client';
 import fetch from 'isomorphic-unfetch';
 import getConfig from 'next/config';
 
+const { publicRuntimeConfig } = getConfig();
+
+const GRAPHQL_ENDPOINT =
+  process.env.GRAPHQL_ENDPOINT ||
+  publicRuntimeConfig.GRAPHQL_ENDPOINT ||
+  'http://localhost:4010/graphql';
+
 let apolloClient = null;
 
 // Polyfill fetch() on the server (used by apollo-client)
@@ -18,7 +25,7 @@ if (!process.browser) {
 
 function create(initialState) {
   const httpLink = createUploadLink({
-    uri: process.env.GRAPHQL_ENDPOINT || 'http://localhost:4010/graphql',
+    uri: GRAPHQL_ENDPOINT,
     credentials: 'same-origin'
   });
 
