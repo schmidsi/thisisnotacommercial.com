@@ -32,7 +32,8 @@ class CompoundInterestPrice extends ProductPricingAdapter {
 
     const slugIncreaseMap = {
       postcard: 0.01,
-      page: 0.04
+      page: 0.04,
+      testpage: 0.04
     };
 
     const confirmedOrders = soldItems(slug);
