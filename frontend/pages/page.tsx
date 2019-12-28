@@ -14,6 +14,7 @@ import AddCartProductAttachment from '../queries/AddCartProductAttachment.gql';
 import UpdateCart from '../queries/UpdateCart.gql';
 
 import css from './main.css';
+import PaintNumber from '../components/PaintNumber';
 
 const isDev = process.env.NODE_ENV !== 'production';
 
@@ -23,6 +24,12 @@ const Page = () => {
   const { data, loading } = useQuery(CurrentPrice, { pollInterval: 60000 });
 
   const pageProductId = R.path(['page', '_id'], data);
+  const pagesSold = R.pathOr(0, ['pagesSold'], data);
+  const pagePrice = R.pathOr(
+    0,
+    ['page', 'simulatedPrice', 'price', 'amount'],
+    data
+  );
 
   const formik = useFormik({
     initialValues: {
@@ -120,6 +127,43 @@ const Page = () => {
       ) : (
         <div>
           <form onSubmit={formik.handleSubmit}>
+            <div className="boom">
+              <div className="holder">
+                No: <br />
+                <span>
+                  <PaintNumber>{pagesSold + 1}</PaintNumber>
+                </span>
+                <div>
+                  <br />
+                  Current price: <br />
+                  <span>
+                    <PaintNumber euro>{pagePrice / 100}</PaintNumber>
+                  </span>
+                  <br />
+                </div>
+              </div>
+
+              <style jsx>{`
+                .holder {
+                  position: absolute;
+                  top: 40%;
+                  left: 10%;
+                  font-size: 20px;
+                }
+                .holder span {
+                  font-size: 30px;
+                }
+                .boom {
+                  padding-bottom: 88.94628099%;
+                  width: 100%;
+                  background-image: url(/static/book-book.jpg);
+                  background-size: contain;
+                  background-position: center;
+                  position: relative;
+                }
+              `}</style>
+            </div>
+
             <label>
               <img
                 className={css.paintedLabel}
