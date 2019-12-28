@@ -1,7 +1,7 @@
 query CurrentPrice {
   lastPageUrl
   postcardsSold: soldItems(slug: "postcard")
-  pagesSold: soldItems(slug: "testpage")
+  pagesSold: soldItems(slug: "page")
   postcard: product(slug: "postcard") {
     _id
     texts {
@@ -23,7 +23,7 @@ query CurrentPrice {
       }
     }
   }
-  page: product(slug: "testpage") {
+  page: product(slug: "page") {
     _id
     texts {
       title
