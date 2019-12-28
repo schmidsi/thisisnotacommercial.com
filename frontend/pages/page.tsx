@@ -12,7 +12,6 @@ import CurrentPrice from '../queries/CurrentPrice.gql';
 import LoginAsGuest from '../queries/LoginAsGuest.gql';
 import AddCartProductAttachment from '../queries/AddCartProductAttachment.gql';
 import UpdateCart from '../queries/UpdateCart.gql';
-import PaintNumber from '../components/PaintNumber';
 
 import css from './main.css';
 
@@ -23,15 +22,7 @@ const Page = () => {
   const client = useApolloClient();
   const { data, loading } = useQuery(CurrentPrice, { pollInterval: 60000 });
 
-  const pagePrice = R.pathOr(
-    0,
-    ['page', 'simulatedPrice', 'price', 'amount'],
-    data
-  );
-
-  const pagesSold = R.pathOr(0, ['pagesSold'], data);
   const pageProductId = R.path(['page', '_id'], data);
-  const lastPageUrl = R.pathOr('', ['lastPageUrl'], data);
 
   const formik = useFormik({
     initialValues: {
@@ -128,45 +119,6 @@ const Page = () => {
         <img src="/static/spinner.gif" />
       ) : (
         <div>
-          <div className={css.pageOffer}>
-            <div className={css.pageOfferLead}>
-              <img src="/static/limited-time-offer.png" />
-            </div>
-            <div className={css.pageOfferText}>
-              Buy a whole page in our upcoming book by edition patrick frey and
-              put in whatever you want :D
-            </div>
-            <div className={css.pageOfferCTA}>
-              Price goes up 4% with every sale 🤑😱.
-            </div>
-          </div>
-
-          <div className={css.bookPreview}>
-            <div className={css.bookPreviewInner}>
-              <div
-                style={{ backgroundImage: `url(${lastPageUrl})` }}
-                className={css.lastImage}
-              />
-
-              <div className={css.bookPreviewPrice}>
-                No: <br />
-                <span>
-                  <PaintNumber>{pagesSold + 1}</PaintNumber>
-                </span>
-                <div className={css.priceText}>
-                  <br />
-                  Current price: <br />
-                  <span>
-                    <PaintNumber euro>{pagePrice / 100}</PaintNumber>
-                  </span>
-                  <br />
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <h2 style={{ marginTop: 80 }}>Order your page in our book:</h2>
-
           <form onSubmit={formik.handleSubmit}>
             <label>
               <img
@@ -293,7 +245,7 @@ const Page = () => {
                 alt="Image"
               />
               <div className={css.field}>
-                <b>Format:</b> 1 Fullpage Landscape:
+                <b>Format:</b> 1 fullpage:
                 <br />
                 260 × 195 mm or
                 <br />

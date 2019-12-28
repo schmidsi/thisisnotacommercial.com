@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import Router from 'next/router';
-import Link from 'next/link';
+
 import { useQuery, useApolloClient } from '@apollo/react-hooks';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
@@ -16,7 +16,7 @@ import UpdateCart from '../queries/UpdateCart.gql';
 import PaintNumber from '../components/PaintNumber';
 
 import css from './main.css';
-import YoutubePlayer from '../components/YoutubePlayer';
+import Popup from '../components/Popup';
 
 const isDev = process.env.NODE_ENV !== 'production';
 
@@ -70,6 +70,8 @@ const Home = () => {
     ['page', 'simulatedPrice', 'price', 'amount'],
     data
   );
+
+  const lastPageUrl = R.pathOr('', ['lastPageUrl'], data);
 
   const postcardsSold = R.pathOr(0, ['postcardsSold'], data);
   const pagesSold = R.pathOr(0, ['pagesSold'], data);
@@ -158,50 +160,13 @@ const Home = () => {
       </div>
 
       {renderPopup && (
-        <Link href="/page">
-          <a className={css.pageOfferFlex} data-open={popupShown}>
-            <div className={css.offerLeft}>
-              <div className={css.pageOfferLead}>
-                <img src="/static/limited-time-offer.png" />
-              </div>
-              <div className={css.pageOfferText}>
-                <p>Do you have something to say?</p>
-                <p>
-                  Buy a whole page in our upcoming book published by{' '}
-                  <b>edition patrick frey</b> – put in whatever you want :D
-                  Click here to get one now...
-                </p>
-                <p>
-                  <b>And get one free copy!</b>
-                </p>
-                <p>
-                  <b>Dont wait to loose money!</b>
-                </p>
-              </div>
-              <div className={css.pageOfferCTA}>
-                Click here to get it now for only €{pagePrice / 100}. Price goes
-                up 4% with every sale 🤑. {pagesSold} are already sold 😱
-                #NOFOMO.
-              </div>
-              <div>
-                <img src="/static/book-now.png" />
-              </div>
-            </div>
-            <div className={css.videoHolder}>
-              <YoutubePlayer />
-            </div>
-            <div className={css.overlay}></div>
-            <input
-              type="image"
-              className={css.closeButton}
-              src="/static/jamaica-x.png"
-              onClick={event => {
-                event.preventDefault();
-                showPopup(!popupShown);
-              }}
-            />
-          </a>
-        </Link>
+        <Popup
+          {...{ popupShown, pagePrice, pagesSold, lastPageUrl }}
+          close={event => {
+            event.preventDefault();
+            showPopup(!popupShown);
+          }}
+        />
       )}
 
       <div className={css.container}>
@@ -234,7 +199,6 @@ const Home = () => {
               </div>
             </div>
 
-            <h2 style={{ marginTop: 20 }}>Order your personal Postcard:</h2>
             <form onSubmit={formik.handleSubmit}>
               <label>
                 <img
