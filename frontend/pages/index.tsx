@@ -61,14 +61,17 @@ const Home = () => {
 
   const client = useApolloClient();
 
-  const { data: {
-    postcardPrice,
-    pagePrice,
-    lastPageUrl,
-    postcardsSold,
-    pagesSold,
-    postcardProductId,
-  }, loading } = useCurrentPrice();
+  const {
+    data: {
+      postcardPrice,
+      pagePrice,
+      lastPageUrl,
+      postcardsSold,
+      pagesSold,
+      postcardProductId
+    },
+    loading
+  } = useCurrentPrice();
 
   const formik = useFormik({
     initialValues: {
@@ -112,8 +115,6 @@ const Home = () => {
         variables: { productId: postcardProductId }
       });
 
-      console.log(addCartResult);
-
       if (addCartResult.errors) Sentry.captureException(addCartResult.errors);
 
       const updateCartResult = await client.mutate({
@@ -124,7 +125,8 @@ const Home = () => {
         }
       });
 
-      if (updateCartResult.errors) Sentry.captureException(updateCartResult.errors);
+      if (updateCartResult.errors)
+        Sentry.captureException(updateCartResult.errors);
 
       setSubmitting(false);
 
