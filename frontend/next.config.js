@@ -10,10 +10,9 @@ module.exports = withPlugins([css, graphql], {
     localIdentName: '[local]___[hash:base64:5]'
   },
   env: {
-    GRAPHQL_ENDPOINT: process.env.GRAPHQL_ENDPOINT,
-    STAGING: process.env.STAGING
-  },
-  publicRuntimeConfig: {
     GRAPHQL_ENDPOINT: process.env.GRAPHQL_ENDPOINT
   }
+  // publicRuntimeConfig: {
+  //   GRAPHQL_ENDPOINT: process.env.GRAPHQL_ENDPOINT
+  // }
 });

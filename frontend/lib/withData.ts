@@ -3,7 +3,7 @@ import { HttpLink } from 'apollo-link-http';
 import { setContext } from 'apollo-link-context';
 import getConfig from 'next/config';
 
-const { publicRuntimeConfig } = getConfig();
+const { publicRuntimeConfig = {} } = getConfig() || {};
 
 const GRAPHQL_ENDPOINT =
   process.env.GRAPHQL_ENDPOINT ||

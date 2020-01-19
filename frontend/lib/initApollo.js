@@ -12,7 +12,7 @@ import getConfig from 'next/config';
 import sentryErrorLink from './sentryErrorLink';
 import sentryBreadcrumbsLink from './sentryBreadcrumpsLink';
 
-const { publicRuntimeConfig } = getConfig();
+const { publicRuntimeConfig = {} } = getConfig() || {};
 
 const GRAPHQL_ENDPOINT =
   process.env.GRAPHQL_ENDPOINT ||
