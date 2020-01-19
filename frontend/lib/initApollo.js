@@ -1,5 +1,6 @@
 import {
   ApolloClient,
+  ApolloLink,
   InMemoryCache,
   HttpLink,
   NormalizedCacheObject
@@ -8,6 +9,8 @@ import { setContext } from 'apollo-link-context';
 import { createUploadLink } from 'apollo-upload-client';
 import fetch from 'isomorphic-unfetch';
 import getConfig from 'next/config';
+import sentryErrorLink from './sentryErrorLink';
+import sentryBreadcrumbsLink from './sentryBreadcrumpsLink';
 
 const { publicRuntimeConfig } = getConfig();
 
@@ -44,7 +47,14 @@ function create(initialState) {
     connectToDevTools: process.browser,
     ssrMode: !process.browser, // Disables forceFetch on the server (so queries are only run once)
     // TODO: Share GraphQL Auth-token between client and server
-    link: process.browser ? authLink.concat(httpLink) : httpLink,
+    link: process.browser
+      ? ApolloLink.from([
+          sentryErrorLink,
+          sentryBreadcrumbsLink,
+          authLink,
+          httpLink
+        ])
+      : ApolloLink.from([sentryErrorLink, sentryBreadcrumbsLink, httpLink]),
     cache: new InMemoryCache().restore(initialState || {})
   });
 }

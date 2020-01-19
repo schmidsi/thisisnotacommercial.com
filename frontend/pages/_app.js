@@ -10,11 +10,12 @@ import withApolloClient from '../lib/withApolloClient';
 
 import css from './main.css';
 
-if (process.env.NODE_ENV === 'production') {
-  Sentry.init({
-    dsn: 'https://7ff1270109f14669bfe2edbec0529457@sentry.io/1477328'
-  });
+Sentry.init({
+  dsn: 'https://7ff1270109f14669bfe2edbec0529457@sentry.io/1477328',
+  environment: process.env.NODE_ENV,
+});
 
+if (process.env.NODE_ENV === 'production') {
   Router.events.on('routeChangeComplete', url => gtag.pageview(url));
 }
 
