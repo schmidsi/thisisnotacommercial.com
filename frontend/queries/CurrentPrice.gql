@@ -1,8 +1,8 @@
-query CurrentPrice {
+query CurrentPrice($postcardSlug: String!, $pageSlug: String!) {
   lastPageUrl
-  postcardsSold: soldItems(slug: "postcard")
-  pagesSold: soldItems(slug: "page")
-  postcard: product(slug: "postcard") {
+  postcardsSold: soldItems(slug: $postcardSlug)
+  pagesSold: soldItems(slug: $pageSlug)
+  postcard: product(slug: $postcardSlug) {
     _id
     texts {
       title
@@ -23,7 +23,7 @@ query CurrentPrice {
       }
     }
   }
-  page: product(slug: "page") {
+  page: product(slug: $pageSlug) {
     _id
     texts {
       title
