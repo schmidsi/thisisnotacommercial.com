@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import Router from 'next/router';
+import * as Sentry from '@sentry/browser';
 
-import { useQuery, useApolloClient } from '@apollo/react-hooks';
+import { useApolloClient } from '@apollo/react-hooks';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import * as R from 'ramda';
@@ -9,7 +10,6 @@ import * as R from 'ramda';
 import PaymentIcons from '../components/PaymentIcons';
 import Gallery from '../components/Gallery';
 
-import CurrentPrice from '../queries/CurrentPrice.gql';
 import LoginAsGuest from '../queries/LoginAsGuest.gql';
 import AddCartProduct from '../queries/AddCartProduct.gql';
 import UpdateCart from '../queries/UpdateCart.gql';
@@ -17,6 +17,7 @@ import PaintNumber from '../components/PaintNumber';
 
 import css from './main.css';
 import Popup from '../components/Popup';
+import useCurrentPrice from '../hooks/useCurrentPrice';
 
 const isDev = process.env.NODE_ENV !== 'production';
 
@@ -59,24 +60,15 @@ const Home = () => {
   }, []);
 
   const client = useApolloClient();
-  const { data, loading } = useQuery(CurrentPrice, { pollInterval: 60000 });
-  const postcardPrice = R.pathOr(
-    0,
-    ['postcard', 'simulatedPrice', 'price', 'amount'],
-    data
-  );
-  const pagePrice = R.pathOr(
-    0,
-    ['page', 'simulatedPrice', 'price', 'amount'],
-    data
-  );
 
-  const lastPageUrl = R.pathOr('', ['lastPageUrl'], data);
-
-  const postcardsSold = R.pathOr(0, ['postcardsSold'], data);
-  const pagesSold = R.pathOr(0, ['pagesSold'], data);
-
-  const postcardProductId = R.path(['postcard', '_id'], data);
+  const { data: {
+    postcardPrice,
+    pagePrice,
+    lastPageUrl,
+    postcardsSold,
+    pagesSold,
+    postcardProductId,
+  }, loading } = useCurrentPrice();
 
   const formik = useFormik({
     initialValues: {
@@ -115,18 +107,24 @@ const Home = () => {
       if (window && window.localStorage)
         window.localStorage.setItem('token', token);
 
-      await client.mutate({
+      const addCartResult = await client.mutate({
         mutation: AddCartProduct,
         variables: { productId: postcardProductId }
       });
 
-      await client.mutate({
+      console.log(addCartResult);
+
+      if (addCartResult.errors) Sentry.captureException(addCartResult.errors);
+
+      const updateCartResult = await client.mutate({
         mutation: UpdateCart,
         variables: {
           ...values,
           meta: { message: values.message }
         }
       });
+
+      if (updateCartResult.errors) Sentry.captureException(updateCartResult.errors);
 
       setSubmitting(false);
 

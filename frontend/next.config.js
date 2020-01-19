@@ -1,16 +1,17 @@
+require('dotenv').config();
 const withPlugins = require('next-compose-plugins');
-const typescript = require('@zeit/next-typescript');
 const css = require('@zeit/next-css');
 const graphql = require('next-plugin-graphql');
 
-module.exports = withPlugins([typescript, css, graphql], {
+module.exports = withPlugins([css, graphql], {
   cssModules: true,
   sourceMap: true,
   cssLoaderOptions: {
     localIdentName: '[local]___[hash:base64:5]'
   },
   env: {
-    GRAPHQL_ENDPOINT: process.env.GRAPHQL_ENDPOINT
+    GRAPHQL_ENDPOINT: process.env.GRAPHQL_ENDPOINT,
+    STAGING: process.env.STAGING
   },
   publicRuntimeConfig: {
     GRAPHQL_ENDPOINT: process.env.GRAPHQL_ENDPOINT

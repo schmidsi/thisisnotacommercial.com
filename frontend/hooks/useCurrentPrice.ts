@@ -1,12 +1,23 @@
 import * as R from 'ramda';
 import { useQuery } from '@apollo/react-hooks';
+import * as Sentry from '@sentry/browser';
 
 import CurrentPrice from '../queries/CurrentPrice.gql';
 
+const isStaging = process.env.STAGING === 'true';
+
+console.log({ isStaging });
+
 const useCurrentPrice = () => {
   const { loading, error, data } = useQuery(CurrentPrice, {
-    pollInterval: 60000
+    pollInterval: 60000,
+    variables: {
+      postcardSlug: isStaging ? 'testpostcard' : 'postcard',
+      pageSlug: isStaging ? 'testpage' : 'page'
+    }
   });
+
+  if (error) Sentry.captureException(error);
 
   const postcardPrice = R.pathOr(
     0,
@@ -19,6 +30,8 @@ const useCurrentPrice = () => {
     data
   );
 
+  const lastPageUrl = R.pathOr('', ['lastPageUrl'], data);
+
   const postcardsSold = R.pathOr(0, ['postcardsSold'], data);
   const pagesSold = R.pathOr(0, ['pagesSold'], data);
 
@@ -27,6 +40,7 @@ const useCurrentPrice = () => {
 
   return {
     data: {
+      lastPageUrl,
       postcardPrice,
       pagePrice,
       postcardsSold,

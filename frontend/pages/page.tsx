@@ -1,35 +1,30 @@
 import React, { useState } from 'react';
 import Router from 'next/router';
 import Link from 'next/link';
-import { useQuery, useApolloClient } from '@apollo/react-hooks';
+import { useApolloClient } from '@apollo/react-hooks';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import * as R from 'ramda';
 
 import PaymentIcons from '../components/PaymentIcons';
 
-import CurrentPrice from '../queries/CurrentPrice.gql';
 import LoginAsGuest from '../queries/LoginAsGuest.gql';
 import AddCartProductAttachment from '../queries/AddCartProductAttachment.gql';
 import UpdateCart from '../queries/UpdateCart.gql';
 
 import css from './main.css';
 import PaintNumber from '../components/PaintNumber';
+import useCurrentPrice from '../hooks/useCurrentPrice';
 
 const isDev = process.env.NODE_ENV !== 'production';
 
 const Page = () => {
   const [file, setFile] = useState();
   const client = useApolloClient();
-  const { data, loading } = useQuery(CurrentPrice, { pollInterval: 60000 });
-
-  const pageProductId = R.path(['page', '_id'], data);
-  const pagesSold = R.pathOr(0, ['pagesSold'], data);
-  const pagePrice = R.pathOr(
-    0,
-    ['page', 'simulatedPrice', 'price', 'amount'],
-    data
-  );
+  const {
+    data: { pagePrice, pagesSold },
+    loading
+  } = useCurrentPrice();
 
   const formik = useFormik({
     initialValues: {
