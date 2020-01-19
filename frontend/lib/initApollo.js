@@ -23,9 +23,9 @@ const hostname =
 const GRAPHQL_ENDPOINT =
   process.env.GRAPHQL_ENDPOINT ||
   publicRuntimeConfig.GRAPHQL_ENDPOINT ||
-  process.browser
+  (process.browser
     ? `http://${hostname}:4010/graphql`
-    : 'http://localhost:4010/graphql';
+    : 'http://localhost:4010/graphql');
 
 let apolloClient = null;
 
