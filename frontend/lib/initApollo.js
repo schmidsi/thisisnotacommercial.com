@@ -14,11 +14,17 @@ import sentryBreadcrumbsLink from './sentryBreadcrumpsLink';
 
 const { publicRuntimeConfig = {} } = getConfig() || {};
 
+const hostname =
+  process.browser &&
+  global.document &&
+  global.document.location &&
+  global.document.location.hostname;
+
 const GRAPHQL_ENDPOINT =
   process.env.GRAPHQL_ENDPOINT ||
   publicRuntimeConfig.GRAPHQL_ENDPOINT ||
   process.browser
-    ? `http://${document.location.hostname}:4010/graphql`
+    ? `http://${hostname}:4010/graphql`
     : 'http://localhost:4010/graphql';
 
 let apolloClient = null;
