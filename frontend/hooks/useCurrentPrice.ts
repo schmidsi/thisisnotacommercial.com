@@ -4,7 +4,7 @@ import * as Sentry from '@sentry/browser';
 
 import CurrentPrice from '../queries/CurrentPrice.gql';
 
-const isStaging = true;
+const isStaging = false;
 
 const useCurrentPrice = () => {
   const { loading, error, data } = useQuery(CurrentPrice, {
