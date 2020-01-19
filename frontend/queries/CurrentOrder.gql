@@ -18,6 +18,7 @@ query CurrentOrder {
         product {
           texts {
             title
+            subtitle
           }
         }
       }

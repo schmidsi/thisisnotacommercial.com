@@ -1,10 +1,11 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import humanizeString from 'humanize-string';
 import { useFormik } from 'formik';
 import { useQuery, useApolloClient } from '@apollo/react-hooks';
 import Router from 'next/router';
 import * as yup from 'yup';
 import * as R from 'ramda';
+import * as Sentry from '@sentry/browser';
 
 import CurrentOrder from '../queries/CurrentOrder.gql';
 import SetOrderPaymentProvider from '../queries/SetOrderPaymentProvider.gql';
@@ -47,6 +48,18 @@ const Order = () => {
     message: R.pathOr('', ['meta', 'message'], cart),
     currency: R.pathOr('', ['total', 'currency'], cart),
     article: R.pathOr('', ['items', 0, 'product', 'texts', 'title'], cart),
+    description: R.pathOr('', ['items', 0, 'product', 'texts', 'title'], cart)
+      .toLowerCase()
+      .includes('postcard')
+      ? 'Custom art painting by Veli & Amos and friends'
+      : 'A full page in the upcoming book by Veli & Amos with Edition Patrick Frey',
+    // TODO: Use description from DB. Does not work with Control Panel currently
+    //
+    // description: R.pathOr(
+    //   '',
+    //   ['items', 0, 'product', 'texts', 'subtitle'],
+    //   cart
+    // ),
     total: (R.pathOr(0, ['total', 'amount'], cart) / 100).toFixed(2)
   };
 
@@ -155,69 +168,73 @@ const Order = () => {
     }
   });
 
-  if (
-    (process as any).browser &&
-    !paypalLoaded &&
-    paymentProviderInterface === 'PaypalCheckout'
-  ) {
-    const script = document.createElement('script');
-    script.type = 'application/javascript';
-    script.src = `https://www.paypal.com/sdk/js?client-id=${clientToken}&currency=${
-      order.currency
-    }`;
-    script.onload = () => {
-      setPaypalLoaded(true);
-    };
-    document.body.appendChild(script);
-  }
+  useEffect(() => {
+    if (
+      (process as any).browser &&
+      !paypalLoaded &&
+      paymentProviderInterface === 'PaypalCheckout'
+    ) {
+      const script = document.createElement('script');
+      script.type = 'application/javascript';
+      script.src = `https://www.paypal.com/sdk/js?client-id=${clientToken}&currency=${order.currency}`;
+      script.onload = () => {
+        setPaypalLoaded(true);
+      };
+      document.body.appendChild(script);
+    }
+  }, [paymentProviderInterface]);
 
-  paymentProviderInterface === 'PaypalCheckout' &&
-    paypalLoaded &&
-    window.setTimeout(() => {
-      !paypalRendered &&
-        (window as any).paypal
-          .Buttons({
-            createOrder: function(_, actions) {
-              setPaypalRendered(true);
-              // Set up the transaction
-              return actions.order.create({
-                intent: 'CAPTURE',
-                payer: {
-                  email_address: order.emailAddress
-                },
-                purchase_units: [
-                  {
-                    amount: {
-                      value: order.total
-                    },
-                    description:
-                      'Custom art painting by Veli & Amos and friends',
-                    shipping: {
-                      name: {
-                        full_name: `${order.firstName} ${order.lastName}`
+  useEffect(() => {
+    paymentProviderInterface === 'PaypalCheckout' &&
+      paypalLoaded &&
+      window.setTimeout(() => {
+        !paypalRendered &&
+          (window as any).paypal
+            .Buttons({
+              createOrder: function(_, actions) {
+                setPaypalRendered(true);
+                // Set up the transaction
+                return actions.order.create({
+                  intent: 'CAPTURE',
+                  payer: {
+                    email_address: order.emailAddress
+                  },
+                  purchase_units: [
+                    {
+                      amount: {
+                        value: order.total
                       },
-                      address: {
-                        address_line_1: order.addressLine,
-                        admin_area_2: order.city,
-                        postal_code: order.postalCode,
-                        country_code: order.countryCode
+                      description: order.description,
+                      shipping: {
+                        name: {
+                          full_name: `${order.firstName} ${order.lastName}`
+                        },
+                        address: {
+                          address_line_1: order.addressLine,
+                          admin_area_2: order.city,
+                          postal_code: order.postalCode,
+                          country_code: order.countryCode
+                        }
                       }
                     }
-                  }
-                ]
-              });
-            },
-            onApprove: function(data, actions) {
-              // Capture the funds from the transaction
-              return actions.order.capture().then(function(__) {
-                // Show a success message to your buyer
-                setPaypalOrderId(data.orderID);
-                formik.submitForm();
-              });
-            }
-          })
-          .render('#paypal-checkout');
-    }, 100);
+                  ]
+                });
+              },
+              onApprove: function(data, actions) {
+                // Capture the funds from the transaction
+                return actions.order.capture().then(function(__) {
+                  // Show a success message to your buyer
+                  setPaypalOrderId(data.orderID);
+                  formik.submitForm();
+                });
+              },
+              onError: function(error) {
+                Sentry.captureException(error);
+              }
+            })
+            .render('#paypal-checkout');
+      }, 100);
+  }, [paymentProviderInterface, paypalLoaded]);
 
   return (
     <div className={css.container} key="main">
