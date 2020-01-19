@@ -11,7 +11,7 @@ module.exports = withPlugins([css, graphql], {
   },
   env: {
     GRAPHQL_ENDPOINT: process.env.GRAPHQL_ENDPOINT
-  }
+  },
   publicRuntimeConfig: {
     GRAPHQL_ENDPOINT: process.env.GRAPHQL_ENDPOINT
   }
