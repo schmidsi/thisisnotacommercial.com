@@ -22,7 +22,7 @@ const Page = () => {
   const [file, setFile] = useState();
   const client = useApolloClient();
   const {
-    data: { pagePrice, pagesSold },
+    data: { pagePrice, pagesSold, pageProductId },
     loading
   } = useCurrentPrice();
 

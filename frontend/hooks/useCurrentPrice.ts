@@ -6,8 +6,6 @@ import CurrentPrice from '../queries/CurrentPrice.gql';
 
 const isStaging = process.env.STAGING === 'true';
 
-console.log({ isStaging });
-
 const useCurrentPrice = () => {
   const { loading, error, data } = useQuery(CurrentPrice, {
     pollInterval: 60000,
