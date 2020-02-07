@@ -34,7 +34,9 @@ const useCurrentPrice = () => {
   const pagesSold = R.pathOr(0, ['pagesSold'], data);
 
   const postcardProductId = R.path(['postcard', '_id'], data);
-  const pageProductId = R.path(['postcard', '_id'], data);
+  const pageProductId = R.path(['page', '_id'], data);
+
+  console.log(data);
 
   return {
     data: {
