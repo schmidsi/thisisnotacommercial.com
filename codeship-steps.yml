@@ -6,17 +6,17 @@
       type: push
       image_name: "registry.ucc.dev/thisisnotacommercial/website/frontend"
       image_tag: "{{.Branch}}-latest"
-      registry: docker.pkg.github.com
+      registry: registry.ucc.dev
     - service: controlpanel
       type: push
       image_name: "registry.ucc.dev/thisisnotacommercial/website/controlpanel"
       image_tag: "{{.Branch}}-latest"
-      registry: docker.pkg.github.com
+      registry: registry.ucc.dev
     - service: unchained
       type: push
       image_name: "registry.ucc.dev/thisisnotacommercial/website/unchained"
       image_tag: "{{.Branch}}-latest"
-      registry: docker.pkg.github.com
+      registry: registry.ucc.dev
 
 - name: Tag images as latest
   tag: develop
@@ -27,17 +27,17 @@
       type: push
       image_name: "registry.ucc.dev/thisisnotacommercial/website/frontend"
       image_tag: "next"
-      registry: docker.pkg.github.com
+      registry: registry.ucc.dev
     - service: controlpanel
       type: push
       image_name: "registry.ucc.dev/thisisnotacommercial/website/controlpanel"
       image_tag: "next"
-      registry: docker.pkg.github.com
+      registry: registry.ucc.dev
     - service: unchained
       type: push
       image_name: "registry.ucc.dev/thisisnotacommercial/website/unchained"
       image_tag: "next"
-      registry: docker.pkg.github.com
+      registry: registry.ucc.dev
 
 - name: Tag images as stable
   tag: master
@@ -48,17 +48,17 @@
       type: push
       image_name: "registry.ucc.dev/thisisnotacommercial/website/frontend"
       image_tag: "stable"
-      registry: docker.pkg.github.com
+      registry: registry.ucc.dev
     - service: controlpanel
       type: push
       image_name: "registry.ucc.dev/thisisnotacommercial/website/controlpanel"
       image_tag: "stable"
-      registry: docker.pkg.github.com
+      registry: registry.ucc.dev
     - service: unchained
       type: push
       image_name: "registry.ucc.dev/thisisnotacommercial/website/unchained"
       image_tag: "stable"
-      registry: docker.pkg.github.com
+      registry: registry.ucc.dev
 
 - name: Deploy to Testing
   tag: develop
