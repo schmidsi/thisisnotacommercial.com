@@ -4,17 +4,17 @@
   steps:
     - service: frontend
       type: push
-      image_name: "docker.pkg.github.com/unchainedshop/thisisnotacommercial.com/frontend"
+      image_name: "registry.ucc.dev/thisisnotacommercial/website/frontend"
       image_tag: "{{.Branch}}-latest"
       registry: docker.pkg.github.com
     - service: controlpanel
       type: push
-      image_name: "docker.pkg.github.com/unchainedshop/thisisnotacommercial.com/controlpanel"
+      image_name: "registry.ucc.dev/thisisnotacommercial/website/controlpanel"
       image_tag: "{{.Branch}}-latest"
       registry: docker.pkg.github.com
     - service: unchained
       type: push
-      image_name: "docker.pkg.github.com/unchainedshop/thisisnotacommercial.com/unchained"
+      image_name: "registry.ucc.dev/thisisnotacommercial/website/unchained"
       image_tag: "{{.Branch}}-latest"
       registry: docker.pkg.github.com
 
@@ -25,17 +25,17 @@
   steps:
     - service: frontend
       type: push
-      image_name: "docker.pkg.github.com/unchainedshop/thisisnotacommercial.com/frontend"
+      image_name: "registry.ucc.dev/thisisnotacommercial/website/frontend"
       image_tag: "next"
       registry: docker.pkg.github.com
     - service: controlpanel
       type: push
-      image_name: "docker.pkg.github.com/unchainedshop/thisisnotacommercial.com/controlpanel"
+      image_name: "registry.ucc.dev/thisisnotacommercial/website/controlpanel"
       image_tag: "next"
       registry: docker.pkg.github.com
     - service: unchained
       type: push
-      image_name: "docker.pkg.github.com/unchainedshop/thisisnotacommercial.com/unchained"
+      image_name: "registry.ucc.dev/thisisnotacommercial/website/unchained"
       image_tag: "next"
       registry: docker.pkg.github.com
 
@@ -46,32 +46,32 @@
   steps:
     - service: frontend
       type: push
-      image_name: "docker.pkg.github.com/unchainedshop/thisisnotacommercial.com/frontend"
+      image_name: "registry.ucc.dev/thisisnotacommercial/website/frontend"
       image_tag: "stable"
       registry: docker.pkg.github.com
     - service: controlpanel
       type: push
-      image_name: "docker.pkg.github.com/unchainedshop/thisisnotacommercial.com/controlpanel"
+      image_name: "registry.ucc.dev/thisisnotacommercial/website/controlpanel"
       image_tag: "stable"
       registry: docker.pkg.github.com
     - service: unchained
       type: push
-      image_name: "docker.pkg.github.com/unchainedshop/thisisnotacommercial.com/unchained"
+      image_name: "registry.ucc.dev/thisisnotacommercial/website/unchained"
       image_tag: "stable"
       registry: docker.pkg.github.com
 
 - name: Deploy to Testing
   tag: develop
-  type: parallel
+  type: serial
   services:
     - unchaineddeployment
   steps:
-    - command: /bin/sh -c "curl -X POST ${HOOK_URL}"
+    - command: /bin/sh -c '/swarmpit_deploy.sh thisisnotacommercial-test "${SWARMPIT_TOKEN}"'
 
 - name: Deploy to Production
   tag: master
-  type: parallel
+  type: serial
   services:
     - unchaineddeployment
   steps:
-    - command: /bin/sh -c "curl -X POST ${HOOK_URL_PRODUCTION}"
+    - command: /bin/sh -c '/swarmpit_deploy.sh thisisnotacommercial-prod "${SWARMPIT_TOKEN}"'

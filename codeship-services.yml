@@ -10,7 +10,10 @@ unchained:
   build:
     context: ./unchained
     dockerfile: Dockerfile
+
 unchaineddeployment:
   image: buildpack-deps:curl
   encrypted_env_file:
     - deploy.env.encrypted
+  volumes:
+    - ./swarmpit_deploy.sh:/swarmpit_deploy.sh
