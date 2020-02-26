@@ -59,19 +59,3 @@
       image_name: "registry.ucc.dev/thisisnotacommercial/website/unchained"
       image_tag: "stable"
       registry: registry.ucc.dev
-
-- name: Deploy to Testing
-  tag: develop
-  type: serial
-  services:
-    - unchaineddeployment
-  steps:
-    - command: /bin/sh -c '/swarmpit_deploy.sh thisisnotacommercial-test "${SWARMPIT_TOKEN}"'
-
-- name: Deploy to Production
-  tag: master
-  type: serial
-  services:
-    - unchaineddeployment
-  steps:
-    - command: /bin/sh -c '/swarmpit_deploy.sh thisisnotacommercial-prod "${SWARMPIT_TOKEN}"'
