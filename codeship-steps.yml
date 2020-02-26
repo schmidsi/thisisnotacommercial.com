@@ -4,19 +4,19 @@
   steps:
     - service: frontend
       type: push
-      image_name: "docker.pkg.github.com/unchainedshop/thisisnotacommercial.com/frontend"
+      image_name: "registry.ucc.dev/thisisnotacommercial/website/frontend"
       image_tag: "{{.Branch}}-latest"
-      registry: docker.pkg.github.com
+      registry: registry.ucc.dev
     - service: controlpanel
       type: push
-      image_name: "docker.pkg.github.com/unchainedshop/thisisnotacommercial.com/controlpanel"
+      image_name: "registry.ucc.dev/thisisnotacommercial/website/controlpanel"
       image_tag: "{{.Branch}}-latest"
-      registry: docker.pkg.github.com
+      registry: registry.ucc.dev
     - service: unchained
       type: push
-      image_name: "docker.pkg.github.com/unchainedshop/thisisnotacommercial.com/unchained"
+      image_name: "registry.ucc.dev/thisisnotacommercial/website/unchained"
       image_tag: "{{.Branch}}-latest"
-      registry: docker.pkg.github.com
+      registry: registry.ucc.dev
 
 - name: Tag images as latest
   tag: develop
@@ -25,19 +25,19 @@
   steps:
     - service: frontend
       type: push
-      image_name: "docker.pkg.github.com/unchainedshop/thisisnotacommercial.com/frontend"
+      image_name: "registry.ucc.dev/thisisnotacommercial/website/frontend"
       image_tag: "next"
-      registry: docker.pkg.github.com
+      registry: registry.ucc.dev
     - service: controlpanel
       type: push
-      image_name: "docker.pkg.github.com/unchainedshop/thisisnotacommercial.com/controlpanel"
+      image_name: "registry.ucc.dev/thisisnotacommercial/website/controlpanel"
       image_tag: "next"
-      registry: docker.pkg.github.com
+      registry: registry.ucc.dev
     - service: unchained
       type: push
-      image_name: "docker.pkg.github.com/unchainedshop/thisisnotacommercial.com/unchained"
+      image_name: "registry.ucc.dev/thisisnotacommercial/website/unchained"
       image_tag: "next"
-      registry: docker.pkg.github.com
+      registry: registry.ucc.dev
 
 - name: Tag images as stable
   tag: master
@@ -46,32 +46,16 @@
   steps:
     - service: frontend
       type: push
-      image_name: "docker.pkg.github.com/unchainedshop/thisisnotacommercial.com/frontend"
+      image_name: "registry.ucc.dev/thisisnotacommercial/website/frontend"
       image_tag: "stable"
-      registry: docker.pkg.github.com
+      registry: registry.ucc.dev
     - service: controlpanel
       type: push
-      image_name: "docker.pkg.github.com/unchainedshop/thisisnotacommercial.com/controlpanel"
+      image_name: "registry.ucc.dev/thisisnotacommercial/website/controlpanel"
       image_tag: "stable"
-      registry: docker.pkg.github.com
+      registry: registry.ucc.dev
     - service: unchained
       type: push
-      image_name: "docker.pkg.github.com/unchainedshop/thisisnotacommercial.com/unchained"
+      image_name: "registry.ucc.dev/thisisnotacommercial/website/unchained"
       image_tag: "stable"
-      registry: docker.pkg.github.com
-
-- name: Deploy to Testing
-  tag: develop
-  type: parallel
-  services:
-    - unchaineddeployment
-  steps:
-    - command: /bin/sh -c "curl -X POST ${HOOK_URL}"
-
-- name: Deploy to Production
-  tag: master
-  type: parallel
-  services:
-    - unchaineddeployment
-  steps:
-    - command: /bin/sh -c "curl -X POST ${HOOK_URL_PRODUCTION}"
+      registry: registry.ucc.dev
