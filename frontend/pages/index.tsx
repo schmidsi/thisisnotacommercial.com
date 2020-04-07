@@ -22,42 +22,42 @@ import useCurrentPrice from '../hooks/useCurrentPrice';
 const isDev = process.env.NODE_ENV !== 'production';
 
 const Home = () => {
-  const [initial, setInitial] = useState(true);
-  const [popupShown, showPopup] = useState(false);
-  const [renderPopup, setRenderPopup] = useState(true);
+  // const [initial, setInitial] = useState(true);
+  // const [popupShown, showPopup] = useState(false);
+  // const [renderPopup, setRenderPopup] = useState(true);
 
-  useEffect(() => {
-    if (process.browser) {
-      setTimeout(() => showPopup(true), 1000);
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (process.browser) {
+  //     setTimeout(() => showPopup(true), 1000);
+  //   }
+  // }, []);
 
-  useEffect(() => {
-    if (!popupShown && initial) {
-      setInitial(false);
-      return;
-    }
+  // useEffect(() => {
+  //   if (!popupShown && initial) {
+  //     setInitial(false);
+  //     return;
+  //   }
 
-    if (!popupShown && process.browser) {
-      setTimeout(() => setRenderPopup(false), 1000);
-    }
-  }, [popupShown]);
+  //   if (!popupShown && process.browser) {
+  //     setTimeout(() => setRenderPopup(false), 1000);
+  //   }
+  // }, [popupShown]);
 
-  const escFunction = useCallback(event => {
-    if (event.keyCode === 27) {
-      showPopup(false);
-    }
-  }, []);
+  // const escFunction = useCallback(event => {
+  //   if (event.keyCode === 27) {
+  //     showPopup(false);
+  //   }
+  // }, []);
 
-  useEffect(() => {
-    if (process.browser) {
-      document.addEventListener('keydown', escFunction, false);
+  // useEffect(() => {
+  //   if (process.browser) {
+  //     document.addEventListener('keydown', escFunction, false);
 
-      return () => {
-        document.removeEventListener('keydown', escFunction, false);
-      };
-    }
-  }, []);
+  //     return () => {
+  //       document.removeEventListener('keydown', escFunction, false);
+  //     };
+  //   }
+  // }, []);
 
   const client = useApolloClient();
 
@@ -68,9 +68,9 @@ const Home = () => {
       lastPageUrl,
       postcardsSold,
       pagesSold,
-      postcardProductId
+      postcardProductId,
     },
-    loading
+    loading,
   } = useCurrentPrice();
 
   const formik = useFormik({
@@ -82,7 +82,7 @@ const Home = () => {
       countryCode: 'CH',
       city: isDev ? 'Zürich' : '',
       emailAddress: isDev ? 'asdf@asdf.ch' : '',
-      message: isDev ? 'Test Message' : ''
+      message: isDev ? 'Test Message' : '',
     },
     validationSchema: Yup.object().shape({
       firstName: Yup.string().required('First name is required.'),
@@ -94,11 +94,11 @@ const Home = () => {
       emailAddress: Yup.string()
         .email('Invalid email address')
         .required('Please provide an email address'),
-      message: Yup.string()
+      message: Yup.string(),
     }),
     onSubmit: async (values, { setSubmitting }) => {
       const loginAsGuestResult = await client.mutate({
-        mutation: LoginAsGuest
+        mutation: LoginAsGuest,
       });
 
       const token = R.pathOr(
@@ -112,7 +112,7 @@ const Home = () => {
 
       const addCartResult = await client.mutate({
         mutation: AddCartProduct,
-        variables: { productId: postcardProductId }
+        variables: { productId: postcardProductId },
       });
 
       if (addCartResult.errors) Sentry.captureException(addCartResult.errors);
@@ -121,8 +121,8 @@ const Home = () => {
         mutation: UpdateCart,
         variables: {
           ...values,
-          meta: { message: values.message }
-        }
+          meta: { message: values.message },
+        },
       });
 
       if (updateCartResult.errors)
@@ -131,14 +131,14 @@ const Home = () => {
       setSubmitting(false);
 
       Router.push({
-        pathname: '/order'
+        pathname: '/order',
         // query: { token }
       });
-    }
+    },
   });
 
   const touchedErrors = Object.keys(formik.touched).filter(
-    key => formik.errors[key]
+    (key) => formik.errors[key]
   );
 
   return (
@@ -159,7 +159,7 @@ const Home = () => {
         </header>
       </div>
 
-      {renderPopup && (
+      {/* {renderPopup && (
         <Popup
           {...{ popupShown, pagePrice, pagesSold, lastPageUrl }}
           close={event => {
@@ -167,7 +167,7 @@ const Home = () => {
             showPopup(!popupShown);
           }}
         />
-      )}
+      )} */}
 
       <div className={css.container}>
         {loading ? (
