@@ -1,4 +1,4 @@
-FROM node:8-alpine
+FROM node:12-alpine
 
 ENV NODE_ENV production
 
@@ -8,8 +8,9 @@ WORKDIR /usr/src/app
 
 # Install app dependencies
 COPY . /usr/src/app
-RUN npm install
+RUN NODE_ENV=development npm install
 RUN npm run build
+RUN npm prune
 
 EXPOSE 3000
 CMD [ "node", "node_modules/.bin/next", "start" ]
