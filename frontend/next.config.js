@@ -10,9 +10,11 @@ module.exports = withPlugins([css, graphql], {
     localIdentName: '[local]___[hash:base64:5]'
   },
   env: {
-    GRAPHQL_ENDPOINT: process.env.GRAPHQL_ENDPOINT
+    GRAPHQL_ENDPOINT: process.env.GRAPHQL_ENDPOINT,
+    INSTAGRAM_ACCESS_TOKEN: process.env.INSTAGRAM_ACCESS_TOKEN
   },
   publicRuntimeConfig: {
-    GRAPHQL_ENDPOINT: process.env.GRAPHQL_ENDPOINT
+    GRAPHQL_ENDPOINT: process.env.GRAPHQL_ENDPOINT,
+    INSTAGRAM_ACCESS_TOKEN: process.env.INSTAGRAM_ACCESS_TOKEN
   }
 });

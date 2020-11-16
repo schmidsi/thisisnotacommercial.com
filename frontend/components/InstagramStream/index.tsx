@@ -1,5 +1,5 @@
-import * as R from 'ramda';
 import React, { useState, useEffect } from 'react';
+import getConfig from 'next/config';
 
 import css from './style.css';
 
@@ -9,24 +9,28 @@ interface Post {
   image: string;
 }
 
+const {
+  publicRuntimeConfig: { INSTAGRAM_ACCESS_TOKEN },
+} = getConfig();
+
 const InstagramStream = () => {
   const [posts, setPosts] = useState<Post[]>([]);
 
-  // useEffect(() => {
-  //   (async () => {
-  //     const response = await fetch(
-  //       'https://api.instagram.com/v1/users/self/media/recent/?access_token=12010147783.167ddba.29dddef82cfe46548914426ae37ef8ab'
-  //       );
-  //     const json = await response.json(); // { data: []} //
-  //     const newPosts = json.data.map(post => ({
-  //       link: post.link,
-  //       caption: R.path(['caption', 'text'], post),
-  //       image: R.path(['images', 'standard_resolution', 'url'], post)
-  //     }));
+  useEffect(() => {
+    (async () => {
+      const response = await fetch(
+        `https://graph.instagram.com/me/media?fields=id,media_type,media_url,permalink,thumbnail_url,timestamp,username,caption&access_token=${INSTAGRAM_ACCESS_TOKEN}`,
+      );
+      const json = await response.json(); // { data: []} //
+      const newPosts = json.data?.map((post) => ({
+        link: post.permalink,
+        image: post?.media_url,
+        caption: post?.caption
+      }));
 
-  //     setPosts(newPosts);
-  //   })();
-  // }, []);
+      setPosts(newPosts);
+    })();
+  }, []);
 
   return (
     <div className={css.InstagramStream}>
