@@ -3,10 +3,13 @@ import { useQuery } from '@apollo/react-hooks';
 import * as Sentry from '@sentry/browser';
 
 import CurrentPrice from '../queries/CurrentPrice.gql';
-
-const isStaging = false;
+import { useRouter } from 'next/router';
 
 const useCurrentPrice = () => {
+  const router = useRouter();
+
+  const isStaging = router.query.test !== undefined;
+
   const { loading, error, data } = useQuery(CurrentPrice, {
     pollInterval: 60000,
     variables: {
@@ -35,8 +38,6 @@ const useCurrentPrice = () => {
 
   const postcardProductId = R.path(['postcard', '_id'], data);
   const pageProductId = R.path(['page', '_id'], data);
-
-  console.log(data);
 
   return {
     data: {
