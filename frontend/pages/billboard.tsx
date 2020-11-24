@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Router from 'next/router';
+import Router, { useRouter } from 'next/router';
 import Link from 'next/link';
 import { useApolloClient } from '@apollo/react-hooks';
 import { useFormik } from 'formik';
@@ -14,17 +14,17 @@ import UpdateCart from '../queries/UpdateCart.gql';
 
 import css from './main.css';
 import PaintNumber from '../components/PaintNumber';
-import useCurrentPrice from '../hooks/useCurrentPrices';
+import useProduct from '../hooks/useProduct';
 
 const isDev = process.env.NODE_ENV !== 'production';
 
-const Page = () => {
+const Billboard = () => {
+  const router = useRouter();
   const [file, setFile] = useState();
   const client = useApolloClient();
-  const {
-    data: { pagePrice, pagesSold, pageProductId },
-    loading
-  } = useCurrentPrice();
+
+  const isStaging = router?.query?.test !== undefined;
+  const { product, soldItems, loading } = useProduct({ slug: isStaging ? 'testbillboard' : 'billboard' });
 
   const formik = useFormik({
     initialValues: {
@@ -72,7 +72,7 @@ const Page = () => {
       await client.mutate({
         mutation: AddCartProductAttachment,
         variables: {
-          productId: pageProductId,
+          productId: product._id,
           attachment: file
         }
       });
@@ -122,43 +122,9 @@ const Page = () => {
       ) : (
         <div>
           <form onSubmit={formik.handleSubmit}>
-            <div className="boom">
-              <div className="holder">
-                No: <br />
-                <span>
-                  <PaintNumber>{pagesSold + 1}</PaintNumber>
-                </span>
-                <div>
-                  <br />
-                  Current price: <br />
-                  <span>
-                    <PaintNumber euro>{pagePrice / 100}</PaintNumber>
-                  </span>
-                  <br />
-                </div>
-              </div>
-
-              <style jsx>{`
-                .holder {
-                  position: absolute;
-                  top: 40%;
-                  left: 10%;
-                  font-size: 20px;
-                }
-                .holder span {
-                  font-size: 30px;
-                }
-                .boom {
-                  padding-bottom: 88.94628099%;
-                  width: 100%;
-                  background-image: url(/static/book-book.jpg);
-                  background-size: contain;
-                  background-position: center;
-                  position: relative;
-                }
-              `}</style>
-            </div>
-
+            <h1>Billboard</h1>
+          <h2>Sold {soldItems}. Current price: CHF {product?.simulatedPrice?.price?.amount / 100}.00</h2>
+          <h2>Price goes up 1% with every sale!</h2>
             <label>
               <img
                 className={css.paintedLabel}
@@ -280,17 +246,29 @@ const Page = () => {
             <label>
               <img
                 className={css.paintedLabel}
+                src="/static/message-optional.png"
+                alt="Message (optional)"
+              />
+              {formik.touched.message && formik.errors.message ? (
+                <div className={css.labelError}>{formik.errors.message}</div>
+              ) : null}
+              <textarea
+                {...formik.getFieldProps('message')}
+                className={css.field}
+                placeholder="I love Veli & Amos"
+              />
+            </label>
+
+            <label>
+              <img
+                className={css.paintedLabel}
                 src="/static/upload-image.png"
                 alt="Image"
               />
               <div className={css.field}>
-                <b>Format:</b> 1 fullpage:
+                <b>Dimensions:</b> Billboard will be painted:
                 <br />
-                260 × 195 mm or
-                <br />
-                3071 × 2303 px
-                <br />
-                <b>Resolution:</b> 300 dpi
+                6 × 2 meter
                 <br />
                 <b>File format: </b>pdf, jpg, tif, png
                 <input
@@ -336,8 +314,7 @@ const Page = () => {
                 <br />
                 <br />
                 © for the uploaded works: the author(s)
-                <br />© for the upcoming book by Veli&amp;Amos This is not a
-                commercial (Spring 2020): Edition Patrick Frey
+                <br />© for the Billboard: Veli&amp;Amos
               </p>
             </label>
 
@@ -369,4 +346,4 @@ const Page = () => {
   );
 };
 
-export default Page;
+export default Billboard;
