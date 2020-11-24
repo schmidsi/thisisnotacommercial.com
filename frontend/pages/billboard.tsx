@@ -36,6 +36,7 @@ const Billboard = () => {
       city: isDev ? 'Zürich' : '',
       emailAddress: isDev ? 'asdf@asdf.ch' : '',
       attachment: '',
+      message: '',
       confirm: false
     },
     validationSchema: Yup.object().shape({
