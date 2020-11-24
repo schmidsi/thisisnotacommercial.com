@@ -3,7 +3,7 @@ import initApollo from "./initApollo";
 import Head from "next/head";
 import { getDataFromTree } from "react-apollo";
 
-export default App => {
+const withApolloClient = App => {
   return class Apollo extends React.Component {
     static displayName = "withApollo(App)";
     static async getInitialProps(ctx) {
@@ -59,3 +59,5 @@ export default App => {
     }
   };
 };
+
+export default withApolloClient;
