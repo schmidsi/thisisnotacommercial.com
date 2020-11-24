@@ -8,7 +8,7 @@ import { useRouter } from 'next/router';
 const useCurrentPrice = () => {
   const router = useRouter();
 
-  const isStaging = router.query.test !== undefined;
+  const isStaging = router?.query?.test !== undefined;
 
   const { loading, error, data } = useQuery(CurrentPrice, {
     pollInterval: 60000,

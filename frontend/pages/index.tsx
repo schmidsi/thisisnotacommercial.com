@@ -17,7 +17,7 @@ import PaintNumber from '../components/PaintNumber';
 
 import css from './main.css';
 import Popup from '../components/Popup';
-import useCurrentPrice from '../hooks/useCurrentPrice';
+import useCurrentPrice from '../hooks/useCurrentPrices';
 
 const isDev = process.env.NODE_ENV !== 'production';
 

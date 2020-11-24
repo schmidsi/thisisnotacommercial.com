@@ -14,7 +14,7 @@ import UpdateCart from '../queries/UpdateCart.gql';
 
 import css from './main.css';
 import PaintNumber from '../components/PaintNumber';
-import useCurrentPrice from '../hooks/useCurrentPrice';
+import useCurrentPrice from '../hooks/useCurrentPrices';
 
 const isDev = process.env.NODE_ENV !== 'production';
 
