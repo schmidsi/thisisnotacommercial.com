@@ -24,7 +24,9 @@ const Billboard = () => {
   const client = useApolloClient();
 
   const isStaging = router?.query?.test !== undefined;
-  const { product, soldItems, loading } = useProduct({ slug: isStaging ? 'testbillboard' : 'billboard' });
+  const { product, soldItems, loading } = useProduct({
+    slug: isStaging ? 'testbillboard' : 'billboard',
+  });
 
   const formik = useFormik({
     initialValues: {
@@ -37,7 +39,7 @@ const Billboard = () => {
       emailAddress: isDev ? 'asdf@asdf.ch' : '',
       attachment: '',
       message: '',
-      confirm: false
+      confirm: false,
     },
     validationSchema: Yup.object().shape({
       firstName: Yup.string().required('First name is required.'),
@@ -53,18 +55,18 @@ const Billboard = () => {
       confirm: Yup.bool().test(
         'is-true',
         'Must agree to terms to continue',
-        value => value === true
-      )
+        (value) => value === true,
+      ),
     }),
     onSubmit: async (values, { setSubmitting }) => {
       const loginAsGuestResult = await client.mutate({
-        mutation: LoginAsGuest
+        mutation: LoginAsGuest,
       });
 
       const token = R.pathOr(
         '',
         ['data', 'loginAsGuest', 'token'],
-        loginAsGuestResult
+        loginAsGuestResult,
       );
 
       if (window && window.localStorage)
@@ -74,28 +76,28 @@ const Billboard = () => {
         mutation: AddCartProductAttachment,
         variables: {
           productId: product._id,
-          attachment: file
-        }
+          attachment: file,
+        },
       });
 
       await client.mutate({
         mutation: UpdateCart,
         variables: {
-          ...values
-        }
+          ...values,
+        },
       });
 
       setSubmitting(false);
 
       Router.push({
-        pathname: '/order'
+        pathname: '/order',
         // query: { token }
       });
-    }
+    },
   });
 
   const touchedErrors = Object.keys(formik.touched).filter(
-    key => formik.errors[key]
+    (key) => formik.errors[key],
   );
 
   return (
@@ -122,10 +124,33 @@ const Billboard = () => {
         <img src="/static/spinner.gif" />
       ) : (
         <div>
+          <img
+            src="/static/billboard.png"
+            alt="ORDER - an original painting by Veli &amp; Amos. Guest artists to be announced"
+            style={{ marginBottom: 20 }}
+          />
+
+          <div className={css.priceBox}>
+            <div>
+              <img src="/static/price-up.png" />
+            </div>
+
+            <div className={css.priceText}>
+              No: <br />
+              <span>
+                <PaintNumber>{soldItems + 1}</PaintNumber>
+              </span>
+              <br />
+              Current price (CHF): <br />
+              <span>
+                <PaintNumber>
+                  {product?.simulatedPrice?.price?.amount / 100}
+                </PaintNumber>
+              </span>
+              <br />
+            </div>
+          </div>
           <form onSubmit={formik.handleSubmit}>
-            <h1>Billboard</h1>
-          <h2>Sold {soldItems}. Current price: CHF {product?.simulatedPrice?.price?.amount / 100}.00</h2>
-          <h2>Price goes up 1% with every sale!</h2>
             <label>
               <img
                 className={css.paintedLabel}

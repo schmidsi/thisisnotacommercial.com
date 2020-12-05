@@ -34,7 +34,9 @@ class CompoundInterestPrice extends ProductPricingAdapter {
       postcard: 0.01,
       testpostcard: 0.01,
       page: 0.02,
-      testpage: 0.02
+      testpage: 0.02,
+      billboard: 0.01,
+      testbillboard: 0.01,
     };
 
     const confirmedOrders = soldItems(slug);
