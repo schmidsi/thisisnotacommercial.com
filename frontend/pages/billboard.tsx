@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Router, { useRouter } from 'next/router';
+import Head from 'next/head';
 import Link from 'next/link';
 import { useApolloClient } from '@apollo/react-hooks';
 import { useFormik } from 'formik';
@@ -102,6 +103,9 @@ const Billboard = () => {
 
   return (
     <div className={css.container}>
+      <Head>
+        <title>Billboard by Veli &amp; Amos: Hand-painted art piece</title>
+      </Head>
       <header className={css.header}>
         <Link href="/">
           <a>
