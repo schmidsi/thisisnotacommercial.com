@@ -25,7 +25,7 @@ const InstagramStream = () => {
       const newPosts = json.data?.map((post) => ({
         link: post.permalink,
         image: post?.media_url,
-        caption: post?.caption
+        caption: post?.caption,
       }));
 
       setPosts(newPosts);
@@ -34,17 +34,18 @@ const InstagramStream = () => {
 
   return (
     <div className={css.InstagramStream}>
-      {posts.map(post => (
-        <a
-          key={post.link}
-          href={post.link}
-          target="_blank"
-          className={css.post}
-        >
-          <img src={post.image} className={css.image} />
-          <div className={css.caption}>{post.caption}</div>
-        </a>
-      ))}
+      {posts &&
+        posts.map((post) => (
+          <a
+            key={post.link}
+            href={post.link}
+            target="_blank"
+            className={css.post}
+          >
+            <img src={post.image} className={css.image} />
+            <div className={css.caption}>{post.caption}</div>
+          </a>
+        ))}
     </div>
   );
 };
